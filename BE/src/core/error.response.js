@@ -48,7 +48,7 @@ class ForBiddenRequestError extends ErrorResponse {
     }
 }
 
-const functionHanlder = (targetFunction) => {
+const catchError = (targetFunction) => {
     return (req, res, next) => {
         targetFunction(req, res, next).catch(next)
     }
@@ -61,7 +61,7 @@ module.exports = {
     NotFoundError,
     AuthError,
     BadRequestError,
-    functionHanlder
+    catchError
 }
 
 

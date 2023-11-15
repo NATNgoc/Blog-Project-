@@ -31,6 +31,8 @@ class CreatedResponse extends SuccesResponse {
     }
 }
 
+
+
 class AccecptedResponse extends SuccesResponse {
     constructor({ message, status = statusCode.ACCEPTED, reason = reasonPhrases.ACCEPTED, metaData = {} }) {
         super({ message, status, reason, metaData })

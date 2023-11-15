@@ -5,6 +5,6 @@ const HEADER = require('../utils/index')
 //-------------MAIN SERVICE FUNCTION
 class AuthService {
 
-    static createAccessToken
+
 
 }
