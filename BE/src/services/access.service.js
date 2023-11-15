@@ -2,16 +2,18 @@
 
 const UserRepository = require("../models/repository/user.repo")
 const Error = require('../core/error.response')
-
+const bcrypt = require('bcrypt')
+const KeyService = require("./key.service")
 //-------------------------MAIN FUNCTION-----------------------
 class AccessService {
 
     static signUp = async (body) => {
-        if (isExistingEmail(body.user_email)) {
-            throw Error.ConflictRequestError("Email has existed!")
+        if (await isExistingEmail(body.user_email)) {
+            throw new Error.ConflictRequestError("Email has existed!")
         }
-        body.user_password = await bcrypt.hash(req.body.user_password, 10)
-        return UserRepository.createNewUser(body)
+        body.user_password = await bcrypt.hash(body.user_password, 10)
+        const user = await UserRepository.createNewUser(body)
+        return await KeyService.genToken(user, "NEW")
     }
 
 }

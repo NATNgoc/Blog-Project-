@@ -12,6 +12,8 @@ app.use(compression())
 app.use(express.json())
 //init db
 require('./dbs/init.mongodb')
+//init app route
+require('./routes/index')(app)
 
 // hanlde error
 app.use((req, res, next) => {

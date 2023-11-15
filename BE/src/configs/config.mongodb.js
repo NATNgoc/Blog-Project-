@@ -7,7 +7,7 @@ const devConfig = {
     db: {
         host: process.env.DB_DEV_HOST_NAME,
         port: process.env.DB_DEV_PORT,
-        name: process.env.DB_NAME
+        name: process.env.DB_DEV_NAME
     }
 }
 

@@ -24,6 +24,12 @@ class ConflictRequestError extends ErrorResponse {
     }
 }
 
+class ServiceUnAvailible extends ErrorResponse {
+    constructor(message = reasonPhrases.SERVICE_UNAVAILABLE, status = statusCode.SERVICE_UNAVAILABLE) {
+        super(message, status)
+    }
+}
+
 class NotFoundError extends ErrorResponse {
     constructor(message = reasonPhrases.NOT_FOUND, status = statusCode.NOT_FOUND) {
         super(message, status)
@@ -59,6 +65,7 @@ module.exports = {
     ConflictRequestError,
     ForBiddenRequestError,
     NotFoundError,
+    ServiceUnAvailible,
     AuthError,
     BadRequestError,
     catchError
