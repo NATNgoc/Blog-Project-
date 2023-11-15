@@ -7,3 +7,5 @@ const server = app.listen(6890, () => {
 process.on('SIGINT', () => {
     server.close(() => { console.log("Close server", 6890) })
 })
+
+module.exports = server

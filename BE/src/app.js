@@ -10,7 +10,8 @@ app.use(morgan('dev'))
 app.use(helmet())
 app.use(compression())
 app.use(express.json())
-
+//init db
+require('./dbs/init.mongodb')
 
 // hanlde error
 app.use((req, res, next) => {
@@ -23,6 +24,7 @@ app.use((error, req, res, next) => {
     const statusCode = error.status || 500;
     console.error(error)
     return res.status(statusCode).json({
+        error: true,
         code: statusCode,
         message: error.message
     })
