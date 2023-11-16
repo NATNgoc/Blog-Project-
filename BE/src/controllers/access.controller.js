@@ -10,6 +10,15 @@ class AccessController {
         }).send(res)
     }
 
+    login = async (req, res, next) => {
+        return new SuccesResponse.OkResponse({
+            ...req.body,
+            message: "Login succesfully",
+            metaData: await AccessService.login(req.body)
+        }).send(res)
+    }
+
+
 }
 const accessController = new AccessController()
 module.exports = accessController

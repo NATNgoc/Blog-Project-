@@ -1,9 +1,11 @@
 'use strict'
 
-const { checkNullForObject } = require("../../utils")
+const { checkNullForObject, isEmptyObject } = require("../../utils")
 const Error = require('../../core/error.response')
 const emailRegrex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
 const bcrypt = require('bcrypt')
+
+//---------------------SIGN UP---------------------------------
 const signUpValidator = async (req, res, next) => {
     const {
         user_nickname, user_email, user_password, user_profilePhotoURL,
@@ -20,10 +22,19 @@ const signUpValidator = async (req, res, next) => {
 
     next()
 }
+//-----------------LOGIN--------------------------------------
+const loginValidator = async (req, res, next) => {
+    const { email, password } = req.body
+
+    if (!email || !password) throw new Error.BadRequestError("Please check login information again!")
+
+    next()
+}
 
 
 module.exports = {
-    signUpValidator
+    signUpValidator,
+    loginValidator
 }
 
 

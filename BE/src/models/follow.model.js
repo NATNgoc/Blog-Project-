@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const COLLECTION_NAME = 'follows'
 const DOCUMENTS_NAME = 'follow'
 
-var followSchema = new Schema({
+var followSchema = new mongoose.Schema({
     follower_user_id: {
         type: mongoose.Types.ObjectId,
         required: true

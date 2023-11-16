@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const COLLECTION_NAME = 'likes'
 const DOCUMENTS_NAME = 'like'
 
-var likeSchema = new Schema({
+var likeSchema = new mongoose.Schema({
     like_user_id: {
         type: mongoose.Types.ObjectId,
         ref: 'user'

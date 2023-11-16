@@ -2,7 +2,8 @@ const { default: mongoose } = require("mongoose")
 
 const HEADER = {
     autherization: "authorization",
-    refreshToken: 'x-rtoken-id'
+    refreshToken: 'x-rtoken-id',
+    apiKey: 'x-api-key'
 }
 
 const objectIdParser = (id) => {
@@ -18,8 +19,14 @@ const checkNullForObject = (object) => {
         return false;
     })
 }
+
+const isEmptyObject = (object) => {
+    return Object.keys(object).length === 0
+}
+
 module.exports = {
     HEADER,
     checkNullForObject,
-    objectIdParser
+    objectIdParser,
+    isEmptyObject
 }

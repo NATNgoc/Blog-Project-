@@ -27,7 +27,6 @@ class KeyService {
             }
         )
         const result = await tokenAction[typeOfGenToken](publicKey, user._id)
-        console.log(result)
         if (!result) {
             throw new Error.ServiceUnAvailible("Something went wrong!")
         }

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const COLLECTION_NAME = 'posts'
 const DOCUMENTS_NAME = 'post'
 
-var postSchema = new Schema({
+var postSchema = new mongoose.Schema({
     post_user_id: {
         type: mongoose.Types.ObjectId,
         required: true
