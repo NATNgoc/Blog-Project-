@@ -9,9 +9,9 @@ const jwt = require('jsonwebtoken')
 //-------------------------------MAIN FUCNTION---------------------------------------------
 const autherizeAccessToken = async (req, res, next) => {
     const { accessToken, userId } = getAccessTokenAndUserIdFromReq(req) // Get Access and userId
-    const keyStore = await checkUserLogin(req, userId) // Check if user login or not
-    const decodeUser = await checkJWT(req, accessToken, keyStore.publicKey) // check JWT
-    checkUserId(userId, decodeUser.userid) // Compare UserId with body of jwt
+    await checkUserLogin(req, userId) // Check if user login or not
+    await checkJWT(req, accessToken, req.keyStore.publicKey) // check JWT
+    checkUserId(userId, req.decodeUser.userid) // Compare UserId with body of jwt
     next()
 }
 
