@@ -1,8 +1,8 @@
 // RegisterLogic.js
 import React, { useState } from 'react';
-import Login from '../components/Login';
-import Register from '../components/Register';
-import Welcome from '../components/Welcome';
+import Login from '../container/Login';
+import Register from '../container/Register';
+import Welcome from '../container/Welcome';
 
 const RegisterLogic = () => {
   const [isClick, setIsClick] = useState(false);

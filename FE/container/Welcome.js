@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     alignItems: 'center',
+    marginTop: 70,
   },
   buttonText: {
     color: '#181717',
@@ -115,9 +116,7 @@ const Welcome = () => {
       </View>
       <Text style={styles.bloggingPartnerText}>Personal Blogging Partner</Text>
 
-      <View >
-        <Image source={require('../assets/snack-icon.png')}  style={styles.image}/>
-      </View>
+    
 
       <TouchableOpacity style={styles.button} onPress={handleLoggingIn}>
         <Text style={styles.buttonText}>Login</Text>
@@ -136,3 +135,7 @@ const Welcome = () => {
 };
 
 export default Welcome;
+
+  /*<View >
+        <Image source={require('../assets/snack-icon.png')}  style={styles.image}/>
+      </View>*/

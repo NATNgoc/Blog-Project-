@@ -12,7 +12,67 @@ import CustomTextInput from './CustomTextInput';
 import { Svg, Path } from 'react-native-svg';
 import handleLogin from '../presentational/handleLogin';
 
-const styles = StyleSheet.create({
+
+
+const Login = () => {
+  const [isClick, setIsClick] = useState(false);
+  const handleClick = () => {
+    setIsClick(true);
+  };
+
+  if (isClick) {
+    return <Welcome />;
+  }
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.backImage}>
+        <TouchableOpacity onPress={handleClick}>
+          <Image
+            source={require('../assets/Arrow.svg')}
+            style={styles.backImage}
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.blogdContainer}>
+        <Text>
+          <Text style={styles.blogdText}>BLOGD</Text>
+          <Text style={styles.dotText}>.</Text>
+        </Text>
+      </View>
+      <Text style={styles.bloggingPartnerText}>Personal Blogging Partner</Text>
+      <View>
+        <CustomTextInput placeholder="Email" />
+
+        <CustomTextInput placeholder="Password" />
+
+        <TouchableOpacity>
+          <Text style={styles.forgotText}>Forgot Password?</Text>
+        </TouchableOpacity>
+      </View>
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
+
+      <View style={{ borderBottomWidth: 1, borderBottomColor: 'black' }} />
+
+      <Image source={require('../assets/Auth.svg')} />
+
+      <TouchableOpacity style={styles.footerContainer}>
+        <View>
+          <Text style={[styles.text, styles.blackText]}>
+            Don't have an account?
+            <Text style={[styles.text, styles.blueText]}> Register</Text>
+          </Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+export default Login;
+
+  const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 70,
@@ -91,60 +151,3 @@ const styles = StyleSheet.create({
   },
 });
 
-const Login = () => {
-  const [isClick, setIsClick] = useState(false);
-  const handleClick = () => {
-    setIsClick(true);
-  };
-
-  if (isClick) {
-    return <Welcome />;
-  }
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.backImage}>
-        <TouchableOpacity onPress={handleClick}>
-          <Image
-            source={require('../assets/Arrow.svg')}
-            style={styles.backImage}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.blogdContainer}>
-        <Text>
-          <Text style={styles.blogdText}>BLOGD</Text>
-          <Text style={styles.dotText}>.</Text>
-        </Text>
-      </View>
-      <Text style={styles.bloggingPartnerText}>Personal Blogging Partner</Text>
-      <View>
-        <CustomTextInput placeholder="Email" />
-
-        <CustomTextInput placeholder="Password" />
-
-        <TouchableOpacity>
-          <Text style={styles.forgotText}>Forgot Password?</Text>
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-
-      <View style={{ borderBottomWidth: 1, borderBottomColor: 'black' }} />
-
-      <Image source={require('../assets/Auth.svg')} />
-
-      <TouchableOpacity style={styles.footerContainer}>
-        <View>
-          <Text style={[styles.text, styles.blackText]}>
-            Don't have an account?
-            <Text style={[styles.text, styles.blueText]}> Register</Text>
-          </Text>
-        </View>
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-export default Login;

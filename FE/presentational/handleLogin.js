@@ -1,9 +1,9 @@
 // LoginLogic.js
 import React, { useState } from 'react';
-import Login from '../components/Login';
-import Welcome from '../components/Welcome';
+import Login from '../container/Login';
+import Welcome from '../container/Welcome';
 
-const handleLogin = () => {
+const HandleLogin = () => {
   const [isClick, setIsClick] = useState(false);
   const handleClick = () => {
     setIsClick(true);
@@ -16,4 +16,4 @@ const handleLogin = () => {
   return <Login handleClick={handleClick} />;
 };
 
-export default handleLogin;
+export default HandleLogin;

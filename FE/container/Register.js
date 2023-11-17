@@ -1,8 +1,9 @@
 // Register.js
-import React from 'react';
+import { React, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import CustomTextInput from './CustomTextInput';
 import handleRegister from '../presentational/handleRegister';
+import Login from './Login';
 
 const styles = StyleSheet.create({
   container: {
@@ -33,7 +34,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const Register = ({ handleClick }) => {
+const Register = () => {
+  const [isClick, setIsClick] = useState(false);
+  const handleClick = () => {
+    setIsClick(true);
+  };
+
+  if (isClick) {
+    return <Login />;
+  }
   return (
     <View style={styles.container}>
       <View style={styles.backImage}>
