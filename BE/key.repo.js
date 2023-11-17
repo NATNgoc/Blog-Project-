@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const keyModel = require('../key.model');
-const { objectIdParser } = require('../../utils');
+const keyModel = require('./src/models/key.model');
+const { objectIdParser } = require('./src/utils');
 
 class KeyRepository {
 
@@ -12,16 +12,6 @@ class KeyRepository {
             upsert: true,
             new: true
         })
-    }
-
-    static deleteKey = async (filter) => {
-        return await keyModel.deleteOne({ ...filter })
-    }
-
-    static findKey = async (filter, select) => {
-        return await keyModel.findOne({ ...filter })
-            .select({ ...select })
-            .lean()
     }
 
 }

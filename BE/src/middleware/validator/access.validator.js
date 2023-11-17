@@ -14,11 +14,11 @@ const signUpValidator = async (req, res, next) => {
 
     if (checkNullForObject({ user_nickname, user_email, user_password, user_gender })) throw new Error.BadRequestError('Not find info for sign Up')
 
-    if (!emailRegrex.test(user_email)) throw new Error.BadRequestError('Email not availible for sign Up')
+    if (!isCorrectEmail(user_email)) throw new Error.BadRequestError('Email not availible for sign Up')
 
-    if (user_nickname.length < 3 || user_nickname.length > 20) throw new Error.BadRequestError('Nickname not valid')
+    if (!isCorrectNickName(user_nickname)) throw new Error.BadRequestError('Nickname not valid')
 
-    if (user_password.length < 8) throw new Error.BadRequestError('Password for valid')
+    if (!isCorrectPassword(user_password)) throw new Error.BadRequestError('Password for valid')
 
     next()
 }
@@ -29,6 +29,18 @@ const loginValidator = async (req, res, next) => {
     if (!email || !password) throw new Error.BadRequestError("Please check login information again!")
 
     next()
+}
+
+function isCorrectPassword(password) {
+    return password.length >= 8
+}
+
+function isCorrectNickName(nickname) {
+    return nickname.length >= 3 && user_nickname.length <= 20
+}
+
+function isCorrectEmail(email) {
+    return emailRegrex.test(email)
 }
 
 

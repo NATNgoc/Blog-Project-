@@ -1,3 +1,4 @@
+'use strict'
 const mongoose = require("mongoose");
 const DOCUMENT_NAME = 'ApiKey';
 const COLLECTION_NAME = 'ApiKeys';

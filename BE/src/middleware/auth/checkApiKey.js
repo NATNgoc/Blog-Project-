@@ -6,7 +6,7 @@ const Error = require('../../core/error.response')
 const checkApiKey = async (req, res, next) => {
     if (!req.header[HEADER.apiKey]) throw new Error.AuthError('unvalid api key')
     const key = req.header[HEADER.apiKey].toString()
-    const apiKeyInstance = ApiKeyService.getApiKey(key)
+    const apiKeyInstance = ApiKeyService.getActiveApiKey(key)
     req.apiKey = apiKeyInstance
     next()
 }

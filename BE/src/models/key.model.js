@@ -18,10 +18,6 @@ var keySchema = new mongoose.Schema({
     refreshTokenUsed: {
         type: [mongoose.Schema.Types.ObjectId],
         default: []
-    },
-    refreshToken: {
-        type: String,
-        require: true
     }
 }, {
     timestamps: true,

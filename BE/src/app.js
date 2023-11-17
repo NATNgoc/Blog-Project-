@@ -15,6 +15,7 @@ require('./dbs/init.mongodb')
 //init app route
 require('./routes/index')(app)
 
+
 // hanlde error
 app.use((req, res, next) => {
     const error = new Error('Not Found')

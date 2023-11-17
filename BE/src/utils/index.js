@@ -3,7 +3,8 @@ const { default: mongoose } = require("mongoose")
 const HEADER = {
     autherization: "authorization",
     refreshToken: 'x-rtoken-id',
-    apiKey: 'x-api-key'
+    apiKey: 'x-api-key',
+    clientId: 'x-client-id'
 }
 
 const objectIdParser = (id) => {
