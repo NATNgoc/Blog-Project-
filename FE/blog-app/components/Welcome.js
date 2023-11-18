@@ -1,30 +1,18 @@
 import { React, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import MySvgImage from '../assets/Grad.svg';
+import { useNavigation } from '@react-navigation/native';
 import Login from './Login';
 import Register from './Register';
 
-
-
 const Welcome = () => {
-  const [isLoggingIn, setIsLoggingIn] = useState(true);
-  const [isRegistering, setIsRegistering] = useState(false);
-
-  const handleLoggingIn = () => {
-    setIsLoggingIn(false);
+  const navigation = useNavigation();
+  
+  const handleOnPressLogin = () => {
+    navigation.navigate('Login');
   };
-
-  if (!isLoggingIn) {
-    return <Login />;
-  }
-
-  const handleSignUp = () => {
-    setIsRegistering(true);
+  const handleOnPressRegister = () => {
+    navigation.navigate('Register');
   };
-
-  if (isRegistering) {
-    return <Register />;
-  }
 
   return (
     <View style={styles.container}>
@@ -36,10 +24,9 @@ const Welcome = () => {
       </View>
       <Text style={styles.bloggingPartnerText}>Personal Blogging Partner</Text>
 
-     <Image source={require('../assets/Grad.png')} 
-        style={styles.image}  />
+      <Image source={require('../assets/Grad.png')} style={styles.image} />
 
-      <TouchableOpacity style={styles.button} onPress={handleLoggingIn}>
+      <TouchableOpacity style={styles.button} onPress={handleOnPressLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
 
@@ -47,7 +34,7 @@ const Welcome = () => {
         <Text style={styles.newHereText}>New here?</Text>
         <TouchableOpacity
           style={styles.registerBackground}
-          onPress={handleSignUp}>
+          onPress={handleOnPressRegister}>
           <Text style={styles.registerText}>Register</Text>
         </TouchableOpacity>
       </View>
@@ -60,7 +47,7 @@ export default Welcome;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 70,
+    marginTop: 45,
     alignItems: 'center',
     backgroundColor: '#EFEFEF',
   },
@@ -71,6 +58,7 @@ const styles = StyleSheet.create({
   blogdContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 30,
   },
   blogdText: {
     color: '#181717',
@@ -133,7 +121,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Montserrat',
     fontWeight: '400',
+    marginBottom: 10,
   },
 });
-
-

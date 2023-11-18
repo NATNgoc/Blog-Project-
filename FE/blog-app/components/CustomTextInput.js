@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { View, TextInput, Image, StyleSheet } from 'react-native';
 
@@ -22,12 +21,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: '#000',
     marginVertical: 10,
-    paddingBottom: 3,
+    paddingStart: 5,
   },
- 
   input: {
-    height: 50,
-    width: 300,
+    height: 45,
+    width: 320,
   },
 });
 

@@ -1,32 +1,23 @@
-import { React, useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import Welcome from './Welcome';
-import Register from './Register';
+import { useNavigation } from '@react-navigation/native';
 import CustomTextInput from './CustomTextInput';
 
 const Login = () => {
-  const [isClick, setIsClick] = useState(false);
-  const [isClick2, setIsClick2] = useState(false);
-  const handleClick = () => {
-    setIsClick(true);
+  const navigation = useNavigation();
+
+  const handleOnPressBack = () => {
+    navigation.navigate('Welcome');
   };
 
-  if (isClick) {
-    return <Welcome />;
-  }
-
-  const handleClick2 = () => {
-    setIsClick2(true);
+  const handleOnPressCreateAccount = () => {
+    navigation.navigate('Register');
   };
-
-  if (isClick2) {
-    return <Register />;
-  }
-
+  
   return (
     <View style={styles.container}>
       <View style={styles.backImage}>
-        <TouchableOpacity onPress={handleClick}>
+        <TouchableOpacity onPress={handleOnPressBack}>
           <Image
             source={require('../assets/Arrow.png')}
             style={styles.backImage}
@@ -40,6 +31,7 @@ const Login = () => {
         </Text>
       </View>
       <Text style={styles.bloggingPartnerText}>Personal Blogging Partner</Text>
+
       <View>
         <CustomTextInput placeholder="Email" />
 
@@ -60,10 +52,12 @@ const Login = () => {
         <Text style={styles.textInLine}>Or</Text>
         <View style={styles.horizontalLine} />
       </View>
-  
+
       <Image source={require('../assets/Auth.png')} />
 
-      <TouchableOpacity style={styles.footerContainer} onPress={handleClick2}>
+      <TouchableOpacity
+        style={styles.footerContainer}
+        onPress={handleOnPressCreateAccount}>
         <View>
           <Text style={[styles.text, styles.blackText]}>
             Don't have an account?
@@ -80,7 +74,7 @@ export default Login;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 40,
+    marginTop: 45,
     marginBottom: 10,
     alignItems: 'center',
     backgroundColor: '#EFEFEF',
@@ -90,11 +84,12 @@ const styles = StyleSheet.create({
     width: 20,
     alignSelf: 'flex-start',
     marginTop: 5,
+    marginLeft: 3,
   },
   blogdContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 30,
   },
   blogdText: {
     color: '#181717',
@@ -119,7 +114,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
     fontWeight: '400',
     wordWrap: 'break-word',
-    marginBottom: 20,
+    marginBottom: 40,
   },
   forgotText: {
     fontWeight: 'bold',
@@ -128,8 +123,8 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   button: {
-    width: 270,
-    height: 60,
+    width: 240,
+    height: 50,
     borderRadius: 10,
     backgroundColor: 'rgba(0, 0, 0, 0)',
     justifyContent: 'center',
@@ -143,8 +138,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
   },
   lineContainer: {
-    flexDirection: 'row', 
-    marginTop: 20, 
+    flexDirection: 'row',
+    marginTop: 20,
     alignItems: 'center',
     marginBottom: 25,
   },
