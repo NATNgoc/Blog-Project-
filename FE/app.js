@@ -1,9 +1,9 @@
 import React from 'react';
-import AppNavigator from './components/AppNavigator';
+
+
+import Welcome from './components/Welcome';
 const App = () => {
-  return (
-     <AppNavigator /> 
-  );
+  return <Welcome />
     
 };
 
