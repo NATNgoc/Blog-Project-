@@ -1,9 +1,9 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import Welcome from './Welcome';
-import Login from './Login';
-import Register from './Register';
-import Verification from './Verification';
+import Welcome from '../presentitional/Welcome';
+import Login from '../presentitional/Login';
+import Register from '../presentitional/Register';
+import Verification from '../presentitional/Verification';
 
 const Stack = createStackNavigator();
 

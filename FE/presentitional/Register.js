@@ -7,7 +7,7 @@ import {
   Image,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import CustomTextInput from './CustomTextInput';
+import CustomTextInput from '../components/CustomTextInput';
 
 const Register = () => {
   const navigation = useNavigation();

@@ -1,12 +1,19 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import Login from './Login';
+import Login from '../presentitional/Login';
 
 const LoginContainer = () => {
   const navigation = useNavigation();
 
   const handleOnPressBack = () => {
     navigation.navigate('Welcome');
+  };
+
+    const handleLogin = () => {
+    loginUser(email, password);
+    if (isAuthenticated) {
+      navigation.navigate('MainBottom');
+    }
   };
 
   const handleOnPressCreateAccount = () => {

@@ -1,13 +1,24 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import CustomTextInput from './CustomTextInput';
+import CustomTextInput from '../components/CustomTextInput';
+import { Context } from '../components/Context';
+
 
 const Login = () => {
   const navigation = useNavigation();
+  const { email, setEmail, password, setPassword, loginUser, isAuthenticated } =
+    useContext(Context);
 
   const handleOnPressBack = () => {
     navigation.navigate('Welcome');
+  };
+
+    const handleLogin = () => {
+    loginUser(email, password);
+    if (isAuthenticated) {
+      navigation.navigate('MainBottom');
+    }
   };
 
   const handleOnPressCreateAccount = () => {

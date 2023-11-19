@@ -1,9 +1,10 @@
 import React from 'react';
-
-
-import Welcome from './container/Welcome';
+import AppNavigator from './components/AppNavigator';
 const App = () => {
-  return <Welcome />
+  return (
+     <AppNavigator /> 
+  );
+    
 };
 
 export default App;
