@@ -25,6 +25,12 @@ class OkResponse extends SuccesResponse {
     }
 }
 
+class NoContentResponse extends SuccesResponse {
+    constructor({ message, status = statusCode.NO_CONTENT, reason = reasonPhrases.NO_CONTENT, metaData = {} }) {
+        super({ message, status, reason, metaData })
+    }
+}
+
 class CreatedResponse extends SuccesResponse {
     constructor({ message, status = statusCode.CREATED, reason = reasonPhrases.CREATED, metaData = {} }) {
         super({ message, status, reason, metaData })
@@ -45,6 +51,7 @@ module.exports = {
     OkResponse,
     CreatedResponse,
     SuccesResponse,
-    AccecptedResponse
+    AccecptedResponse,
+    NoContentResponse
 }
 

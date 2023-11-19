@@ -1,5 +1,4 @@
 const ApiKeyModel = require('../apikey.model')
-const crypto = require('crypto')
 
 class ApiKeyRepository {
 

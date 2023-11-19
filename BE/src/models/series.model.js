@@ -20,10 +20,17 @@ var seriesSchema = new mongoose.Schema({
         },
         required: true
     },
+    /*
+    {
+        _id: ,
+        post name,
+        
+    }
+    */
     series_status: {
         type: String,
         required: true,
-        enum: ['active', 'inactive']
+        enum: ['active', 'draft']
     },
 }, {
     timestamps: true,

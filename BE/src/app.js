@@ -2,6 +2,7 @@ const express = require('express')
 const compression = require('compression')
 const { default: helmet } = require('helmet')
 const morgan = require('morgan')
+const { sendMail } = require('./utils/mailer')
 const app = express()
 
 
@@ -10,11 +11,11 @@ app.use(morgan('dev'))
 app.use(helmet())
 app.use(compression())
 app.use(express.json())
+
 //init db
 require('./dbs/init.mongodb')
 //init app route
 require('./routes/index')(app)
-
 
 // hanlde error
 app.use((req, res, next) => {

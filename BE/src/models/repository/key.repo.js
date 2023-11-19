@@ -4,10 +4,10 @@ const { objectIdParser } = require('../../utils');
 
 class KeyRepository {
 
-    static createNewKey = async (userId, publicKey) => {
-        return await keyModel.findOneAndUpdate({ userid: objectIdParser(userId) }, {
-            userid: objectIdParser(userId),
-            publicKey: publicKey
+    static createNewKey = async (currentUserId, publicKey) => {
+        return await keyModel.findOneAndUpdate({ user_id: objectIdParser(currentUserId) }, {
+            user_id: objectIdParser(currentUserId),
+            public_key: publicKey
         }, {
             upsert: true,
             new: true

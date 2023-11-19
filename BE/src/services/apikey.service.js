@@ -9,9 +9,7 @@ class ApiKeyService {
             "key": apikey,
             "status": true
         }
-        const currentApiKey = await ApiKeyRepository.findApiKey(filter)
-        if (!currentApiKey) throw new Error.BadRequestError('Unvalid Api Key')
-        return currentApiKey
+        return await ApiKeyRepository.findApiKey(filter)
     }
 
 

@@ -5,8 +5,6 @@ const { Types } = require('mongoose')
 const KeyRepository = require('../models/repository/key.repo')
 const Error = require('../core/error.response')
 
-
-
 class KeyService {
 
     static genToken = async (user, typeOfGenToken) => {

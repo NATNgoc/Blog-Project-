@@ -1,10 +1,9 @@
 const { default: mongoose } = require("mongoose")
-
+const bcrypt = require('bcrypt')
 const HEADER = {
     autherization: "authorization",
     refreshToken: 'x-rtoken-id',
-    apiKey: 'x-api-key',
-    clientId: 'x-client-id'
+    apiKey: 'x-api-key'
 }
 
 const objectIdParser = (id) => {
@@ -21,6 +20,19 @@ const checkNullForObject = (object) => {
     })
 }
 
+
+async function encryptString(keyword, salt) {
+    return await bcrypt.hash(keyword, salt)
+}
+
+async function compareEncryptedStrings(plainString, encryptedString) {
+    return await bcrypt.compare(plainString, encryptedString);
+}
+
+function getObjectFromReqHeader(req, keyword) {
+    return req.headers[keyword]
+}
+
 const isEmptyObject = (object) => {
     return Object.keys(object).length === 0
 }
@@ -29,5 +41,8 @@ module.exports = {
     HEADER,
     checkNullForObject,
     objectIdParser,
-    isEmptyObject
+    isEmptyObject,
+    getObjectFromReqHeader,
+    encryptString,
+    compareEncryptedStrings
 }

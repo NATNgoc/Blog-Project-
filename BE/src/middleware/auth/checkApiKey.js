@@ -1,14 +1,20 @@
 
 const ApiKeyService = require('../../services/apikey.service')
-const { HEADER } = require('../../utils/index')
+const { HEADER, getObjectFromReqHeader } = require('../../utils/index')
 const Error = require('../../core/error.response')
 
 const checkApiKey = async (req, res, next) => {
-    if (!req.header[HEADER.apiKey]) throw new Error.AuthError('unvalid api key')
-    const key = req.header[HEADER.apiKey].toString()
-    const apiKeyInstance = ApiKeyService.getActiveApiKey(key)
+    const keyString = getKeyStringFromHeader(req)
+    const apiKeyInstance = ApiKeyService.getActiveApiKey(keyString)
+    if (!apiKeyInstance) throw new Error.AuthError('unvalid api key')
     req.apiKey = apiKeyInstance
     next()
+}
+
+function getKeyStringFromHeader(req) {
+    const key = getObjectFromReqHeader(req, HEADER.apiKey)
+    if (!key) throw new Error.AuthError('unvalid api key')
+    return key.toString()
 }
 
 const checkPermission = async (permission) => {
@@ -19,7 +25,6 @@ const checkPermission = async (permission) => {
         next()
     }
 }
-
 
 const isContainPermission = (permission, apiKey) => {
     return apiKey.permissions.includes(permission)

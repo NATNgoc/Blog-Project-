@@ -4,8 +4,9 @@ const { catchError } = require('../core/error.response')
 const router = express.Router()
 
 const initApiRoute = (app) => {
-    router.post("/authen", catchError(autherizeRefreshToken))
-    router.use('/users', require('./access/index'))
+    router.use("/users", require('./user/index'))
+    router.use('/access', require('./access/index'))
+    router.use('/otps', require('./otp/index'))
     return app.use("/api/v1", router)
 }
 

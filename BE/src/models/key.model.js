@@ -6,16 +6,16 @@ const DOCUMENT_NAME = 'key';
 const COLLECTION_NAME = 'keys';
 
 var keySchema = new mongoose.Schema({
-    userid: {
+    user_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'user'
     },
-    publicKey: {
+    public_key: {
         type: String,
         require: true
     },
-    refreshTokenUsed: {
+    used_refresh_tokens: {
         type: [mongoose.Schema.Types.ObjectId],
         default: []
     }

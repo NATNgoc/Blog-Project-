@@ -8,29 +8,42 @@ const jwt = require('jsonwebtoken')
 
 //-------------------------------MAIN FUCNTION---------------------------------------------
 const autherizeAccessToken = async (req, res, next) => {
-    const { accessToken, userId } = getAccessTokenAndUserIdFromReq(req) // Get Access and userId
+    const accessToken = getAccessTokenFromReq(req)
+    const userId = getUserIdFromToken(accessToken)
     await checkUserLogin(req, userId) // Check if user login or not
-    await checkJWT(req, accessToken, req.keyStore.publicKey) // check JWT
-    checkUserId(userId, req.decodeUser.userid) // Compare UserId with body of jwt
+    await checkJWT(req, accessToken, req.keyStore.public_key) // check JWT
     next()
 }
 
 
 const autherizeRefreshToken = async (req, res, next) => {
-    const { refreshToken, userId } = getRefreshTokenAndUserIdFromReq(req)
+    const refreshToken = getRefreshTokenFromReq(req)
+    const userId = getUserIdFromToken(refreshToken)
     await checkUserLogin(req, userId) // Check if user login or not
-    await Promise.all([checkLegalRefreshToken(userId, refreshToken, req.keyStore.refreshTokenUsed), checkJWT(req, refreshToken, req.keyStore.publicKey)]);
-    checkUserId(userId, req.decodeUser.userid); // So sánh UserId với nội dung của jwt
-    next(); // Compare UserId with body of jwt
+    await Promise.all([checkLegalRefreshToken(userId, refreshToken, req.keyStore.used_refresh_tokens), checkJWT(req, refreshToken, req.keyStore.public_key)]);
+    next();
 }
 
 
 //-------------------------------SUB FUNCTION---------------------------------------------
 
-function checkUserId(userId, legalUserId) {
-    if (!isLegalUserId(userId, legalUserId)) {
-        throw new Error.AuthError('Unvalid token')
-    }
+function getAccessTokenFromReq(req) {
+    const jwt = getObjectFromReqHeader(req, HEADER.autherization)
+    if (!jwt) throw new Error.AuthError('Unvalid token')
+    const accessToken = getAccessTokenFromJWT(jwt)
+    if (!accessToken) throw new Error.AuthError('Unvalid token')
+    return accessToken
+}
+
+function getRefreshTokenFromReq(req) {
+    const refreshToken = getObjectFromReqHeader(req, HEADER.refreshToken)
+    if (!refreshToken) throw new Error.AuthError('Unvalid token')
+    return refreshToken
+}
+
+function getUserIdFromToken(token) {
+    const decodeUser = jwt.decode(token)
+    return decodeUser.userid
 }
 
 async function checkUserLogin(req, userId) {
@@ -52,7 +65,7 @@ async function hanldeWithIllegalToken(userId) {
 
 async function deleteKeyStore(userId) {
     const filter = {
-        userid: userId
+        user_id: userId
     }
     return await KeyRepository.deleteKey(filter)
 }
@@ -60,29 +73,6 @@ async function deleteKeyStore(userId) {
 function isLegalRefreshToken(refreshToken, usedRefreshTokens) {
     const result = usedRefreshTokens.includes(refreshToken)
     return result === true ? false : true
-}
-
-async function isLegalUserId(userId, userIdInJWT) {
-    return userId === userIdInJWT
-}
-
-
-function getRefreshTokenAndUserIdFromReq(req) {
-    const refreshToken = getObjectFromReqHeader(req, HEADER.refreshToken)
-    const userId = getObjectFromReqHeader(req, HEADER.clientId)
-    if (!refreshToken) throw new Error.AuthError('Unvalid token')
-    if (!userId) throw new Error.BadRequestError('Check userId again')
-    return { refreshToken, userId }
-}
-
-function getAccessTokenAndUserIdFromReq(req) {
-    const jwt = getObjectFromReqHeader(req, HEADER.autherization)
-    const userId = getObjectFromReqHeader(req, HEADER.clientId)
-    if (!jwt) throw new Error.AuthError('Unvalid token')
-    if (!userId) throw new Error.BadRequestError('Check userId again')
-    const accessToken = getAccessTokenFromJWT(jwt)
-    if (!accessToken) throw new Error.AuthError('Unvalid token')
-    return { accessToken, userId }
 }
 
 function getObjectFromReqHeader(req, keyword) {
@@ -105,7 +95,7 @@ async function createPublicKeyObject(publicKeyString) {
 }
 
 async function isUserLogin(userId) {
-    const keyStore = await KeyRepository.findKey({ "userid": objectIdParser(userId) })
+    const keyStore = await KeyRepository.findKey({ "user_id": objectIdParser(userId) })
     if (!keyStore) throw new Error.AuthError("User isn't login")
     return keyStore
 }

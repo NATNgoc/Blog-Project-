@@ -3,7 +3,7 @@
 const { checkNullForObject, isEmptyObject } = require("../../utils")
 const Error = require('../../core/error.response')
 const emailRegrex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-const bcrypt = require('bcrypt')
+
 
 //---------------------SIGN UP---------------------------------
 const signUpValidator = async (req, res, next) => {
@@ -26,7 +26,7 @@ const signUpValidator = async (req, res, next) => {
 const loginValidator = async (req, res, next) => {
     const { email, password } = req.body
 
-    if (!email || !password) throw new Error.BadRequestError("Please check login information again!")
+    if (checkNullForObject({ email, password })) throw new Error.BadRequestError("Please check login information again!")
 
     next()
 }
@@ -36,7 +36,7 @@ function isCorrectPassword(password) {
 }
 
 function isCorrectNickName(nickname) {
-    return nickname.length >= 3 && user_nickname.length <= 20
+    return nickname.length >= 3 && nickname.length <= 20
 }
 
 function isCorrectEmail(email) {
