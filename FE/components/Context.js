@@ -1,26 +1,27 @@
 import React, { createContext, useState } from 'react';
 import { Alert } from 'react-native';
 
-const Context= createContext();
+const Context = createContext();
 
-const AuthProvider = ({children}) => {
+const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   const loginUser = (enteredEmail, enteredPassword) => {
-    if (enteredEmail === '123456' && enteredPassword === '123456' ) {
+    if (enteredEmail === '123' && enteredPassword === '123') {
       setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+      Alert.alert('Incorrect Email or Password');
     }
-    else{
-    setIsAuthenticated(false);
-    Alert.alert("Incorrect Email or Password")
-    }
-  };
-  const logoutUser = () => {
-    setIsAuthenticated(false)
   };
 
-   const contextValue = {
+  const logoutUser = () => {
+    setIsAuthenticated(false);
+  };
+
+  const contextValue = {
     isAuthenticated,
     setIsAuthenticated,
     email,
@@ -31,10 +32,11 @@ const AuthProvider = ({children}) => {
     logoutUser,
   };
 
-    return (
-      <Context.Provider value={contextValue}>
+  return (
+    <Context.Provider value={contextValue}>
       {children}
-      </Context.Provider>
-    );
-  };
-export {Context, AuthProvider };
+    </Context.Provider>
+  );
+};
+
+export { Context, AuthProvider };

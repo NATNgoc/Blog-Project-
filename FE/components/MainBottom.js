@@ -29,23 +29,22 @@ const MainBottom = () => {
       />
 
       <Bottom.Screen
-        name="Categories"
-        component={Categories}
-        options={homeScreenOptions(false, 'grid')}
+        name="Search"
+        component={Search}
+        options={homeScreenOptions(false, 'search')}
       />
       <Bottom.Screen
-        name="Favourites"
-        component={Favourites}
+        name="Favorites"
+        component={Favorites}
         options={{ ...homeScreenOptions(false, 'heart'), tabBarBadge: 3 }}
       />
 
       <Bottom.Screen
-        name="Profile"
-        component={Profile}
-        options={homeScreenOptions(false, 'person')}
+        name="Setting"
+        component={Setting}
+        options={homeScreenOptions(false, 'settings')}
       />
     </Bottom.Navigator>
   );
 };
-//Danh Hoàng Khải-21522181
 export default MainBottom;

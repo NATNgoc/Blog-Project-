@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomTextInput';
 import { Context } from '../components/Context';
 
@@ -14,7 +15,7 @@ const Login = () => {
     navigation.navigate('Welcome');
   };
 
-    const handleLogin = () => {
+   const handleLogin = () => {
     loginUser(email, password);
     if (isAuthenticated) {
       navigation.navigate('MainBottom');
@@ -44,17 +45,27 @@ const Login = () => {
       <Text style={styles.bloggingPartnerText}>Personal Blogging Partner</Text>
 
       <View>
-        <CustomTextInput placeholder="Email" />
+        <CustomTextInput
+          placeholder="Email"
+          value={email}
+          handleTextChange={(text) => setEmail(text)}
+        />
 
-        <CustomTextInput placeholder="Password" />
+        <CustomTextInput
+          placeholder="Password"
+          value={password}
+          handleTextChange={(pwd) => setPassword(pwd)}
+        />
 
         <TouchableOpacity>
           <Text style={styles.forgotText}>Forgot Password?</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
+      <CustomButton
+          title="Login"
+          onPress={handleLogin}
+        />
+      
 
       <View style={{ borderBottomWidth: 1, borderBottomColor: 'black' }} />
 
@@ -133,21 +144,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     marginBottom: 25,
   },
-  button: {
-    width: 240,
-    height: 50,
-    borderRadius: 10,
-    backgroundColor: 'rgba(0, 0, 0, 0)',
-    justifyContent: 'center',
-    borderWidth: 1,
-    alignItems: 'center',
-    marginBottom: 25,
-  },
-  buttonText: {
-    color: '#181717',
-    fontSize: 16,
-    fontFamily: 'Montserrat',
-  },
+  
   lineContainer: {
     flexDirection: 'row',
     marginTop: 20,

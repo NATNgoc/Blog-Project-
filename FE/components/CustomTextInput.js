@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TextInput, Image, StyleSheet } from 'react-native';
 
-const CustomTextInput = ({ placeholder, icon, value, handleTextChange }) => {
+const CustomTextInput = ({ placeholder, value, handleTextChange }) => {
   return (
     <View style={styles.inputContainer}>
       <TextInput
