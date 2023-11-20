@@ -10,12 +10,14 @@ class UserRepository {
 
     }
 
-    static async updateUser(filter, bodyUpdate) {
+    static async updateUser(filter, bodyUpdate, isNew = true, select = {}) {
         return await userModel.findOneAndUpdate({ ...filter }, {
             $set: {
                 ...bodyUpdate
             }
-        })
+        }, {
+            new: isNew
+        }).select({ ...select })
     }
 
     static async findUser(filter, select = {}) {

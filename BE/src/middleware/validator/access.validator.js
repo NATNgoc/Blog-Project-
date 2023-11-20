@@ -1,9 +1,8 @@
 'use strict'
 
-const { checkNullForObject, isEmptyObject } = require("../../utils")
+const { checkNullForObject } = require("../../utils")
 const Error = require('../../core/error.response')
-const emailRegrex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-
+const UserUtils = require('../../utils/userUtils')
 
 //---------------------SIGN UP---------------------------------
 const signUpValidator = async (req, res, next) => {
@@ -14,14 +13,11 @@ const signUpValidator = async (req, res, next) => {
 
     if (checkNullForObject({ user_nickname, user_email, user_password, user_gender })) throw new Error.BadRequestError('Not find info for sign Up')
 
-    if (!isCorrectEmail(user_email)) throw new Error.BadRequestError('Email not availible for sign Up')
-
-    if (!isCorrectNickName(user_nickname)) throw new Error.BadRequestError('Nickname not valid')
-
-    if (!isCorrectPassword(user_password)) throw new Error.BadRequestError('Password for valid')
+    await Promise.all([UserUtils.checkEmail(user_email), UserUtils.checkGender(user_gender), UserUtils.checkNickName(user_nickname), UserUtils.checkPassword(user_password)])
 
     next()
 }
+
 //-----------------LOGIN--------------------------------------
 const loginValidator = async (req, res, next) => {
     const { email, password } = req.body
@@ -29,18 +25,6 @@ const loginValidator = async (req, res, next) => {
     if (checkNullForObject({ email, password })) throw new Error.BadRequestError("Please check login information again!")
 
     next()
-}
-
-function isCorrectPassword(password) {
-    return password.length >= 8
-}
-
-function isCorrectNickName(nickname) {
-    return nickname.length >= 3 && nickname.length <= 20
-}
-
-function isCorrectEmail(email) {
-    return emailRegrex.test(email)
 }
 
 

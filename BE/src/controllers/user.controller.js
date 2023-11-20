@@ -10,6 +10,14 @@ class UserController {
         }).send(res)
     }
 
+    updateGeneralProfile = async (req, res, next) => {
+        return new SuccesResponse.OkResponse({
+            ...req.body,
+            message: "Update profile successfully",
+            metaData: await UserService.updateGeneralProfile(req.decodeUser.userid, req.body)
+        }).send(res)
+    }
+
 }
 const userController = new UserController()
 module.exports = userController

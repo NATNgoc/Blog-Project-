@@ -33,6 +33,15 @@ function getObjectFromReqHeader(req, keyword) {
     return req.headers[keyword]
 }
 
+const getSelectDataForQuery = (select) => {
+    return Object.fromEntries(select.map(it => [it, 1]))
+}
+
+const getUnselectDataForQuery = (select) => {
+    return Object.fromEntries(select.map(it => [it, 0]))
+}
+
+
 const isEmptyObject = (object) => {
     return Object.keys(object).length === 0
 }
@@ -44,5 +53,7 @@ module.exports = {
     isEmptyObject,
     getObjectFromReqHeader,
     encryptString,
-    compareEncryptedStrings
+    compareEncryptedStrings,
+    getSelectDataForQuery,
+    getUnselectDataForQuery
 }

@@ -17,7 +17,7 @@ const sendMail = (to, subject, htmlContent) => {
   })
 
   const message = {
-    from: emailConfig.username,
+    from: "TechHub" + "<" + emailConfig.username + ">",
     to: to,
     subject: subject,
     html: htmlContent

@@ -9,7 +9,7 @@ class OTPService {
 
     static async createNewOTP({ email }) {
         if (await findUserByEmail(email))
-            throw new Error.AuthError("Email has existed!")
+            throw new Error.BadRequestError("Email has existed!")
         const OTP = getRandomOTP()
         const hashedOTP = await encryptString(OTP, 10)
         await OTPRepository.createNewOtp(email, hashedOTP)

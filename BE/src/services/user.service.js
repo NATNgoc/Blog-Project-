@@ -1,6 +1,7 @@
 const UserRepository = require('../models/repository/user.repo')
 const Error = require('../core/error.response')
-const { encryptString, compareEncryptedStrings, checkNullForObject, objectIdParser } = require('../utils')
+const { encryptString, compareEncryptedStrings, checkNullForObject, objectIdParser, getUnselectDataForQuery } = require('../utils')
+
 
 //------------------------------MAIN-FUNCTION--------------------
 class UserService {
@@ -12,6 +13,19 @@ class UserService {
         console.log("mới: ", encryptedNewPassword, "cũ: ", currentUser.user_password)
         await updateUserPassword(userId, encryptedNewPassword)
     }
+
+    static async updateGeneralProfile(userId, bodyUpdate) {
+        await checkUser(userId)
+        const filter = {
+            _id: userId
+        }
+        const { user_nickname, user_profilePhotoURL, user_website, user_bio, user_gender } = bodyUpdate
+        const unSelectField = getUnselectDataForQuery(["role", "updatedAt", "createdAt", "__v", "user_password"])
+        return await UserRepository.updateUser(filter, { user_nickname, user_profilePhotoURL, user_website, user_bio, user_gender }, true, unSelectField)
+    }
+
+
+
 }
 //--------------------------SUB-FUNCTION------------------------
 
