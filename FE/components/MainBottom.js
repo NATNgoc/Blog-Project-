@@ -36,7 +36,7 @@ const MainBottom = () => {
       <Bottom.Screen
         name="Favorites"
         component={Favorites}
-        options={{ ...homeScreenOptions(false, 'heart'), tabBarBadge: 3 }}
+        options={{ ...homeScreenOptions(false, 'bookmark'), tabBarBadge: 3 }}
       />
 
       <Bottom.Screen
