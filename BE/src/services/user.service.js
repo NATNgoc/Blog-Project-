@@ -6,7 +6,7 @@ const { encryptString, compareEncryptedStrings, checkNullForObject, objectIdPars
 //------------------------------MAIN-FUNCTION--------------------
 class UserService {
     static async resetPassword(userId, { oldPassword, newPassword }) {
-        if (checkNullForObject({ oldPassword, newPassword })) throw new Error.BadRequestError("All field are required")
+        checkNullForObject({ oldPassword, newPassword })
         const currentUser = await checkUser(userId)
         await checkOldPassword(oldPassword, currentUser.user_password)
         const encryptedNewPassword = await encryptString(newPassword, 10)
@@ -21,11 +21,11 @@ class UserService {
         }
         const { user_nickname, user_profilePhotoURL, user_website, user_bio, user_gender } = bodyUpdate
         const unSelectField = getUnselectDataForQuery(["role", "updatedAt", "createdAt", "__v", "user_password"])
-        return await UserRepository.updateUser(filter, { user_nickname, user_profilePhotoURL, user_website, user_bio, user_gender }, true, unSelectField)
+        const option = {
+            new: true
+        }
+        return await UserRepository.updateUser(filter, { user_nickname, user_profilePhotoURL, user_website, user_bio, user_gender }, unSelectField, option)
     }
-
-
-
 }
 //--------------------------SUB-FUNCTION------------------------
 
@@ -36,7 +36,10 @@ async function updateUserPassword(userId, encryptedPassword) {
     const bodyUpdate = {
         user_password: encryptedPassword
     }
-    return await UserRepository.updateUser(filter, bodyUpdate)
+    const options = {
+        new: true
+    }
+    return await UserRepository.updateUser(filter, bodyUpdate, {}, options)
 }
 
 async function checkOldPassword(plainPassword, encryptedPassword) {

@@ -9,7 +9,7 @@ const sendMail = (to, subject, htmlContent) => {
   const transporter = nodeMailer.createTransport({
     host: emailConfig.mail_host,
     port: emailConfig.mail_port,
-    secure: false, // nếu dùng port 465 (smtps) thì để true, còn lại hãy để false cho tất cả các port khác
+    secure: false, //dùng port 465 (smtps) thì để true, còn lại hãy để false cho tất cả các port khác
     auth: {
       user: emailConfig.username,
       pass: emailConfig.password

@@ -7,6 +7,7 @@ const initApiRoute = (app) => {
     router.use("/users", require('./user/index'))
     router.use('/access', require('./access/index'))
     router.use('/otps', require('./otp/index'))
+    router.use('/followers', require('./follow/index'))
     return app.use("/api/v1", router)
 }
 

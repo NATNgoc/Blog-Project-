@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose")
 const bcrypt = require('bcrypt')
+const Error = require('../core/error.response')
 const HEADER = {
     autherization: "authorization",
     refreshToken: 'x-rtoken-id',
@@ -11,13 +12,10 @@ const objectIdParser = (id) => {
 }
 
 const checkNullForObject = (object) => {
-    Object.values(object).every(value => {
-        if (value === null) {
-            return true;
-        }
-
-        return false;
-    })
+    const result = Object.values(object).every(value => value !== null && value !== undefined) === false ? true : false;
+    if (result) {
+        throw new Error.BadRequestError("All field are required!")
+    }
 }
 
 
@@ -46,14 +44,18 @@ const isEmptyObject = (object) => {
     return Object.keys(object).length === 0
 }
 
-module.exports = {
-    HEADER,
-    checkNullForObject,
-    objectIdParser,
-    isEmptyObject,
-    getObjectFromReqHeader,
-    encryptString,
-    compareEncryptedStrings,
-    getSelectDataForQuery,
-    getUnselectDataForQuery
-}
+
+const wrapperFunctionWithTransaction =
+
+
+    module.exports = {
+        HEADER,
+        checkNullForObject,
+        objectIdParser,
+        isEmptyObject,
+        getObjectFromReqHeader,
+        encryptString,
+        compareEncryptedStrings,
+        getSelectDataForQuery,
+        getUnselectDataForQuery
+    }

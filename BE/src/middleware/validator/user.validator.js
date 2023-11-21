@@ -8,10 +8,16 @@ const updateProfileValidator = async (req, res, next) => {
         user_website, user_bio, user_gender
     } = req.body
 
-    if (checkNullForObject({ user_nickname, user_gender })) throw new Error.BadRequestError('NickName and Gender are required!')
-
+    checkNullForObject({ user_nickname, user_gender })
     await Promise.all([UserUtils.checkGender(user_gender), UserUtils.checkNickName(user_nickname)])
     next()
 }
 
-module.exports = { updateProfileValidator }
+const resetPasswordValidator = async (req, res, next) => {
+    const { oldPassword, newPassword } = req.body
+    checkNullForObject({ oldPassword, newPassword })
+    await Promise.all([UserUtils.checkPassword(oldPassword), UserUtils.checkPassword(newPassword)])
+    next()
+}
+
+module.exports = { updateProfileValidator, resetPasswordValidator }

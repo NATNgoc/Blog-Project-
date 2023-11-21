@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+
 const keyModel = require('../key.model');
 const { objectIdParser } = require('../../utils');
 

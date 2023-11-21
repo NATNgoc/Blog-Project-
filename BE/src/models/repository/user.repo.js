@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+
 const userModel = require('../user.model')
 
 class UserRepository {
@@ -10,15 +10,44 @@ class UserRepository {
 
     }
 
-    static async updateUser(filter, bodyUpdate, isNew = true, select = {}) {
+    static async updateUser(filter, bodyUpdate, select = {}, option = {}) {
+        console.log("option", option)
         return await userModel.findOneAndUpdate({ ...filter }, {
             $set: {
                 ...bodyUpdate
             }
         }, {
-            new: isNew
+            ...option
         }).select({ ...select })
     }
+
+    static async updateFollowerCountOfUser(userId, count, options = {}) {
+        const filter = {
+            _id: userId
+        }
+        return await userModel.findOneAndUpdate({ ...filter }, {
+            $inc: {
+                user_follower_count: count
+            }
+        }, {
+            ...options
+        })
+    }
+
+    static async updateFollowingCountOfUser(userId, count, options = {}) {
+        const filter = {
+            _id: userId
+        }
+        return await userModel.findOneAndUpdate({ ...filter }, {
+            $inc: {
+                user_following_count: count
+            }
+        }, {
+            ...options
+        })
+    }
+
+
 
     static async findUser(filter, select = {}) {
         return await userModel.findOne({ ...filter }).select({ ...select }).lean()

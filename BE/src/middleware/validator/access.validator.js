@@ -11,8 +11,7 @@ const signUpValidator = async (req, res, next) => {
         user_website, user_bio, user_gender
     } = req.body
 
-    if (checkNullForObject({ user_nickname, user_email, user_password, user_gender })) throw new Error.BadRequestError('Not find info for sign Up')
-
+    checkNullForObject({ user_nickname, user_email, user_password, user_gender })
     await Promise.all([UserUtils.checkEmail(user_email), UserUtils.checkGender(user_gender), UserUtils.checkNickName(user_nickname), UserUtils.checkPassword(user_password)])
 
     next()

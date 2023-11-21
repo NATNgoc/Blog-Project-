@@ -5,6 +5,8 @@ const UserRepository = require("../models/repository/user.repo")
 const { sendMail } = require('../utils/mailer')
 const { encryptString } = require('../utils')
 
+
+//------------------------------MAIN-FUNCTION--------------------
 class OTPService {
 
     static async createNewOTP({ email }) {

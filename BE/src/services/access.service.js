@@ -9,8 +9,6 @@ const OTPService = require("./otp.service")
 //-------------------------MAIN FUNCTION-----------------------
 class AccessService {
     static signUp = async (body) => {
-        // await checkEmailUser(body.user_email)
-        // await checkOTP(body.otp, body.user_email)
         await Promise.all([checkEmailUser(body.user_email), checkOTP(body.otp, body.user_email)])
         body.user_password = await encryptString(body.user_password, 10)
         const user = await UserRepository.createNewUser(body)

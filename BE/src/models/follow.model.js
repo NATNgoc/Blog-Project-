@@ -13,9 +13,9 @@ var followSchema = new mongoose.Schema({
         required: true
     },
     status: {
-        type: String,
+        type: Boolean,
         required: true,
-        enum: ['active', 'blocked']
+        default: true
     }
 }, {
     timestamps: true,
