@@ -6,11 +6,13 @@ const DOCUMENTS_NAME = 'follow'
 var followSchema = new mongoose.Schema({
     follower_user_id: {
         type: mongoose.Types.ObjectId,
-        required: true
+        required: true,
+        ref: 'user'
     },
     following_user_id: {
         type: mongoose.Types.ObjectId,
-        required: true
+        required: true,
+        ref: 'user'
     },
     status: {
         type: Boolean,

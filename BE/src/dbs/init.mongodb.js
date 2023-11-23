@@ -1,9 +1,8 @@
 const devConfig = require('../configs/config.mongodb');
 const { default: mongoose } = require('mongoose');
 
-// const url = 'mongodb://127.0.0.1:27017';
 const connectString = 'mongodb://' + devConfig.db.host + ":" + devConfig.db.port + "/" + devConfig.db.name
-// const connectString = "mongodb://127.0.0.1:27001"
+// const connectString = 'mongodb+srv://' +devConfig.db.user_name + ":" + devConfig.db.password+"@"+devConfig.db.cluster_name+".mongodb.net/"+devConfig.db.name +"?retryWrites=true&w=majority"
 
 class DatabaseMongoDB {
     constructor() {
@@ -18,7 +17,7 @@ class DatabaseMongoDB {
         mongoose.connect(connectString, {
             socketTimeoutMS: 30000,
             maxPoolSize: 30,
-            replicaSet: "rs0",
+            useNewUrlParser: true,
             directConnection: true
         }).then(_ => {
             console.log("Connect mongoDB succesfully")

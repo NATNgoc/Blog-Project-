@@ -11,12 +11,15 @@ const objectIdParser = (id) => {
     return new mongoose.Types.ObjectId(id)
 }
 
+
 const checkNullForObject = (object) => {
     const result = Object.values(object).every(value => value !== null && value !== undefined) === false ? true : false;
     if (result) {
         throw new Error.BadRequestError("All field are required!")
     }
 }
+
+
 
 
 async function encryptString(keyword, salt) {
@@ -34,6 +37,8 @@ function getObjectFromReqHeader(req, keyword) {
 const getSelectDataForQuery = (select) => {
     return Object.fromEntries(select.map(it => [it, 1]))
 }
+
+
 
 const getUnselectDataForQuery = (select) => {
     return Object.fromEntries(select.map(it => [it, 0]))
