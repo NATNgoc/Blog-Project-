@@ -1,7 +1,8 @@
 const devConfig = require('../configs/config.mongodb');
 const { default: mongoose } = require('mongoose');
-
+//LOCAL
 const connectString = 'mongodb://' + devConfig.db.host + ":" + devConfig.db.port + "/" + devConfig.db.name
+//CLOUD
 // const connectString = 'mongodb+srv://' +devConfig.db.user_name + ":" + devConfig.db.password+"@"+devConfig.db.cluster_name+".mongodb.net/"+devConfig.db.name +"?retryWrites=true&w=majority"
 
 class DatabaseMongoDB {

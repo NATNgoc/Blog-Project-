@@ -10,8 +10,7 @@ const { encryptString } = require('../utils')
 class OTPService {
 
     static async createNewOTP({ email }) {
-        if (await findUserByEmail(email))
-            throw new Error.BadRequestError("Email has existed!")
+        await checkEmailUser(email)
         const OTP = getRandomOTP()
         const hashedOTP = await encryptString(OTP, 10)
         await OTPRepository.createNewOtp(email, hashedOTP)
@@ -25,6 +24,12 @@ class OTPService {
 
 }
 //--------------------SUB FUNCTION-------------------------
+
+async function checkEmailUser(email) {
+    if (await findUserByEmail(email))
+        throw new Error.BadRequestError("Email has existed!")
+}
+
 function getRandomOTP() {
     return otpGenerator.generate(6, {
         digits: true,

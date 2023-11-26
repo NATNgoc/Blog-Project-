@@ -22,8 +22,13 @@ const checkNullForObject = (object) => {
 
 
 
+
 async function encryptString(keyword, salt) {
     return await bcrypt.hash(keyword, salt)
+}
+
+async function test_encryptString(keyword, salt) {
+
 }
 
 async function compareEncryptedStrings(plainString, encryptedString) {

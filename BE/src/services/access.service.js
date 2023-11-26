@@ -8,8 +8,9 @@ const { encryptString } = require("../utils")
 const OTPService = require("./otp.service")
 //-------------------------MAIN FUNCTION-----------------------
 class AccessService {
+
     static signUp = async (body) => {
-        await Promise.all([checkEmailUser(body.user_email), checkOTP(body.otp, body.user_email)])
+        await Promise.all([checkExistingEmailUser(body.user_email), checkExistingOTP(body.otp, body.user_email)])
         body.user_password = await encryptString(body.user_password, 10)
         const user = await UserRepository.createNewUser(body)
         return await KeyService.genToken(user, "NEW")
@@ -24,13 +25,19 @@ class AccessService {
 
 //--------------------------SUB FUNCTION-----------------------
 
-
-async function checkOTP(otp, email) {
+async function checkExistingOTP(currentOTP, email) {
     const OTPs = await getOTPsByEmail(email)
-    if (OTPs.length === 0) throw new Error.AuthError("Your OTP code has expired or not correct!")
-    const newestOTP = OTPs[0].otp.toString()
-    console.log("OTP:::", OTPs, newestOTP)
-    if (!await bcrypt.compare(otp, newestOTP)) throw new Error.AuthError("Your OTP code has expired or not correct!")
+    if (!isExistedOTP(OTPs)) throw new Error.AuthError("Your OTP code has expired or not correct!")
+    const newestOTP = getNewestOTPCode(OTPs)
+    if (!await bcrypt.compare(currentOTP, newestOTP)) throw new Error.AuthError("Your OTP code has expired or not correct!")
+}
+
+function isExistedOTP(OTPs) {
+    return OTPs.length === 0 ? false : true
+}
+
+function getNewestOTPCode(OTPs) {
+    return OTPs[0].otp.toString()
 }
 
 async function getOTPsByEmail(email) {
@@ -38,7 +45,7 @@ async function getOTPsByEmail(email) {
 }
 
 
-async function checkEmailUser(email) {
+async function checkExistingEmailUser(email) {
     const currentEmail = await UserRepository.findUserByEmail(email)
     if (currentEmail) {
         throw new Error.ConflictRequestError("Email has existed!")

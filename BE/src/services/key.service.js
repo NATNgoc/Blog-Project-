@@ -36,6 +36,10 @@ class KeyService {
         return result
     }
 
+    static async getRefreshKey(publicKey, userId) {
+
+    }
+
     static genPubicAndPrivateKey = async () => {
         const { privateKey, publicKey } = await crypto.generateKeyPairSync('rsa', {
             modulusLength: 2048, // Độ mạnh của thuật toán generateKey
@@ -57,7 +61,7 @@ class KeyService {
 
 const tokenAction = {
     "NEW": KeyService.genNewKey,
-    "REFRESH": "s"
+    "REFRESH": KeyService.getRefreshKey
 }
 
 module.exports = KeyService

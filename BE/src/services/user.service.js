@@ -7,15 +7,14 @@ const { encryptString, compareEncryptedStrings, checkNullForObject, objectIdPars
 class UserService {
     static async resetPassword(userId, { oldPassword, newPassword }) {
         checkNullForObject({ oldPassword, newPassword })
-        const currentUser = await checkUser(userId)
+        const currentUser = await UserService.checkUser(userId)
         await checkOldPassword(oldPassword, currentUser.user_password)
         const encryptedNewPassword = await encryptString(newPassword, 10)
-        console.log("mới: ", encryptedNewPassword, "cũ: ", currentUser.user_password)
         await updateUserPassword(userId, encryptedNewPassword)
     }
 
     static async updateGeneralProfile(userId, bodyUpdate) {
-        await checkUser(userId)
+        await UserService.checkUser(userId)
         const filter = {
             _id: userId
         }
@@ -25,6 +24,12 @@ class UserService {
             new: true
         }
         return await UserRepository.updateUser(filter, { user_nickname, user_profilePhotoURL, user_website, user_bio, user_gender }, unSelectField, option)
+    }
+
+    static async checkUser(userId) {
+        const currentUser = await UserRepository.findUserById(userId)
+        if (!currentUser) throw new Error.BadRequestError("Not exits user")
+        return currentUser
     }
 }
 //--------------------------SUB-FUNCTION------------------------
@@ -47,10 +52,6 @@ async function checkOldPassword(plainPassword, encryptedPassword) {
     if (!result) throw new Error.BadRequestError("Incorrect password")
 }
 
-async function checkUser(userId) {
-    const currentUser = await UserRepository.findUserById(userId)
-    if (!currentUser) throw new Error.BadRequestError("Not exits user")
-    return currentUser
-}
+
 
 module.exports = UserService
