@@ -22,8 +22,6 @@ class FollowService {
         return await new TransactionWrapper(processUnFollowingUser).process({ followerUserID, unFollowingUserId })
     }
 
-
-
     static async getAllFollower(userId, { sortBy = 'ctime', limit = 20, offset = 0, startDate = '2002-01-01', endDate = new Date() }) {
         const filter = {
             following_user_id: objectIdParser(userId),

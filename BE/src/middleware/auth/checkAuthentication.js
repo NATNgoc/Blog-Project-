@@ -43,7 +43,7 @@ function getRefreshTokenFromReq(req) {
 
 function getUserIdFromToken(token) {
     const decodeUser = jwt.decode(token)
-    if (!decodeUser.userid) throw new Error.AuthError('Unvalid token')
+    if (!decodeUser || !decodeUser.userid) throw new Error.AuthError('Unvalid token')
     return decodeUser.userid
 }
 

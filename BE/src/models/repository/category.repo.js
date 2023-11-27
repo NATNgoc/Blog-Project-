@@ -29,8 +29,8 @@ class CategoryRepository {
     }
 
     // Category không nhiều nên không cần limit và skip
-    static async findAllCategory() {
-        return await categoryModel.find({}).lean()
+    static async findAllCategory(selectField) {
+        return await categoryModel.find({}).select(selectField).lean()
     }
 
 }

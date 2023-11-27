@@ -1,17 +1,44 @@
 const express = require('express')
 const compression = require('compression')
-const { default: helmet } = require('helmet')
+const helmet = require('helmet');
 const morgan = require('morgan')
-const { sendMail } = require('./utils/mailer')
 const app = express()
+const cookieParser = require('cookie-parser');
 
+//INIT MIDDLEWARE
 
-//init middleware
 app.use(morgan('dev'))
-app.use(helmet())
+// setting base
+app.use(helmet.frameguard({
+    action: 'deny'
+}));
+// strict transport security
+const reqDuration = 2629746000;
+app.use(
+    helmet.hsts({
+        maxAge: reqDuration,
+    })
+);
+// content security policy
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'"],
+    },
+}))
+// x content type options
+app.use(helmet.noSniff());
+// x xss protection
+app.use(helmet.xssFilter())
+// referrer policy
+app.use(helmet.referrerPolicy({
+    policy: "no-referrer",
+}))
 app.use(compression())
-app.use(express.json())
-
+// setting body parser, cookie parser
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(cookieParser());
 //init db
 require('./dbs/init.mongodb')
 //init app route

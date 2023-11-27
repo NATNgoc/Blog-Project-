@@ -44,7 +44,6 @@ async function getOTPsByEmail(email) {
     return await OTPService.getOTPsByEmail(email)
 }
 
-
 async function checkExistingEmailUser(email) {
     const currentEmail = await UserRepository.findUserByEmail(email)
     if (currentEmail) {

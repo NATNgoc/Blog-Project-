@@ -20,16 +20,10 @@ const checkNullForObject = (object) => {
 }
 
 
-
-
-
 async function encryptString(keyword, salt) {
     return await bcrypt.hash(keyword, salt)
 }
 
-async function test_encryptString(keyword, salt) {
-
-}
 
 async function compareEncryptedStrings(plainString, encryptedString) {
     return await bcrypt.compare(plainString, encryptedString);
@@ -44,6 +38,14 @@ const getSelectDataForQuery = (select) => {
 }
 
 
+const nullObjectParser = (obj) => {
+    for (let key in obj) {
+        if (obj[key] === null) {
+            delete obj[key];
+        }
+    }
+    return obj;
+};
 
 const getUnselectDataForQuery = (select) => {
     return Object.fromEntries(select.map(it => [it, 0]))
@@ -54,6 +56,15 @@ const isEmptyObject = (object) => {
     return Object.keys(object).length === 0
 }
 
+
+const filterRequiredFields = (obj, fields) => {
+    return Object.keys(obj)
+        .filter(key => fields.includes(key))
+        .reduce((acc, key) => {
+            acc[key] = obj[key];
+            return acc;
+        }, {});
+}
 
 const wrapperFunctionWithTransaction =
 
@@ -67,5 +78,7 @@ const wrapperFunctionWithTransaction =
         encryptString,
         compareEncryptedStrings,
         getSelectDataForQuery,
-        getUnselectDataForQuery
+        getUnselectDataForQuery,
+        nullObjectParser,
+        filterRequiredFields
     }

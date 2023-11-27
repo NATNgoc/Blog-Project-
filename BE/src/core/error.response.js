@@ -56,9 +56,9 @@ class ForBiddenRequestError extends ErrorResponse {
 
 const catchError = (targetFunction) => {
     return (req, res, next) => {
-        targetFunction(req, res, next).catch(next)
-    }
-}
+        return Promise.resolve(targetFunction(req, res, next)).catch(next);
+    };
+};
 
 module.exports = {
     ErrorResponse,

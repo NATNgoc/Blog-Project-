@@ -1,6 +1,6 @@
 const Permission = {
-    ADMIN: "ADMIN",
-    USER: "USER"
+    ADMIN: "admin",
+    USER: "user"
 }
 
 module.exports = {
