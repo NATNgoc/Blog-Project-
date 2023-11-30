@@ -6,31 +6,26 @@ const DOCUMENT_NAME = 'series';
 const COLLECTION_NAME = 'series';
 
 var seriesSchema = new mongoose.Schema({
-    series_name: [{
+    series_name: {
         type: String,
-        required: true
-    }],
-    series_detail: {
-        type: Array,
-        validate: {
-            validator: function (arr) {
-                return arr.length >= 2;
-            },
-            message: 'series_detail must have at least two elements',
-        },
         required: true
     },
-    /*
-    {
-        _id: ,
-        post name,
-        
-    }
-    */
-    series_status: {
-        type: String,
+    series_user_id: {
+        type: mongoose.Types.ObjectId,
+        required: true
+    },
+    series_post_ids: {
+        type: Array,
+        default: [{
+            type: mongoose.Types.ObjectId,
+            ref: 'post'
+        }],
+        required: true
+    },
+    status: {
+        type: Boolean,
         required: true,
-        enum: ['active', 'draft']
+        default: false
     },
 }, {
     timestamps: true,

@@ -10,6 +10,7 @@ const initApiRoute = (app) => {
     router.use('/follows', require('./follow/index'))
     router.use('/posts', require('./post/index'))
     router.use('/categories', require('./category/index'))
+    router.use('/series', require('./series/index'))
     return app.use("/api/v1", router)
 }
 

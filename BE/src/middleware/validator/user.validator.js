@@ -1,22 +1,25 @@
 const { checkNullForObject } = require("../../utils")
 const Error = require('../../core/error.response')
 const UserUtils = require('../../utils/userUtils')
+const Utils = require('../../utils/index')
 //------------------UPDATE GENERAL PROFILE---------------------
-const updateProfileValidator = async (req, res, next) => {
-    const {
-        user_nickname, user_profilePhotoURL,
-        user_website, user_bio, user_gender
-    } = req.body
+const requiredFields = {
+    UPDATE: ["user_nickname", "user_profilePhotoURL", "user_website", "user_bio", "user_gender"],
+    RESET_PASSWORD: ["oldPassword", "newPassword"]
 
+}
+const updateProfileValidator = async (req, res, next) => {
+    const filteredRequestObject = Utils.filterRequiredFields(req.body, requiredFields.UPDATE)
+    const { user_nickname, user_gender } = filteredRequestObject
     checkNullForObject({ user_nickname, user_gender })
-    await Promise.all([UserUtils.checkGender(user_gender), UserUtils.checkNickName(user_nickname)])
+    await Promise.all([UserUtils.checkGender(filteredRequestObject.user_gender), UserUtils.checkNickName(filteredRequestObject.user_nickname)])
     next()
 }
 
 const resetPasswordValidator = async (req, res, next) => {
-    const { oldPassword, newPassword } = req.body
-    checkNullForObject({ oldPassword, newPassword })
-    await Promise.all([UserUtils.checkPassword(oldPassword), UserUtils.checkPassword(newPassword)])
+    const filteredRequestObject = Utils.filterRequiredFields(req.body, requiredFields.RESET_PASSWORD)
+    checkNullForObject(filteredRequestObject)
+    await Promise.all([UserUtils.checkPassword(filteredRequestObject.oldPassword), UserUtils.checkPassword(filteredRequestObject.newPassword)])
     next()
 }
 

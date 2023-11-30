@@ -1,6 +1,7 @@
 const { default: mongoose } = require("mongoose")
 const bcrypt = require('bcrypt')
 const Error = require('../core/error.response')
+
 const HEADER = {
     autherization: "authorization",
     refreshToken: 'x-rtoken-id',
@@ -11,6 +12,10 @@ const objectIdParser = (id) => {
     return new mongoose.Types.ObjectId(id)
 }
 
+function getRequiredFieldsFromReqBody(reqBody, requiredFields) {
+    const filteredRequestObject = filterRequiredFields(reqBody, requiredFields)
+    return filteredRequestObject
+}
 
 const checkNullForObject = (object) => {
     const result = Object.values(object).every(value => value !== null && value !== undefined) === false ? true : false;
@@ -58,17 +63,13 @@ const isEmptyObject = (object) => {
 
 
 const filterRequiredFields = (obj, fields) => {
-    return Object.keys(obj)
-        .filter(key => fields.includes(key))
-        .reduce((acc, key) => {
-            acc[key] = obj[key];
-            return acc;
-        }, {});
+    const result = {};
+    fields.forEach(field => {
+        result[field] = obj.hasOwnProperty(field) ? obj[field] : null;
+    });
+    return result;
 }
-
 const wrapperFunctionWithTransaction =
-
-
     module.exports = {
         HEADER,
         checkNullForObject,
@@ -80,5 +81,6 @@ const wrapperFunctionWithTransaction =
         getSelectDataForQuery,
         getUnselectDataForQuery,
         nullObjectParser,
-        filterRequiredFields
+        filterRequiredFields,
+        getRequiredFieldsFromReqBody
     }

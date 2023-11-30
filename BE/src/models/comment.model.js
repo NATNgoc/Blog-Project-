@@ -10,11 +10,13 @@ var commentSchema = new mongoose.Schema({
     },
     cmt_post_id: {
         type: mongoose.Types.ObjectId,
-        required: true
+        required: true,
+        ref: 'post'
     },
     cmt_user_id: {
         type: mongoose.Types.ObjectId,
-        required: true
+        required: true,
+        ref: 'user'
     },
     cmt_content: {
         type: String,
@@ -25,7 +27,10 @@ var commentSchema = new mongoose.Schema({
         default: 0
     },
     cmt_likes: {
-        type: [mongoose.Types.ObjectId],
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'user'
+        }],
         default: []
     }
 }, {

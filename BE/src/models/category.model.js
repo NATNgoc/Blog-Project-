@@ -17,7 +17,10 @@ var categorySchema = new mongoose.Schema({
         default: 0
     },
     category_post_ids: {
-        type: [mongoose.Types.ObjectId],
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'post'
+        }],
         default: []
     }
 }, {

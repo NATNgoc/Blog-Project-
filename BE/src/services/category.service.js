@@ -70,7 +70,7 @@ async function checkPostsWithoutCategory(categoryId) {
 
 async function findPostWithCategory(categoryId) {
     const filter = {
-        _id: Utils.objectIdParser(categoryId)
+        post_category_ids: Utils.objectIdParser(categoryId)
     }
     return await PostRepository.findPost(filter)
 }

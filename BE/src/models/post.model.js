@@ -6,7 +6,8 @@ const DOCUMENTS_NAME = 'post'
 var postSchema = new mongoose.Schema({
     post_user_id: {
         type: mongoose.Types.ObjectId,
-        required: true
+        required: true,
+        ref: 'user'
     },
     post_title: {
         type: String,
@@ -34,18 +35,24 @@ var postSchema = new mongoose.Schema({
     },
     post_likes_ids: {
         type: Array,
-        default: [],
-        ref: 'user'
+        default: [{
+            type: mongoose.Types.ObjectId,
+            ref: 'user'
+        }]
     },
     post_coments_ids: {
         type: Array,
-        default: [],
-        ref: 'user'
+        default: [{
+            type: mongoose.Types.ObjectId,
+            ref: 'user'
+        }]
     },
     post_category_ids: {
         type: Array,
-        default: [],
-        ref: 'user'
+        default: [{
+            type: mongoose.Types.ObjectId,
+            ref: 'category'
+        }]
     },
     status: {
         type: String,

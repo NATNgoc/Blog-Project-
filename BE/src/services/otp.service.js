@@ -11,6 +11,7 @@ class OTPService {
 
     static async createNewOTP({ email }) {
         await checkEmailUser(email)
+        await checkOTPsCount(email)
         const OTP = getRandomOTP()
         const hashedOTP = await encryptString(OTP, 10)
         await OTPRepository.createNewOtp(email, hashedOTP)
@@ -24,7 +25,10 @@ class OTPService {
 
 }
 //--------------------SUB FUNCTION-------------------------
-
+async function checkOTPsCount(email) {
+    const OTPs = await OTPService.getOTPsByEmail(email)
+    if (OTPs.length === 5) throw new Error.BadRequestError("Please try again while later")
+}
 async function checkEmailUser(email) {
     if (await findUserByEmail(email))
         throw new Error.BadRequestError("Email has existed!")

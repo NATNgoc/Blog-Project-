@@ -16,7 +16,7 @@ var keySchema = new mongoose.Schema({
         require: true
     },
     used_refresh_tokens: {
-        type: [mongoose.Schema.Types.ObjectId],
+        type: Array,
         default: []
     }
 }, {

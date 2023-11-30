@@ -5,6 +5,4 @@ const otpController = require('../../controllers/otp.controller')
 
 router.post('/', catchError(otpController.createNewOTP))
 
-
-
 module.exports = router

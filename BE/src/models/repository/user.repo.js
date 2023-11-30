@@ -2,10 +2,7 @@
 const userModel = require('../user.model')
 
 class UserRepository {
-    /**
-     * 
-     * @param {*} shopId : "Id of shop you want to find"
-     */
+
     static async findUsers(filter, limit, skip, select = {}, sortOption = {}) {
 
     }

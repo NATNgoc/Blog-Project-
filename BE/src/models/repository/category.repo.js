@@ -6,6 +6,10 @@ class CategoryRepository {
         return categoryModel.findOne(filter).lean()
     }
 
+    static async findCategories(filter, selectField = {}) {
+        return categoryModel.find(filter).select(selectField).lean()
+    }
+
     static async createNewCategory(name, description) {
         const newCategory = {
             category_name: name,
