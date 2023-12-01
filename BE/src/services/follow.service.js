@@ -11,11 +11,11 @@ const { objectIdParser, getSelectDataForQuery, checkNullForObject } = require('.
 class FollowService {
     static async followUser(followerUserID, followingUserID) {
         //TRANSACTION
-        // return await new TransactionWrapper(processFollowingUser).process({ followerUserID, followingUserID })
+        return await new TransactionWrapper(processFollowingUser).process({ followerUserID, followingUserID })
         // TRIGGER
-        await Promise.all([checkUser(followerUserID), checkUser(followingUserID)])
-        if (await getFollowExisted(followerUserID, followingUserID)) throw new ErrorRespone.BadRequestError("User has followed this user before!")
-        await FollowRepository.createNewFollow(followerUserID, followingUserID)
+        // await Promise.all([checkUser(followerUserID), checkUser(followingUserID)])
+        // if (await getFollowExisted(followerUserID, followingUserID)) throw new ErrorRespone.BadRequestError("User has followed this user before!")
+        // await FollowRepository.createNewFollow(followerUserID, followingUserID)
     }
 
     static async unFollowUser(followerUserID, unFollowingUserId) {
