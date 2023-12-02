@@ -1,4 +1,3 @@
-//Danh Hoàng Khải-21522181
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../presentitional/Home';
@@ -6,13 +5,14 @@ import Search from '../presentitional/Search';
 import Favorites from '../presentitional/Favorities';
 import Setting from '../presentitional/Setting';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import DrawerNavigator from './DrawerNavigator'
 
 const Bottom = createBottomTabNavigator();
 
 const TabIcon = ({ name, focused }) => {
   return <IonIcon name={name} size={25} color={focused ? '#0081F1' : '#000'} />;
 };
-const homeScreenOptions = (headerShown, name) => {
+const homeScreenOptions = (headerShown, name, bottab) => {
   return {
     headerShown: headerShown,
     tabBarIcon: ({ focused }) => <TabIcon name={name} focused={focused} />,
@@ -21,6 +21,7 @@ const homeScreenOptions = (headerShown, name) => {
 
 const MainBottom = () => {
   return (
+    
     <Bottom.Navigator>
       <Bottom.Screen
         name="Home"
@@ -36,7 +37,7 @@ const MainBottom = () => {
       <Bottom.Screen
         name="Favorites"
         component={Favorites}
-        options={{ ...homeScreenOptions(false, 'bookmark'), tabBarBadge: 3 }}
+        options={{ ...homeScreenOptions(false, 'heart'), tabBarBadge: 3 }}
       />
 
       <Bottom.Screen
@@ -45,6 +46,7 @@ const MainBottom = () => {
         options={homeScreenOptions(false, 'settings')}
       />
     </Bottom.Navigator>
+    
   );
 };
 export default MainBottom;

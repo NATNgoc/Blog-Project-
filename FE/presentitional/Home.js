@@ -1,14 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, Button, TextInput } from 'react-native';
+import { View, Text, StyleSheet, Image, Button, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import CustomTextInput from '../components/CustomTextInput';
 
 const Home = () => {
-  const navigation = useNavigation;
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.homeHeader}>
+      <TouchableOpacity onPress={() => navigation.openDrawer()}>
         <Image source={require('../assets/Home/gg_menu-left.png')} />
+      </TouchableOpacity>
         <Image source={require('../assets/Home/Notification.png')} />
       </View>
 

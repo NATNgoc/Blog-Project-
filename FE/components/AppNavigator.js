@@ -2,7 +2,8 @@
 import React, { useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import NavBar from './MainBottom';
+import MainBottom from './MainBottom';
+import DrawerNavigator from './DrawerNavigator';
 import AuthStack from './AuthStack';
 import { Context } from './Context';
 const Stack = createStackNavigator();
@@ -13,7 +14,7 @@ const AppNavigator = () => {
       <Stack.Navigator>
         {isAuthenticated
           ? (
-            <Stack.Screen name="NavBar" component={NavBar} options={{ headerShown: false }} />
+            <Stack.Screen name="NavBar" component={DrawerNavigator} options={{ headerShown: false }} />
           )
           : (
             <Stack.Screen name="AuthStack" component={AuthStack} options={{ headerShown: false }} />

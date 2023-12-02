@@ -17,6 +17,8 @@
     "react-native-screens": "~3.20.0",
     "react-native-svg-uri": "1.2.3",
     "@react-navigation/stack": "*",
+    "react-native-reanimated": "~2.14.4",
+    "@react-navigation/drawer": "6.4.1",
     "@react-navigation/native": "6.0.0",
     "react-native-vector-icons": "*",
     "react-native-gesture-handler": "~2.9.0",

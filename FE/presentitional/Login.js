@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomTextInput';
+import CustomButton from '../components/CustomButton';
 import { Context } from '../components/Context';
 
 
@@ -61,6 +61,7 @@ const Login = () => {
           <Text style={styles.forgotText}>Forgot Password?</Text>
         </TouchableOpacity>
       </View>
+      
       <CustomButton
           title="Login"
           onPress={handleLogin}
@@ -144,7 +145,6 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     marginBottom: 25,
   },
-  
   lineContainer: {
     flexDirection: 'row',
     marginTop: 20,

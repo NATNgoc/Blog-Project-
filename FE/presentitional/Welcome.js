@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Login from './Login';
 import Register from './Register';
+import CustomButton from '../components/CustomButton';
 
 const Welcome = () => {
   const navigation = useNavigation();
@@ -95,8 +96,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#181717',
-    fontSize: 16,
-    fontFamily: 'Montserrat',
+    fontSize: 20,
   },
   registerContainer: {
     top: 33,
@@ -113,13 +113,11 @@ const styles = StyleSheet.create({
   registerText: {
     color: 'white',
     fontSize: 20,
-    fontFamily: 'Montserrat',
-    fontWeight: '500',
+    fontWeight: '350',
   },
   newHereText: {
     color: '#3C3939',
     fontSize: 14,
-    fontFamily: 'Montserrat',
     fontWeight: '400',
     marginBottom: 10,
   },

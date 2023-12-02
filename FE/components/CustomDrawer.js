@@ -1,0 +1,119 @@
+import React from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import {
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem
+} from '@react-navigation/drawer';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Feather';
+import Home from '../presentitional/Home';
+
+function CustomDrawer(props) {
+  const { navigation } = props
+  return (
+    <DrawerContentScrollView style={styles.drawerContainer} {...props}>
+
+      <View style={styles.profile}>
+        <Image source={require('../assets/avatar.png')} style={styles.avt} />
+        <Text style={{fontSize: 24, color: '#FFFF'}}>James Anderson</Text>
+        <Text style={{fontSize: 14, fontStyle: 'italic' , color: '#C8C8C8', marginBottom: 5}}>@james_andy</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between',
+     width:'75%' }}>
+          <Text style={{fontSize: 15, color: '#C8C8C8'}}>200 Follower</Text>  
+          <Text style={{fontSize: 15, color: '#C8C8C8'}}>15 Following</Text>  
+        </View>
+       <View style={styles.horizontalLine} />
+      </View>
+
+      <View style={styles.out}>
+      <TouchableOpacity onPress={() => navigation.closeDrawer()}>
+        <Image
+        style={{ position: 'absolute', top: 400, left: 0, width: 40, height: 40 }}
+        source={require('../assets/circle.png')}
+        />
+        <Image
+        style={{ position: 'absolute', top: 400, left: 0, width: 20, height: 20 }}
+        source={require('../assets/x.png')}
+      />
+      </TouchableOpacity>
+      </View>
+
+
+      <DrawerItem
+        label="Home"
+        onPress={()=> navigation.navigate(Home)} 
+        icon={() => <IonIcon name="home-outline" size={24} color="#FFFF" />}
+        labelStyle={{fontSize: 15, color:"#FFFF" }}
+      />
+      <DrawerItem
+        label="Add new article"
+        onPress={()=> navigation.navigate(CreatePost)} 
+        icon={() => <IonIcon name="add-circle-outline" size={24} color="#FFFF" />}
+        labelStyle={{fontSize: 15, color: "#FFFF" }}
+      />
+      <DrawerItem
+        label="Your Blogs"
+        onPress={()=> navigation.navigate(Blog)} 
+        icon={() => <IonIcon name="document-text-outline" size={24} color="#FFFF" />}
+        labelStyle={{fontSize: 15, color: "#FFFF" }}
+      />
+      <DrawerItem
+        label="Your Activities"
+        onPress={()=> navigation.navigate(Activities)} 
+        icon={() => <Icon name="activity" size={24} color="#FFFF" />}
+        labelStyle={{fontSize: 15, color: "#FFFF" }}
+      />
+      <DrawerItem
+        label="Your Favorites"
+        onPress={()=> navigation.navigate(Favorites)} 
+        icon={() => <IonIcon name="heart-outline" size={24} color="#FFFF" />}
+        labelStyle={{fontSize: 15, color: "#FFFF" }}
+      />
+      <DrawerItem
+        label="Setting"
+        onPress={()=> navigation.navigate(Setting)} 
+        icon={() => <IonIcon name="settings-outline" size={24} color="#FFFF" />}
+        labelStyle={{fontSize: 15, color: "#FFFF" }}
+      />
+      <DrawerItem
+        label="Log Out"
+        onPress={()=> navigation.navigate(Logout)} 
+        icon={() => <IonIcon name="log-out-outline" size={24} color="#FFFF" />}
+        labelStyle={{fontSize: 15, color: "#FFFF" }}
+      />
+      
+      
+    </DrawerContentScrollView>
+  );
+}
+
+export default CustomDrawer;
+
+const styles = StyleSheet.create({
+  drawerContainer: {
+    backgroundColor: '#181717',
+  },
+  profile: {
+    marginLeft: 18,
+  },
+  avt: {
+    width: 80,
+    height: 80,
+    marginBottom: 10,
+  },
+  horizontalLine: {
+    width: 198,
+    height: 2,
+    borderRadius: 5,
+    backgroundColor: '#C8C8C8',
+    marginTop: 25,
+    marginBottom: 20,
+  },
+  out: {
+    marginLeft: 20,
+    marginTop: 20,
+  },
+});
+

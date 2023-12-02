@@ -8,6 +8,7 @@ import {
   TextInput,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import CustomButton from '../components/CustomButton';
 
 const Verification = () => {
   const navigation = useNavigation();
@@ -38,9 +39,9 @@ const Verification = () => {
           <TextInput style={styles.input} maxLength={1} />
         </View>
 
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Verify Now</Text>
-        </TouchableOpacity>
+         <CustomButton
+          title="Verify Now"
+        />
       </View>
     </View>
   );
@@ -71,21 +72,6 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: 'bold',
     fontSize: 17,
-  },
-  button: {
-    width: 240,
-    height: 50,
-    borderRadius: 10,
-    backgroundColor: 'rgba(0, 0, 0, 0)',
-    justifyContent: 'center',
-    borderWidth: 1,
-    alignItems: 'center',
-    marginBottom: 25,
-  },
-  buttonText: {
-    color: '#181717',
-    fontSize: 16,
-    fontFamily: 'Montserrat',
   },
   inputContainer: {
     flexDirection: 'row',

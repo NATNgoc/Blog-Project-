@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import CustomTextInput from '../components/CustomTextInput';
+import CustomButton from '../components/CustomButton';
 
 const Register = () => {
   const navigation = useNavigation();
@@ -35,9 +36,11 @@ const Register = () => {
 
         <CustomTextInput placeholder="Password" />
       </View>
-      <TouchableOpacity style={styles.button} onPress={handleOnPressRegister}>
-        <Text style={styles.buttonText}>Register</Text>
-      </TouchableOpacity>
+      
+      <CustomButton
+          title="Register"
+          onPress={handleOnPressRegister}
+        />
 
       <View style={styles.lineContainer}>
         <View style={styles.horizontalLine} />
@@ -82,21 +85,5 @@ const styles = StyleSheet.create({
   textInLine: {
     marginHorizontal: 10,
     fontWeight: 'bold',
-  },
-  button: {
-    width: 240,
-    height: 50,
-    borderRadius: 10,
-    backgroundColor: 'rgba(0, 0, 0, 0)',
-    justifyContent: 'center',
-    borderWidth: 1,
-    alignItems: 'center',
-    marginTop: 18,
-    marginBottom: 25,
-  },
-  buttonText: {
-    color: '#181717',
-    fontSize: 16,
-    fontFamily: 'Montserrat',
   },
 });
