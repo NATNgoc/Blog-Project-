@@ -13,8 +13,8 @@ class SuccesResponse {
 
     send(res, header = {}) {
         return res.status(this.statusCode).json({
-            error: false
-            , ...this
+            error: false,
+            ...this
         })
     }
 }

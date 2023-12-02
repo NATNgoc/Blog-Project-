@@ -3,13 +3,12 @@ const Error = require('../../core/error.response')
 const Utils = require('../../utils/index')
 
 const requiredFields = {
-    CREATE: ["series_name", "series_post_ids", "status"]
+    CREATE: ["series_name", "series_post_ids", "series_status"]
 }
 
-const createSeriesValidator = (req, res, next) => {
-    console.log("🚀 ~ file: series.validator.js:10 ~ createSeriesValidator ~ req:", req.body)
-
+const SeriesValidator = (req, res, next) => {
     const filteredRequestObject = Utils.getRequiredFieldsFromReqBody(req.body, requiredFields.CREATE)
+    console.log("🚀 ~ file: series.validator.js:11 ~ SeriesValidator ~ filteredRequestObject:", filteredRequestObject)
     checkNullForObject(filteredRequestObject)
     checkSeriesName(filteredRequestObject.series_name)
     checkSeriesPostIds(filteredRequestObject.series_post_ids)
@@ -46,7 +45,7 @@ function isValidName(name) {
 
 
 module.exports = {
-    createSeriesValidator,
+    SeriesValidator,
     updateCategoryValidator
 }
 

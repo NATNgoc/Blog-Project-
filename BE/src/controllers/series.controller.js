@@ -11,10 +11,34 @@ class SeriesController {
     }
 
     deleteSeries = async (req, res, next) => {
-        return new SuccesResponse.CreatedResponse({
+        return new SuccesResponse.OkResponse({
             ...req.body,
             message: "Delete series succesfully!",
             metaData: await SeriesService.deleteSeries(req.decodeUser.userid, req.params.id)
+        }).send(res)
+    }
+
+    findAllSeriesOfUser = async (req, res, next) => {
+        return new SuccesResponse.OkResponse({
+            ...req.body,
+            message: "All series of user!",
+            metaData: await SeriesService.findAllSeriesOfUser(req.decodeUser.userid, req.query)
+        }).send(res)
+    }
+
+    addPostsIntoSeries = async (req, res, next) => {
+        return new SuccesResponse.OkResponse({
+            ...req.body,
+            message: "Add post successfully!",
+            metaData: await SeriesService.addPostsIntoSeries(req.decodeUser.userid, req.body, req.params.id)
+        }).send(res)
+    }
+
+    removePostsFromSeries = async (req, res, next) => {
+        return new SuccesResponse.OkResponse({
+            ...req.body,
+            message: "Add post successfully!",
+            metaData: await SeriesService.removePostFromSeries(req.decodeUser.userid, req.body, req.params.id)
         }).send(res)
     }
 

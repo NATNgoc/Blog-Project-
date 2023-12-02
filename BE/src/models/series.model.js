@@ -22,7 +22,7 @@ var seriesSchema = new mongoose.Schema({
         }],
         required: true
     },
-    status: {
+    series_status: {
         type: Boolean,
         required: true,
         default: false

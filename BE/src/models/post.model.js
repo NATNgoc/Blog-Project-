@@ -33,27 +33,18 @@ var postSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    post_likes_ids: {
-        type: Array,
-        default: [{
-            type: mongoose.Types.ObjectId,
-            ref: 'user'
-        }]
-    },
-    post_coments_ids: {
-        type: Array,
-        default: [{
-            type: mongoose.Types.ObjectId,
-            ref: 'user'
-        }]
-    },
-    post_category_ids: {
-        type: Array,
-        default: [{
-            type: mongoose.Types.ObjectId,
-            ref: 'category'
-        }]
-    },
+    post_likes_ids: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'user'
+    }],
+    post_coments_ids: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'user'
+    }],
+    post_category_ids: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'category'
+    }],
     status: {
         type: String,
         enum: ['active', 'pending', 'blocked'],
