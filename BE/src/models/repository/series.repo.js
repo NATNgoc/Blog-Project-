@@ -18,12 +18,12 @@ class SeriesRepository {
         })
     }
 
-    static async removePostsFromSeries(filter, postIds) {
+    static async removePostsFromSeries(filter, postIds, options = {}) {
         return await seriesModel.findOneAndUpdate({ ...filter }, {
             $pull: {
                 series_post_ids: { $in: postIds }
             }
-        });
+        }, { ...options });
     }
 
     static async findOneSeries(filter, selectField = {}) {
@@ -44,6 +44,14 @@ class SeriesRepository {
 
     static async deleteSeriesById(seriesId) {
         return await seriesModel.findByIdAndDelete(seriesId)
+    }
+
+    static async updateSeriesById(seriesId, bodyUpdate, option) {
+        return await seriesModel.findByIdAndUpdate(seriesId, {
+            $set: bodyUpdate
+        }, {
+            ...option
+        })
     }
 
 }

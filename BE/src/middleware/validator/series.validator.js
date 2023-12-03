@@ -3,12 +3,12 @@ const Error = require('../../core/error.response')
 const Utils = require('../../utils/index')
 
 const requiredFields = {
-    CREATE: ["series_name", "series_post_ids", "series_status"]
+    CREATE: ["series_name", "series_post_ids", "series_status"],
+    UPDATE: ["series_name", "series_status"]
 }
 
-const SeriesValidator = (req, res, next) => {
+const createSeriesValidator = (req, res, next) => {
     const filteredRequestObject = Utils.getRequiredFieldsFromReqBody(req.body, requiredFields.CREATE)
-    console.log("🚀 ~ file: series.validator.js:11 ~ SeriesValidator ~ filteredRequestObject:", filteredRequestObject)
     checkNullForObject(filteredRequestObject)
     checkSeriesName(filteredRequestObject.series_name)
     checkSeriesPostIds(filteredRequestObject.series_post_ids)
@@ -18,8 +18,13 @@ const SeriesValidator = (req, res, next) => {
 
 
 
-const updateCategoryValidator = (req, res, next) => {
-
+const updateSeriesValidator = (req, res, next) => {
+    let filteredRequestObject = Utils.getRequiredFieldsFromReqBody(req.body, requiredFields.UPDATE)
+    filteredRequestObject = Utils.nullObjectParser(filteredRequestObject)
+    if (Utils.isEmptyObject(filteredRequestObject)) throw new Error.BadRequestError("Nothing for update")
+    filteredRequestObject.series_name ? checkSeriesName(filteredRequestObject.series_name) : null;
+    req.body = filteredRequestObject
+    next()
 }
 
 function checkSeriesPostIds(seriesPostIds) {
@@ -45,7 +50,7 @@ function isValidName(name) {
 
 
 module.exports = {
-    SeriesValidator,
-    updateCategoryValidator
+    createSeriesValidator,
+    updateSeriesValidator
 }
 

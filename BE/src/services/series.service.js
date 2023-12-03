@@ -4,8 +4,8 @@ const SeriesRepository = require('../models/repository/series.repo')
 const Utils = require('../utils')
 const PostRepository = require('../models/repository/post.repo')
 const TransactionWrapper = require('../dbs/transaction.wrapper');
-const UserRepository = require('../models/repository/user.repo')
 const PostUtils = require('../utils/post.utils')
+const UserService = require('./user.service')
 
 
 class SeriesService {
@@ -15,16 +15,11 @@ class SeriesService {
     }
 
     static async deleteSeries(userId, seriesId) {
-        return await new TransactionWrapper(processRemoveSeries).process({ userId, seriesId })
+        return await new TransactionWrapper(processDeleteSeries).process({ userId, seriesId })
     }
 
     static async findAllSeriesOfUser(userId, { limit = 20, offset = 0, sortBy = "ctime", keyword, startDate, endDate, status }) {
-        const skip = limit * offset
-        let sortOption = sortBy === 'ctime' ? { createdAt: -1 } : { createdAt: 1 }
-        const unSelectField = ["__v"]
-        let filter = {
-            series_user_id: Utils.objectIdParser(userId)
-        }
+        let { skip, sortOption, unSelectField, filter } = configForQueryAllSeriesOfUser(userId, limit, offset, sortBy)
         configFilterForGetAllSeries(filter, sortOption, keyword, startDate, endDate, status)
         return await SeriesRepository.findSeries(filter, limit, skip, Utils.getUnselectDataForQuery(unSelectField), sortOption)
     }
@@ -35,8 +30,20 @@ class SeriesService {
         const filter = {
             _id: seriesId
         }
-        const results = await Promise.all([SeriesRepository.addPostsIntoSeries(filter, series_post_ids), updateSeriesForPost(series_post_ids, seriesId)])
+        const results = await Promise.all([SeriesRepository.addPostsIntoSeries(filter, series_post_ids), updateSeriesStatusForPost(series_post_ids, seriesId)])
         return results[0]
+    }
+
+    static async findAllSeries({ limit = 20, offset = 0, sortBy = "ctime", keyword, startDate, endDate, authorId }) {
+        const { skip, sortOption, unSelectField, filter } = configForQueryAllSeries(userId, limit, offset, sortBy)
+        configFilterForGetAllSeries(filter, sortOption, keyword, startDate, endDate, null, authorId)
+        return await SeriesRepository.findSeries(filter, limit, skip, Utils.getUnselectDataForQuery(unSelectField), sortOption)
+    }
+
+    static async updateSeries(userId, seriesId, filteredObject) {
+        console.log("🚀 ~ file: series.service.js:45 ~ SeriesService ~ updateSeries ~ userId, seriesId, filteredObject:", userId, seriesId, filteredObject)
+        await checkExistingSeries(seriesId, userId)
+        return await SeriesRepository.updateSeriesById(seriesId, filteredObject, { new: true })
     }
 
     static async removePostFromSeries(userId, { series_post_ids }, seriesId) {
@@ -52,6 +59,27 @@ class SeriesService {
 }
 //--------------SUB FUNCTION-----------------------
 
+function configForQueryAllSeries(limit = 20, offset = 0, sortBy = "ctime") {
+    const skip = limit * offset
+    let sortOption = sortBy === 'ctime' ? { createdAt: -1 } : { createdAt: 1 }
+    const unSelectField = ["status", "__v", "series_status"]
+    let filter = {
+        series_status: true
+    }
+    return { skip, sortOption, unSelectField, filter }
+}
+
+function configForQueryAllSeriesOfUser(userId, limit = 20, offset = 0, sortBy = "ctime") {
+    const skip = limit * offset
+    let sortOption = sortBy === 'ctime' ? { createdAt: -1 } : { createdAt: 1 }
+    const unSelectField = ["__v"]
+    let filter = {
+        series_user_id: Utils.objectIdParser(userId)
+    }
+    return { skip, sortOption, unSelectField, filter }
+}
+
+
 async function checkExistingSeries(seriesId, userId) {
     const currentSeries = await findOneSeries(seriesId, userId)
     if (!currentSeries) throw new Error.BadRequestError("Series is not your own or dont existed!")
@@ -59,7 +87,6 @@ async function checkExistingSeries(seriesId, userId) {
 }
 
 async function findOneSeries(seriesId, userId) {
-    console.log("🚀 ~ file: series.service.js:45 ~ findOneSeries ~ seriesId, userId:", seriesId, userId)
     const filter = {
         _id: Utils.objectIdParser(seriesId),
         series_user_id: Utils.objectIdParser(userId)
@@ -68,7 +95,7 @@ async function findOneSeries(seriesId, userId) {
 }
 
 
-function configFilterForGetAllSeries(filter, sortOption, keyword, startDate, endDate, status) {
+function configFilterForGetAllSeries(filter, sortOption, keyword, startDate, endDate, status, authorId) {
     if (startDate) {
         configForStartDate(filter, startDate)
     }
@@ -81,6 +108,13 @@ function configFilterForGetAllSeries(filter, sortOption, keyword, startDate, end
     if (keyword) {
         configForKeyWord(filter, sortOption, keyword)
     }
+    if (authorId) {
+        configForAuthorId(filter, authorId)
+    }
+}
+
+function configForAuthorId(filter, authorId) {
+    filter.series_user_id = Utils.objectIdParser(authorId)
 }
 
 function configForStatus(filter, status) {
@@ -109,11 +143,10 @@ function configForEndDate(filter, endDate) {
     }
 }
 
-async function processRemoveSeries({ userId, seriesId }) {
-    const currentUser = await UserRepository.findUserById(userId)
-    if (!currentUser) throw new Error.BadRequestError("Check again!")
+async function processDeleteSeries({ userId, seriesId }) {
+    await UserService.checkUser(userId)
     const currentSeries = await checkExistingSeries(seriesId, userId)
-    await Promise.all([SeriesRepository.deleteSeriesById(currentSeries._id), removeSeriesFromPost(currentSeries.series_post_ids)])
+    await Promise.all([SeriesRepository.deleteSeriesById(currentSeries._id), removeSeriesStatusFromPost(currentSeries.series_post_ids)])
 }
 
 
@@ -122,12 +155,12 @@ async function processCreateNewSeries({ userId, filteredObject }) {
     await checkValidPostIds(newSeriesObject.series_post_ids)
     const result = await SeriesRepository.createNewSeries(newSeriesObject)
     if (!result) throw new Error.NotFoundError("Something went wrong!")
-    return await updateSeriesForPost(newSeriesObject.series_post_ids, result._id)
+    return await updateSeriesStatusForPost(newSeriesObject.series_post_ids, result._id)
 }
 
 
 
-async function updateSeriesForPost(seriesPostIds, seriesId) {
+async function updateSeriesStatusForPost(seriesPostIds, seriesId) {
     const filter = {
         _id: {
             $in: seriesPostIds
@@ -159,7 +192,7 @@ async function cancleSeriesStatusForPost(seriesPostIds, seriesId) {
     return await PostRepository.updatePosts(filter, updateBody, option)
 }
 
-async function removeSeriesFromPost(seriesPostIds) {
+async function removeSeriesStatusFromPost(seriesPostIds) {
     const filter = {
         _id: {
             $in: seriesPostIds

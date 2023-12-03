@@ -26,10 +26,18 @@ class SeriesController {
         }).send(res)
     }
 
+    findAllSeries = async (req, res, next) => {
+        return new SuccesResponse.OkResponse({
+            ...req.body,
+            message: "All series of user!",
+            metaData: await SeriesService.findAllSeries(req.query)
+        }).send(res)
+    }
+
     addPostsIntoSeries = async (req, res, next) => {
         return new SuccesResponse.OkResponse({
             ...req.body,
-            message: "Add post successfully!",
+            message: "Add post into series successfully!",
             metaData: await SeriesService.addPostsIntoSeries(req.decodeUser.userid, req.body, req.params.id)
         }).send(res)
     }
@@ -37,8 +45,16 @@ class SeriesController {
     removePostsFromSeries = async (req, res, next) => {
         return new SuccesResponse.OkResponse({
             ...req.body,
-            message: "Add post successfully!",
+            message: "Remove post from series successfully!",
             metaData: await SeriesService.removePostFromSeries(req.decodeUser.userid, req.body, req.params.id)
+        }).send(res)
+    }
+
+    updateSeries = async (req, res, next) => {
+        return new SuccesResponse.OkResponse({
+            ...req.body,
+            message: "Update series successfully!",
+            metaData: await SeriesService.updateSeries(req.decodeUser.userid, req.params.id, req.body)
         }).send(res)
     }
 

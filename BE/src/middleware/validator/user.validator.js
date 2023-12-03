@@ -8,6 +8,7 @@ const requiredFields = {
     RESET_PASSWORD: ["oldPassword", "newPassword"]
 
 }
+
 const updateProfileValidator = async (req, res, next) => {
     const filteredRequestObject = Utils.filterRequiredFields(req.body, requiredFields.UPDATE)
     const { user_nickname, user_gender } = filteredRequestObject
