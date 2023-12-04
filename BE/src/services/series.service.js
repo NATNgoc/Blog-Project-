@@ -56,6 +56,8 @@ class SeriesService {
         return results[0]
     }
 
+
+
 }
 //--------------SUB FUNCTION-----------------------
 
@@ -234,9 +236,7 @@ async function findPostWithoutSeriesByIds(postIds) {
             $in: postIds
         },
         post_is_series: false,
-        status: {
-            $nin: [PostUtils.statusOfPost.BLOCKED, PostUtils.statusOfPost.PENDING]
-        }
+        status: PostUtils.statusOfPost.ACTIVE
     }
     return await PostRepository.findPosts(filter)
 }
@@ -248,9 +248,7 @@ async function findPostWithSeriesByIds(postIds, seriesId) {
         },
         post_is_series: true,
         post_series_id: Utils.objectIdParser(seriesId),
-        status: {
-            $nin: [PostUtils.statusOfPost.BLOCKED, PostUtils.statusOfPost.PENDING]
-        }
+        status: PostUtils.statusOfPost.ACTIVE
     }
     return await PostRepository.findPosts(filter)
 }

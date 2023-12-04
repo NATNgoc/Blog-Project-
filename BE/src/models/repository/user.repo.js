@@ -10,9 +10,7 @@ class UserRepository {
     static async updateUser(filter, bodyUpdate, select = {}, option = {}) {
         console.log("option", option)
         return await userModel.findOneAndUpdate({ ...filter }, {
-            $set: {
-                ...bodyUpdate
-            }
+            ...bodyUpdate
         }, {
             ...option
         }).select({ ...select })

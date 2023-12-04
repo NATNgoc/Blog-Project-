@@ -4,7 +4,7 @@ const CategoryRepository = require('../models/repository/category.repo')
 const PostRepository = require('../models/repository/post.repo')
 const { objectIdParser, getUnselectDataForQuery, checkNullForObject } = require('../utils')
 const UserService = require('./user.service')
-
+const PostUtils = require('../utils/post.utils')
 const statusOfPost = {
     ACTIVE: 'active',
     PENDING: 'pending',
@@ -23,7 +23,7 @@ class PostService {
     static async updateStatusOfPost(postId, { newStatus }) {
         checkNullForObject({ newStatus })
         checkNotExistingStatus(newStatus)
-        const currentPost = await checkExistingPost(postId)
+        const currentPost = await PostUtils.checkExistingPost(postId)
         checkDuplicatedStatus(currentPost.status, newStatus)
         const filter = {
             _id: objectIdParser(postId)
@@ -65,12 +65,6 @@ function checkDuplicatedStatus(oldStatus, newStatus) {
     const result = oldStatus === newStatus ? true : false
     if (result) throw new Error.BadRequestError("Status is already like that!")
 }
-async function checkExistingPost(postId) {
-    const currentPost = await PostRepository.findPostById(postId)
-    if (!currentPost) throw new Error.BadRequestError("Post isn't existed")
-    return currentPost
-}
-
 
 function configFilterForGetAllPost(filter, sortOption, keyword, startDate, endDate, category, authorId, status) {
     if (startDate) {
