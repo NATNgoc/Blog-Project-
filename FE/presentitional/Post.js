@@ -9,14 +9,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Home from './Home';
+import ProfileOthers from './ProfileOthers';
 
-const Post = () => {
+const Post = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.homeHeader}>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.goBack()} >
           <Image source={require('../assets/Arrow.png')} />
         </TouchableOpacity>
         <Image source={require('../assets/Post/Bookmark.png')} />
@@ -31,7 +31,9 @@ const Post = () => {
       </View>
 
       <View style={styles.info}>
+      <TouchableOpacity onPress={()=> navigation.navigate(ProfileOthers)}>
         <Image source={require('../assets/Post/avt.png')} />
+      </TouchableOpacity>
         <Text style={{ marginLeft: 7 }}>Username</Text>
         <Text style={styles.date}>Date</Text>
       </View>

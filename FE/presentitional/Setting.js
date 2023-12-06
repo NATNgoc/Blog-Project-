@@ -1,10 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet } from 'react-native';
 
-const Setting = () => {
+const Setting = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text>Setting</Text>
+       <Button
+        title="GO TO DETAILS"
+        onPress={() => navigation.goBack()}
+      />
     </View>
   );
 };

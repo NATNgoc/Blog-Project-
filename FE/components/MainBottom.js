@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../presentitional/Home';
 import Search from '../presentitional/Search';
-import Favorites from '../presentitional/Favorities';
+import Favorites from '../presentitional/Favorites';
 import Setting from '../presentitional/Setting';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import DrawerNavigator from './DrawerNavigator'

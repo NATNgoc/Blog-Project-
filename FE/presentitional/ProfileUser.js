@@ -2,12 +2,7 @@ import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 
-const ProfileOthers = ({ navigation }) => {
-  const [isFollowing, setIsFollowing] = useState(false);
-
-  const handlePress = () => {
-    setIsFollowing(!isFollowing);
-  };
+const ProfileUser = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image
@@ -25,21 +20,11 @@ const ProfileOthers = ({ navigation }) => {
 
       <View style={styles.profile}>
         <Image
-          source={require('../assets/Profile/avatar.png')}
+          source={require('../assets/Profile/avataruser.png')}
           style={styles.avt}
         />
         <Text style={styles.username}>USERNAME</Text>
         <Text>Description</Text>
-        <View style={[styles.commonContainer, { width: '88%' }]}>
-          <TouchableOpacity style={styles.button} onPress={handlePress}>
-            <Text style={styles.buttonText}>
-              {isFollowing ? 'Unfollow' : 'Follow'}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Message</Text>
-          </TouchableOpacity>
-        </View>
       </View>
 
       <View
@@ -54,9 +39,9 @@ const ProfileOthers = ({ navigation }) => {
 
       <View style={styles.horizontalLine} />
 
-      <View style={styles.profile}>
+      <View style={styles.info}>
         <View style={[styles.commonContainer, styles.space, { marginTop: 10 }]}>
-          <Text style={{ fontWeight: 'bold' }}>User's Info</Text>
+          <Text style={{ fontWeight: 'bold' }}>Personal Info</Text>
           <Image source={require('../assets/Profile/3dot.png')} />
         </View>
         <View style={[styles.commonContainer, styles.space]}>
@@ -92,7 +77,7 @@ const ProfileOthers = ({ navigation }) => {
   );
 };
 
-export default ProfileOthers;
+export default ProfileUser;
 
 const styles = StyleSheet.create({
   container: {
@@ -106,7 +91,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     width: '100%',
-    height: '25%',
+    height: 200,
   },
   commonContainer: {
     flexDirection: 'row',
@@ -121,6 +106,11 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   profile: {
+    alignItems: 'center',
+    marginHorizontal: 20,
+    marginTop: 50,
+  },
+  info: {
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0,
@@ -138,26 +128,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   avt: {
-    width: 90,
-    height: 90,
-    marginTop: 10,
+    width: 100,
+    height: 100,
+    marginLeft: 8,
   },
   username: {
     fontSize: 17,
     fontWeight: 'bold',
-  },
-  button: {
-    width: 120,
-    height: 40,
-    borderRadius: 7,
-    backgroundColor: '#D9D9D9',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 15,
-  },
-  buttonText: {
-    fontSize: 15,
-    fontWeight: 'bold',
+    marginVertical: 10,
   },
   horizontalLine: {
     alignSelf: 'center',

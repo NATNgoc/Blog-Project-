@@ -9,6 +9,11 @@ import {
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/Feather';
 import Home from '../presentitional/Home';
+import Favorites from '../presentitional/Favorites';
+import Post from '../presentitional/Post';
+import AuthStack from './AuthStack';
+import Setting from '../presentitional/Setting';
+import ProfileUser from '../presentitional/ProfileUser';
 
 function CustomDrawer(props) {
   const { navigation } = props
@@ -16,7 +21,9 @@ function CustomDrawer(props) {
     <DrawerContentScrollView style={styles.drawerContainer} {...props}>
 
       <View style={styles.profile}>
-        <Image source={require('../assets/avatar.png')} style={styles.avt} />
+      <TouchableOpacity onPress={()=> navigation.navigate(ProfileUser)} >
+        <Image source={require('../assets/Profile/avatar.png')} style={styles.avt} />
+      </TouchableOpacity>
         <Text style={{fontSize: 24, color: '#FFFF'}}>James Anderson</Text>
         <Text style={{fontSize: 14, fontStyle: 'italic' , color: '#C8C8C8', marginBottom: 5}}>@james_andy</Text>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between',
@@ -30,11 +37,11 @@ function CustomDrawer(props) {
       <View style={styles.out}>
       <TouchableOpacity onPress={() => navigation.closeDrawer()}>
         <Image
-        style={{ position: 'absolute', top: 400, left: 0, width: 40, height: 40 }}
+        style={{ position: 'absolute', top: 390, left: 0, width: 40, height: 40 }}
         source={require('../assets/circle.png')}
         />
         <Image
-        style={{ position: 'absolute', top: 400, left: 0, width: 20, height: 20 }}
+        style={{ position: 'absolute', top: 400, left: 10, width: 20, height: 20 }}
         source={require('../assets/x.png')}
       />
       </TouchableOpacity>
@@ -55,7 +62,7 @@ function CustomDrawer(props) {
       />
       <DrawerItem
         label="Your Blogs"
-        onPress={()=> navigation.navigate(Blog)} 
+        onPress={()=> navigation.navigate(Post)} 
         icon={() => <IonIcon name="document-text-outline" size={24} color="#FFFF" />}
         labelStyle={{fontSize: 15, color: "#FFFF" }}
       />
@@ -79,7 +86,7 @@ function CustomDrawer(props) {
       />
       <DrawerItem
         label="Log Out"
-        onPress={()=> navigation.navigate(Logout)} 
+        onPress={()=> navigation.navigate(AuthStack)} 
         icon={() => <IonIcon name="log-out-outline" size={24} color="#FFFF" />}
         labelStyle={{fontSize: 15, color: "#FFFF" }}
       />

@@ -3,6 +3,11 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MainBottom from './MainBottom';
 import CustomDrawer from './CustomDrawer';
+import AuthStack from './AuthStack';
+import Post from '../presentitional/Post';
+import Setting from '../presentitional/Setting';
+import ProfileUser from '../presentitional/ProfileUser';
+import ProfileOthers from '../presentitional/ProfileOthers';
 
 const Drawer = createDrawerNavigator();
 
@@ -10,21 +15,30 @@ export default function DrawerNavigator() {
   return (
     <Drawer.Navigator
       useLegacyImplementation
-      initialRouteName="MainBottom"
+      initialRouteName="Home"
       screenOptions={{ headerShown: false }}
       drawerContent={(props) => <CustomDrawer {...props} />} 
       >
       <Drawer.Screen
-        name="Home"
-        component={MainBottom}
-        
+        name="MainBottom"
+        component={MainBottom}  
       />
-      <Drawer.Screen name="Add new article" />
-      <Drawer.Screen name="Your Blogs" />
-      <Drawer.Screen name="Your Activities" />
-      <Drawer.Screen name="Your Favorites" />
-      <Drawer.Screen name="Setting" />
-      <Drawer.Screen name="Log out" />
+      <Drawer.Screen
+        name="Post"
+        component={Post}  
+      />
+      <Drawer.Screen
+        name="Setting"
+        component={Setting}  
+      />
+      <Drawer.Screen
+        name="ProfileUser"
+        component={ProfileUser}  
+      />
+      <Drawer.Screen
+        name="ProfileOthers"
+        component={ProfileOthers}  
+      />
     </Drawer.Navigator>
   );
 }
