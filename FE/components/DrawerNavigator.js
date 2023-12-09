@@ -1,13 +1,12 @@
 import React from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import IonIcon from 'react-native-vector-icons/Ionicons';
-import MainBottom from './MainBottom';
-import CustomDrawer from './CustomDrawer';
-import AuthStack from './AuthStack';
-import Post from '../presentitional/Post';
-import Setting from '../presentitional/Setting';
-import ProfileUser from '../presentitional/ProfileUser';
-import ProfileOthers from '../presentitional/ProfileOthers';
+import { createDrawerNavigator } from '@react-navigation/drawer'
+import MainBottom from './MainBottom'
+import CustomDrawer from './CustomDrawer'
+import AuthStack from './AuthStack'
+import Post from '../presentitional/Post'
+import ProfileUser from '../presentitional/ProfileUser'
+import ProfileOthers from '../presentitional/ProfileOthers'
+import SettingStack from './SettingStack'
 
 const Drawer = createDrawerNavigator();
 
@@ -28,8 +27,8 @@ export default function DrawerNavigator() {
         component={Post}  
       />
       <Drawer.Screen
-        name="Setting"
-        component={Setting}  
+        name="SettingStack"
+        component={SettingStack}  
       />
       <Drawer.Screen
         name="ProfileUser"
@@ -39,6 +38,11 @@ export default function DrawerNavigator() {
         name="ProfileOthers"
         component={ProfileOthers}  
       />
+      <Drawer.Screen
+        name="AuthStack"
+        component={AuthStack}  
+      />
+      
     </Drawer.Navigator>
   );
 }

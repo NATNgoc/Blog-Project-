@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons'
 
 const ProfileUser = ({ navigation }) => {
   return (
@@ -14,7 +14,7 @@ const ProfileUser = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={require('../assets/Arrow.png')} />
         </TouchableOpacity>
-        <Text style={styles.name}>Profile</Text>
+        <Text style={styles.title}>Profile</Text>
         <Image source={require('../assets/Home/Notification.png')} />
       </View>
 
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 2,
   },
-  name: {
+  title: {
     fontSize: 20,
     fontWeight: 'bold',
   },

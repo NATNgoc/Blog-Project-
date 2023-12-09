@@ -5,15 +5,15 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
   DrawerItem
-} from '@react-navigation/drawer';
-import IonIcon from 'react-native-vector-icons/Ionicons';
-import Icon from 'react-native-vector-icons/Feather';
-import Home from '../presentitional/Home';
-import Favorites from '../presentitional/Favorites';
-import Post from '../presentitional/Post';
-import AuthStack from './AuthStack';
-import Setting from '../presentitional/Setting';
-import ProfileUser from '../presentitional/ProfileUser';
+} from '@react-navigation/drawer'
+import IonIcon from 'react-native-vector-icons/Ionicons'
+import Icon from 'react-native-vector-icons/Feather'
+import Home from '../presentitional/Home'
+import Favorites from '../presentitional/Favorites'
+import Post from '../presentitional/Post'
+import AuthStack from './AuthStack'
+import SettingStack from './SettingStack'
+import ProfileUser from '../presentitional/ProfileUser'
 
 function CustomDrawer(props) {
   const { navigation } = props
@@ -80,7 +80,7 @@ function CustomDrawer(props) {
       />
       <DrawerItem
         label="Setting"
-        onPress={()=> navigation.navigate(Setting)} 
+        onPress={()=> navigation.navigate(SettingStack)} 
         icon={() => <IonIcon name="settings-outline" size={24} color="#FFFF" />}
         labelStyle={{fontSize: 15, color: "#FFFF" }}
       />

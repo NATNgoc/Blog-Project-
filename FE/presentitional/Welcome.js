@@ -1,9 +1,6 @@
 import { React, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import Login from './Login';
-import Register from './Register';
-import CustomButton from '../components/CustomButton';
+import { useNavigation } from '@react-navigation/native'
 
 const Welcome = () => {
   const navigation = useNavigation();

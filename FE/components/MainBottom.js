@@ -1,11 +1,10 @@
 import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Home from '../presentitional/Home';
-import Search from '../presentitional/Search';
-import Favorites from '../presentitional/Favorites';
-import Setting from '../presentitional/Setting';
-import IonIcon from 'react-native-vector-icons/Ionicons';
-import DrawerNavigator from './DrawerNavigator'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import Home from '../presentitional/Home'
+import Search from '../presentitional/Search'
+import Favorites from '../presentitional/Favorites'
+import SettingStack from './SettingStack'
+import IonIcon from 'react-native-vector-icons/Ionicons'
 
 const Bottom = createBottomTabNavigator();
 
@@ -42,7 +41,7 @@ const MainBottom = () => {
 
       <Bottom.Screen
         name="Setting"
-        component={Setting}
+        component={SettingStack}
         options={homeScreenOptions(false, 'settings')}
       />
     </Bottom.Navigator>

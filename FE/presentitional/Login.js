@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import CustomTextInput from '../components/CustomTextInput';
-import CustomButton from '../components/CustomButton';
-import { Context } from '../components/Context';
+import { useNavigation } from '@react-navigation/native'
+import CustomTextInput from '../components/CustomTextInput'
+import CustomButton from '../components/CustomButton'
+import { Context } from '../components/Context'
 
 
 const Login = () => {

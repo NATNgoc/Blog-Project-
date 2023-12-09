@@ -1,11 +1,10 @@
-//Danh Hoàng Khải-21522181
-import React, { useContext } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import MainBottom from './MainBottom';
-import DrawerNavigator from './DrawerNavigator';
-import AuthStack from './AuthStack';
-import { Context } from './Context';
+import React, { useContext } from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import DrawerNavigator from './DrawerNavigator'
+import AuthStack from './AuthStack'
+import { Context } from './Context'
+
 const Stack = createStackNavigator();
 const AppNavigator = () => {
   const { isAuthenticated } = useContext(Context);

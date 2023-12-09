@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, Button, TextInput, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import CustomTextInput from '../components/CustomTextInput';
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native'
 
 const Home = () => {
   const navigation = useNavigation();

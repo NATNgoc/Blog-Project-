@@ -4,12 +4,9 @@ import {
   Text,
   StyleSheet,
   Image,
-  Button,
-  TextInput,
   TouchableOpacity,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import ProfileOthers from './ProfileOthers';
+import ProfileOthers from './ProfileOthers'
 
 const Post = ({ navigation }) => {
   return (

@@ -7,8 +7,8 @@ import {
   Image,
   TextInput,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import CustomButton from '../components/CustomButton';
+import { useNavigation } from '@react-navigation/native'
+import CustomButton from '../components/CustomButton'
 
 const Verification = () => {
   const navigation = useNavigation();
