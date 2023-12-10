@@ -15,13 +15,6 @@ var categorySchema = new mongoose.Schema({
     category_post_count: {
         type: Number,
         default: 0
-    },
-    category_post_ids: {
-        type: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'post'
-        }],
-        default: []
     }
 }, {
     timestamps: true,

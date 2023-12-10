@@ -7,7 +7,7 @@ class SeriesRepository {
     }
 
     static async findSeriesById(seriesId) {
-        return await seriesModel.findById(seriesId)
+        return await seriesModel.findById(seriesId).lean()
     }
 
     static async addPostsIntoSeries(filter, postIds) {
@@ -15,7 +15,7 @@ class SeriesRepository {
             $addToSet: {
                 series_post_ids: { $each: postIds }
             }
-        })
+        }).lean()
     }
 
     static async removePostsFromSeries(filter, postIds, options = {}) {
@@ -23,7 +23,7 @@ class SeriesRepository {
             $pull: {
                 series_post_ids: { $in: postIds }
             }
-        }, { ...options });
+        }, { ...options }).lean();
     }
 
     static async findOneSeries(filter, selectField = {}) {
@@ -43,7 +43,7 @@ class SeriesRepository {
     }
 
     static async deleteSeriesById(seriesId) {
-        return await seriesModel.findByIdAndDelete(seriesId)
+        return await seriesModel.findByIdAndDelete(seriesId).lean()
     }
 
     static async updateSeriesById(seriesId, bodyUpdate, option) {
@@ -51,7 +51,7 @@ class SeriesRepository {
             $set: bodyUpdate
         }, {
             ...option
-        })
+        }).lean()
     }
 
 }

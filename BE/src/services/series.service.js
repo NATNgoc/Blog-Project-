@@ -5,7 +5,7 @@ const Utils = require('../utils')
 const PostRepository = require('../models/repository/post.repo')
 const TransactionWrapper = require('../dbs/transaction.wrapper');
 const PostUtils = require('../utils/post.utils')
-const UserService = require('./user.service')
+const { UserService } = require('./user.service')
 
 
 class SeriesService {

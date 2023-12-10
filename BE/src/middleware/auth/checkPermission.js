@@ -1,6 +1,6 @@
 
 const Error = require('../../core/error.response')
-const UserService = require('../../services/user.service')
+const { UserService } = require('../../services/user.service')
 
 const autherizePermission = (permission) => {
     return async (req, res, next) => {

@@ -51,6 +51,8 @@ class UserService {
         await checkPostIdsBeforeRemove(userId, filteredPostIds)
         return await removePostIdsFromWishList(userId, filteredPostIds)
     }
+
+
 }
 //--------------------------SUB-FUNCTION------------------------
 
@@ -106,14 +108,11 @@ function configQueryForAddWishList(userId, postId) {
     return { filter, bodyUpdate, option, selectField }
 }
 
-
-
 async function checkActivePost(postId) {
     const currentPost = await findActivePostById(postId)
     if (!currentPost) throw new Error.BadRequestError("Post is not valid")
     return currentPost
 }
-
 async function findActivePostById(postId) {
     const filter = {
         _id: objectIdParser(postId),
@@ -144,4 +143,6 @@ async function checkOldPassword(plainPassword, encryptedPassword) {
 
 
 
-module.exports = UserService
+module.exports = { UserService, checkActivePost }
+
+

@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+  # MongoDB service
   mongo-primary:
     container_name: mongo-primary
     image: mongo
@@ -42,11 +43,26 @@ services:
     restart: always
     networks:
       - mongo_replica
-
+  # Nodejs
+  node-app:
+    container_name: node-app
+    image: node:19.1.0
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - 3000:6890
+    command: bash -c "npm start"
+    depends_on:
+      - mongo-primary
+    networks:
+      - mongo_replica
+# Volumes and networks
 volumes:
   mongo-primary:
   mongo_secondary-1:
   mongo_secondary-2:
+
 
 networks:
   mongo_replica:

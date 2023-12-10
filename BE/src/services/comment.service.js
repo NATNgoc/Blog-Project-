@@ -1,0 +1,146 @@
+const Error = require('../core/error.response')
+const CommentRepository = require('../models/repository/comment.repo');
+const PostRepository = require('../models/repository/post.repo');
+const Utils = require('../utils');
+const { checkActivePost } = require('./user.service')
+const TransactionWrapper = require('../dbs/transaction.wrapper');
+const { configForStartDate, configForEndDate } = require('./post.service');
+
+//----------------------MAIN SERVICE------------------------
+class CommentService {
+
+    static async commentPost(userId, filteredComment) {
+        return await new TransactionWrapper(processCommentPost).process({ userId, filteredComment })
+    }
+
+    static async unCommentPost(userId, commentId) {
+        return await new TransactionWrapper(processUnCommentPost).process({ userId, commentId })
+    }
+
+    static async getAllCommentHistoryByUserId(userId, { offset = 0, limit = 20, startDate, endDate, sortBy = 'ctime' }) {
+        const skip = limit * offset
+        const unSelectField = Utils.getUnselectDataForQuery(["__v"])
+        const { filter, sortOption } = configForQueryAllComment(null, userId, startDate, endDate, sortBy)
+        return await CommentRepository.getComments(filter, limit, skip, unSelectField, sortOption)
+    }
+
+    static async getAllCommentHistoryByPostId(postId, { offset = 0, limit = 20, startDate, endDate, sortBy = 'ctime' }) {
+        Utils.checkNullForObject({ postId })
+        const skip = limit * offset
+        const unSelectField = Utils.getUnselectDataForQuery(["__v"])
+        const { filter, sortOption } = configForQueryAllComment(postId, null, startDate, endDate, sortBy)
+        return await CommentRepository.getComments(filter, limit, skip, unSelectField, sortOption)
+    }
+
+
+}
+
+
+
+//-----------------------SUB FUNCTION-----------------------
+
+function configForQueryAllComment(postId, userId, startDate, endDate, sortBy) {
+    const filter = configForFilterQueryAllComment(startDate, endDate, userId, postId)
+    const sortOption = sortBy === 'ctime' ? { createdAt: -1 } : { createdAt: 1 }
+    return { filter, sortOption }
+}
+
+function configForFilterQueryAllComment(startDate, endDate, userId, postId) {
+    let filter = {}
+    if (startDate) {
+        configForStartDate(filter, startDate)
+    }
+    if (endDate) {
+        configForEndDate(filter, endDate)
+    }
+    if (userId) {
+        configForUserId(filter, userId)
+    }
+    if (postId) {
+        configForPostId(filter, postId)
+    }
+    return filter
+}
+
+function configForPostId(filter, postId) {
+    filter.cmt_post_id = Utils.objectIdParser(postId)
+}
+
+function configForUserId(filter, userId) {
+    filter.cmt_user_id = Utils.objectIdParser(userId)
+}
+
+
+async function findCommentWithUserId(userId, commentId) {
+    const filter = {
+        _id: Utils.objectIdParser(commentId),
+        cmt_user_id: Utils.objectIdParser(userId)
+    }
+    const unSelectField = Utils.getUnselectDataForQuery(["__v"])
+    return await CommentRepository.getComment(filter, unSelectField)
+}
+
+async function checkExistingCommentWithUserId(userId, commentId) {
+    const currentComment = await findCommentWithUserId(userId, commentId)
+    if (!currentComment) throw new Error.BadRequestError("Comment is not your own or not exist")
+    return currentComment
+}
+
+async function processUnCommentPost({ userId, commentId }, session) {
+    const currentComment = await checkExistingCommentWithUserId(userId, commentId)
+    const filterForDelete = {
+        _id: Utils.objectIdParser(currentComment._id)
+    }
+    await Promise.all([CommentRepository.deleteCommentWithSession(filterForDelete, session),
+    updatePostStatusForUnCommentSection(currentComment.cmt_post_id, session)])
+}
+
+async function processCommentPost({ userId, filteredComment }, session) {
+    await checkActivePost(filteredComment.cmt_post_id)
+    const newComment = createCommentObjectForCreate(userId, filteredComment.cmt_post_id, filteredComment.cmt_content)
+    const result = await CommentRepository.createNewCommentWithSession(newComment, session)
+    await updatePostStatusForCommentSection(filteredComment.cmt_post_id, session)
+    return result
+}
+
+async function updatePostStatusForUnCommentSection(postId, session) {
+    const bodyUpdate = {
+        $inc: {
+            post_coments_count: -1
+        }
+    }
+    const filter = {
+        _id: Utils.objectIdParser(postId)
+    }
+    const option = {
+        session: session,
+        new: true
+    }
+    return await PostRepository.updatePost(filter, bodyUpdate, option)
+}
+
+async function updatePostStatusForCommentSection(postId, session) {
+    const bodyUpdate = {
+        $inc: {
+            post_coments_count: 1
+        }
+    }
+    const filter = {
+        _id: Utils.objectIdParser(postId)
+    }
+    const option = {
+        session: session,
+        new: true
+    }
+    return await PostRepository.updatePost(filter, bodyUpdate, option)
+}
+
+function createCommentObjectForCreate(userId, postId, content) {
+    return {
+        cmt_post_id: Utils.objectIdParser(postId),
+        cmt_user_id: Utils.objectIdParser(userId),
+        cmt_content: content
+    }
+}
+
+module.exports = { CommentService }

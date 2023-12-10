@@ -11,6 +11,8 @@ const initApiRoute = (app) => {
     router.use('/posts', require('./post/index'))
     router.use('/categories', require('./category/index'))
     router.use('/series', require('./series/index'))
+    router.use('/likes', require('./like/index'))
+    router.use('/comments', require('./comment/index'))
     return app.use("/api/v1", router)
 }
 

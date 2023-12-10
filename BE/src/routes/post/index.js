@@ -9,7 +9,7 @@ const { Permission } = require('../../utils/role.utils')
 
 router.post('/', catchError(autherizeAccessToken), catchError(PostValidator.createPostValidator), catchError(postController.createNewPost))
 router.get('/', catchError(autherizeAccessToken), catchError(postController.getAllPost))
-router.get('/author', catchError(autherizeAccessToken), catchError(postController.getAllPostOfAuthor))
+router.get('/author', catchError(autherizeAccessToken), catchError(postController.getAllPostOfUser))
 router.patch('/:id/status', catchError(autherizeAccessToken), catchError(autherizePermission(Permission.ADMIN)), catchError(postController.updateStatusOfPost))
 
 

@@ -3,27 +3,28 @@ const Error = require('../core/error.response')
 const CategoryRepository = require('../models/repository/category.repo')
 const PostRepository = require('../models/repository/post.repo')
 const { objectIdParser, getUnselectDataForQuery, checkNullForObject } = require('../utils')
-const UserService = require('./user.service')
-const PostUtils = require('../utils/post.utils')
+const { UserService } = require('./user.service')
+
 const statusOfPost = {
     ACTIVE: 'active',
     PENDING: 'pending',
     BLOCKED: 'blocked'
 }
+
+//-------------------MAIN FUNCTION--------------------
 class PostService {
 
     static async createNewPost(userId, payload) {
         await UserService.checkUser(userId)
-        await checkCategoryIds(payload.post_category_ids)
-        const newPost = createPostObject(userId, payload.post_title, payload.post_content, payload.post_thumb_url, payload.post_description, payload.post_category_ids)
-        const result = await PostRepository.createNewPost(newPost)
-        if (!result) throw new Error.NotFoundError("Something went wrong")
+        const listOfCategories = await checkCategoryIds(payload.post_category_ids)
+        const newPost = createPostObject(userId, payload.post_title, payload.post_content, payload.post_thumb_url, payload.post_description, listOfCategories)
+        return await PostRepository.createNewPost(newPost)
     }
 
     static async updateStatusOfPost(postId, { newStatus }) {
         checkNullForObject({ newStatus })
         checkNotExistingStatus(newStatus)
-        const currentPost = await PostUtils.checkExistingPost(postId)
+        const currentPost = await checkExistingPost(postId)
         checkDuplicatedStatus(currentPost.status, newStatus)
         const filter = {
             _id: objectIdParser(postId)
@@ -31,31 +32,41 @@ class PostService {
         return await PostRepository.updateStatusOfPost(filter, newStatus)
     }
 
-    static async getAllPost({ limit = 20, offset = 0, sortBy = "ctime", keyword, startDate, endDate, category, authorId }) {
+    static async getAllPost({ limit = 20, offset = 0, sortBy = "ctime", keyword, startDate, endDate, categoryId, authorId }) {
         const skip = limit * offset
-        let sortOption = sortBy === 'ctime' ? { createdAt: -1 } : { createdAt: 1 }
-        const unSelectField = ["status", "__v"]
-        let filter = {
-            status: statusOfPost.ACTIVE
-        }
-        configFilterForGetAllPost(filter, sortOption, keyword, startDate, endDate, category, authorId)
-        return await PostRepository.findPosts(filter, limit, skip, getUnselectDataForQuery(unSelectField), sortOption)
+        const unSelectField = getUnselectDataForQuery(["status", "__v"])
+        const { filter, sortOption } = configQueryForgetAllPost(sortBy, keyword, startDate, endDate, categoryId, authorId)
+        return await PostRepository.findPosts(filter, limit, skip, unSelectField, sortOption)
     }
 
-    static async getAllPostOfAuthor(userId, { limit = 20, offset = 0, sortBy = "ctime", keyword, startDate, endDate, category, status }) {
+    static async getAllPostOfUser(userId, { limit = 20, offset = 0, sortBy = "ctime", keyword, startDate, endDate, categoryId, status }) {
         const skip = limit * offset
-        let sortOption = sortBy === 'ctime' ? { createdAt: -1 } : { createdAt: 1 }
-        const unSelectField = ["__v"]
-        let filter = {
-            post_user_id: objectIdParser(userId)
-        }
-        configFilterForGetAllPost(filter, sortOption, keyword, startDate, endDate, category, "", status)
-        return await PostRepository.findPosts(filter, limit, skip, getUnselectDataForQuery(unSelectField), sortOption)
+        const unSelectField = getUnselectDataForQuery(["__v"])
+        const { filter, sortOption } = configQueryForgetAllPostOfUser(userId, sortBy, keyword, startDate, endDate, categoryId, status)
+        return await PostRepository.findPosts(filter, limit, skip, unSelectField, sortOption)
     }
 
 
 }
 //-------------------SUB FUNCTION--------------------
+
+function configQueryForgetAllPost(sortBy, keyword, startDate, endDate, categoryId, authorId) {
+    let sortOption = sortBy === 'ctime' ? { createdAt: -1 } : { createdAt: 1 }
+    let filter = {
+        status: statusOfPost.ACTIVE
+    }
+    configFilterForGetAllPost(filter, sortOption, keyword, startDate, endDate, categoryId, authorId)
+    return { filter, sortOption }
+}
+
+function configQueryForgetAllPostOfUser(userId, sortBy, keyword, startDate, endDate, categoryId, status) {
+    let sortOption = sortBy === 'ctime' ? { createdAt: -1 } : { createdAt: 1 }
+    let filter = {
+        post_user_id: objectIdParser(userId)
+    }
+    configFilterForGetAllPost(filter, sortOption, keyword, startDate, endDate, categoryId, "", status)
+    return { filter, sortOption }
+}
 
 function checkNotExistingStatus(newStatus) {
     const result = Object.values(statusOfPost).includes(newStatus)
@@ -65,8 +76,14 @@ function checkDuplicatedStatus(oldStatus, newStatus) {
     const result = oldStatus === newStatus ? true : false
     if (result) throw new Error.BadRequestError("Status is already like that!")
 }
+async function checkExistingPost(postId) {
+    const currentPost = await PostRepository.findPostById(postId)
+    if (!currentPost) throw new Error.BadRequestError("Post isn't existed")
+    return currentPost
+}
 
-function configFilterForGetAllPost(filter, sortOption, keyword, startDate, endDate, category, authorId, status) {
+
+function configFilterForGetAllPost(filter, sortOption, keyword, startDate, endDate, categoryId, authorId, status) {
     if (startDate) {
         configForStartDate(filter, startDate)
     }
@@ -76,8 +93,8 @@ function configFilterForGetAllPost(filter, sortOption, keyword, startDate, endDa
     if (endDate) {
         configForEndDate(filter, endDate)
     }
-    if (category) {
-        configForCategory(filter, category)
+    if (categoryId) {
+        configForCategory(filter, categoryId)
     }
     if (authorId) {
         configForAuthor(filter, authorId)
@@ -110,7 +127,7 @@ function configForAuthor(filter, authorId) {
     filter.post_user_id = objectIdParser(authorId)
 }
 function configForCategory(filter, categoryId) {
-    filter.post_category_ids = objectIdParser(categoryId)
+    filter["post_categories._id"] = objectIdParser(categoryId);
 }
 
 function configForEndDate(filter, endDate) {
@@ -121,14 +138,14 @@ function configForEndDate(filter, endDate) {
 }
 
 
-function createPostObject(userId, title, content, thumbUrl, description, categoryIds) {
+function createPostObject(userId, title, content, thumbUrl, description, listOfCategories) {
     const newPost = {
         post_user_id: objectIdParser(userId),
         post_title: title,
         post_content: content,
         post_thumb_url: thumbUrl,
         post_description: description,
-        post_category_ids: categoryIds.map(id => objectIdParser(id)),
+        post_categories: listOfCategories,
     }
     return newPost
 }
@@ -138,6 +155,7 @@ async function checkCategoryIds(categoryIds) {
     const initialNumberOfCategory = categoryIds.length
     const listOfCategories = await findCategoriesByIds(categoryIds)
     if (initialNumberOfCategory !== listOfCategories.length) throw new Error.BadRequestError("Check category info again!")
+    return listOfCategories
 }
 
 async function findCategoriesByIds(listOfCategoryIds) {
@@ -146,8 +164,8 @@ async function findCategoriesByIds(listOfCategoryIds) {
             $in: listOfCategoryIds
         }
     }
-    const unSelectField = ["__v", "status"]
-    return await CategoryRepository.findCategories(filter, getUnselectDataForQuery(unSelectField))
+    const unSelectField = getUnselectDataForQuery(["__v", "status", "createdAt", "updatedAt"])
+    return await CategoryRepository.findCategories(filter, unSelectField)
 }
 
-module.exports = PostService
+module.exports = { PostService, checkExistingPost, configForStartDate, configForEndDate }

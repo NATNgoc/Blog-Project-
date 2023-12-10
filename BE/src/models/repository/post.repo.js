@@ -15,6 +15,10 @@ class PostRepository {
         return await postModel.updateMany(filter, { $set: body }, { ...option })
     }
 
+    static async updatePost(filter, bodyUpdate, options = {}) {
+        return await postModel.updateOne(filter, { ...bodyUpdate }, { ...options })
+    }
+
     static async findPostById(postId, selectField = {}) {
         return await postModel.findOne({ _id: postId }).select(selectField).lean()
     }

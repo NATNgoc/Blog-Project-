@@ -20,7 +20,7 @@ function getRequiredFieldsFromReqBody(reqBody, requiredFields) {
 const checkNullForObject = (object) => {
     const result = Object.values(object).every(value => value !== null && value !== undefined) === false ? true : false;
     if (result) {
-        throw new Error.BadRequestError("All field are required!")
+        throw new Error.BadRequestError("Some field are required!")
     }
 }
 

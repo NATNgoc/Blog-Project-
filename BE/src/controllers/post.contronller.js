@@ -1,4 +1,4 @@
-const PostService = require('../services/post.service')
+const { PostService } = require('../services/post.service')
 const SuccesResponse = require('../core/success.response')
 
 class PostController {
@@ -18,11 +18,11 @@ class PostController {
         }).send(res)
     }
 
-    getAllPostOfAuthor = async (req, res, next) => {
+    getAllPostOfUser = async (req, res, next) => {
         return new SuccesResponse.OkResponse({
             ...req.body,
             message: "Get all post of user succesfully!",
-            metaData: await PostService.getAllPostOfAuthor(req.decodeUser.userid, req.query)
+            metaData: await PostService.getAllPostOfUser(req.decodeUser.userid, req.query)
         }).send(res)
     }
 
