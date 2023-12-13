@@ -7,6 +7,11 @@ import Post from '../presentitional/Post'
 import ProfileUser from '../presentitional/ProfileUser'
 import ProfileOthers from '../presentitional/ProfileOthers'
 import SettingStack from './SettingStack'
+import CreatePost from '../presentitional/CreatePost'
+import Notification from '../presentitional/Notification'
+import Activities from '../presentitional/Activities'
+import Follow from '../presentitional/Follow'
+import ProfileStack from './ProfileStack'
 
 const Drawer = createDrawerNavigator();
 
@@ -42,7 +47,26 @@ export default function DrawerNavigator() {
         name="AuthStack"
         component={AuthStack}  
       />
-      
+      <Drawer.Screen
+        name="CreatePost"
+        component={CreatePost}  
+      />
+       <Drawer.Screen
+        name="Notification"
+        component={Notification}  
+      />
+       <Drawer.Screen
+        name="Activities"
+        component={Activities}  
+      />
+       <Drawer.Screen
+        name="Follow"
+        component={Follow}  
+      />
+        <Drawer.Screen
+        name="ProfileStack"
+        component={ProfileStack}  
+      />
     </Drawer.Navigator>
   );
 }

@@ -97,18 +97,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: 'bold',
     marginLeft: 10,
   },
   layer: {
     position: 'absolute',
     width: '100%',
-    height: '15.5%', //10.2
+    height: '10.2%', 
   },
   commonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   space: {
     width: '88%', 
@@ -121,14 +122,15 @@ const styles = StyleSheet.create({
     marginTop: 90,
   },
   colorText: {
-    fontWeight: '645',
+    fontWeight: 'bold',
+    fontSize: 17,
   },
   backImage: {
-    height: 20,
-    width: 20,
+    height: 30,
+    width: 30,
     alignSelf: 'flex-start',
     marginTop: 5,
-    marginLeft: 3,
+    marginLeft: 7,
   },
   picker: {
     width: 80,

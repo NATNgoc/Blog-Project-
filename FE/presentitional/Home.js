@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
+import Notification from './Notification'
 
 const Home = () => {
   const navigation = useNavigation();
@@ -10,7 +11,9 @@ const Home = () => {
       <TouchableOpacity onPress={() => navigation.openDrawer()}>
         <Image source={require('../assets/Home/gg_menu-left.png')} />
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate(Notification)}>
         <Image source={require('../assets/Home/Notification.png')} />
+      </TouchableOpacity>
       </View>
 
       <View style={styles.searchFilter}>

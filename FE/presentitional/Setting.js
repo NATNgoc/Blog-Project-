@@ -29,13 +29,11 @@ const Setting = ({ navigation }) => {
         <Text style={styles.title}>Setting</Text>
       </View>
 
-      <View style={styles.profile}>
-        <TouchableOpacity onPress={()=> navigation.navigate(ProfileUser)}>
+      <TouchableOpacity style={styles.profile}  onPress={()=> navigation.navigate(ProfileUser)}>
         <Image
           source={require('../assets/Profile/avatar.png')}
           style={styles.avt}
         />
-        </TouchableOpacity>
         <View>
           <Text style={{ fontSize: 18, color: '#FFFF' }}>James Anderson</Text>
           <Text style={[styles.smallSize, { marginVertical: 3 }]}>
@@ -48,7 +46,7 @@ const Setting = ({ navigation }) => {
             <Text style={styles.smallSize}>14 Following</Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
 
       <View style={styles.tabList}>
         <TouchableOpacity style={[styles.commonContainer, styles.space]} onPress={()=> navigation.navigate(SettingAccount)} >
@@ -99,14 +97,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: 'bold',
     marginLeft: 10,
   },
   layer: {
     position: 'absolute',
     width: '100%',
-    height: '41.2%',
+    height: '27.3%',
     
   },
   profile: {
@@ -125,7 +123,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   space: {
-    width: '88%', 
+    width: '95%', 
     marginBottom: 25,
   },
   smallSize: {
@@ -140,13 +138,14 @@ const styles = StyleSheet.create({
   },
   colorText: {
     fontWeight: 'bold',
+    fontSize: 17,
   },
   backImage: {
-    height: 20,
-    width: 20,
+    height: 30,
+    width: 30,
     alignSelf: 'flex-start',
     marginTop: 5,
-    marginLeft: 3,
+    marginLeft: 7,
   },
 });
 

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons'
+import Follow from './Follow'
 
 const ProfileUser = ({ navigation }) => {
   return (
@@ -32,8 +33,12 @@ const ProfileUser = ({ navigation }) => {
           styles.commonContainer,
           { marginHorizontal: 15, marginVertical: 17 },
         ]}>
-        <Text>1K Follower</Text>
-        <Text>2K Following</Text>
+        <TouchableOpacity onPress={() => navigation.navigate(Follow)}>
+          <Text>1K Follower</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate(Follow)}>
+          <Text>2K Following</Text>
+        </TouchableOpacity>
         <Text>3K Posts</Text>
       </View>
 
