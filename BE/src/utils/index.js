@@ -1,5 +1,5 @@
 const { default: mongoose } = require("mongoose")
-const bcrypt = require('bcrypt')
+const bcryptjs = require('bcryptjs')
 const Error = require('../core/error.response')
 
 const HEADER = {
@@ -26,12 +26,12 @@ const checkNullForObject = (object) => {
 
 
 async function encryptString(keyword, salt) {
-    return await bcrypt.hash(keyword, salt)
+    return await bcryptjs.hash(keyword, salt)
 }
 
 
 async function compareEncryptedStrings(plainString, encryptedString) {
-    return await bcrypt.compare(plainString, encryptedString);
+    return await bcryptjs.compare(plainString, encryptedString);
 }
 
 function getObjectFromReqHeader(req, keyword) {

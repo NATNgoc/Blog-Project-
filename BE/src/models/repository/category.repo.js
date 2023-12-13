@@ -32,6 +32,14 @@ class CategoryRepository {
         })
     }
 
+    static async updateCategorys(filter, updateObject, option) {
+        return await categoryModel.updateMany(filter, {
+                ...updateObject
+        }, {
+            ...option
+        })
+    }
+
     // Category không nhiều nên không cần limit và skip
     static async findAllCategory(selectField) {
         return await categoryModel.find({}).select(selectField).lean()

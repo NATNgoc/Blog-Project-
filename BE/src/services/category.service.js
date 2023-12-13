@@ -40,7 +40,6 @@ async function updateNewCategory(categoryId, bodyUpdate) {
     const filter = {
         _id: categoryId
     }
-    bodyUpdate = Utils.nullObjectParser(bodyUpdate)
     return await CategoryRepository.updateCategory(filter, bodyUpdate)
 }
 
@@ -70,7 +69,7 @@ async function checkPostsWithoutCategory(categoryId) {
 
 async function findPostWithCategory(categoryId) {
     const filter = {
-        post_category_ids: Utils.objectIdParser(categoryId)
+        "post_categories._id": Utils.objectIdParser(categoryId)
     }
     return await PostRepository.findPost(filter)
 }

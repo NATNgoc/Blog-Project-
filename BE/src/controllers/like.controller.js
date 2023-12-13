@@ -27,6 +27,14 @@ class LikeController {
         }).send(res)
     }
 
+    findAllLikeOfPost = async (req, res, next) => {
+        return new SuccesResponse.OkResponse({
+            ...req.body,
+            message: "Get like history of post succesfully!",
+            metaData: await LikeService.findAllLikeHistoryOfPost(req.params.id, req.query)
+        }).send(res)
+    }
+
 }
 
 const likeController = new LikeController()

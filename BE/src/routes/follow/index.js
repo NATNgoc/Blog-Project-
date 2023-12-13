@@ -6,9 +6,7 @@ const { autherizeAccessToken } = require('../../middleware/auth/checkAuthenticat
 
 router.post('/', catchError(autherizeAccessToken), catchError(followController.followUser))
 router.delete('/', catchError(autherizeAccessToken), catchError(followController.unFollowUser))
-router.get('/followers', catchError(autherizeAccessToken), catchError(followController.getAllFollower))
-router.get('/followings', catchError(autherizeAccessToken), catchError(followController.getAllFollowing))
-router.post('/status', catchError(autherizeAccessToken), catchError(followController.changeStatus))
+router.post('/:id/status', catchError(autherizeAccessToken), catchError(followController.changeStatus))
 
 
 module.exports = router

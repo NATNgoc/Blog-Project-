@@ -31,7 +31,7 @@ class CommentController {
         return new SuccesResponse.OkResponse({
             ...req.body,
             message: "All comment history of post!",
-            metaData: await CommentService.getAllCommentHistoryByPostId(req.params.id, req.query)
+            metaData: await CommentService.getAllCommentHistoryByPostId(req.decodeUser.userid, req.params.id, req.query)
         }).send(res)
     }
 

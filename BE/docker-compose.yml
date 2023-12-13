@@ -51,8 +51,8 @@ services:
     volumes:
       - ./:/app
     ports:
-      - 3000:6890
-    command: bash -c "npm start"
+      - 6890:6890
+    command: bash -c "npm install&&npm start"
     depends_on:
       - mongo-primary
     networks:

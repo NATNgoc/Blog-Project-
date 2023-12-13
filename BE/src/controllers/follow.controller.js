@@ -22,7 +22,7 @@ class FollowController {
         return new SuccesResponse.OkResponse({
             ...req.body,
             message: "Get list followers succesfully",
-            metaData: await FollowService.getAllFollower(req.decodeUser.userid, { ...req.query })
+            metaData: await FollowService.getAllFollower(req.params.id,req.decodeUser.userid, { ...req.query })
         }).send(res)
     }
 
@@ -30,7 +30,7 @@ class FollowController {
         return new SuccesResponse.OkResponse({
             ...req.body,
             message: "Get list following succesfully",
-            metaData: await FollowService.getAllFollowing(req.decodeUser.userid, { ...req.query })
+            metaData: await FollowService.getAllFollowing(req.params.id,req.decodeUser.userid, { ...req.query })
         }).send(res)
     }
 
@@ -38,19 +38,9 @@ class FollowController {
         return new SuccesResponse.OkResponse({
             ...req.body,
             message: "Change status succesfully!",
-            metaData: await FollowService.changeStatusFollow(req.decodeUser.userid, { ...req.body })
+            metaData: await FollowService.changeStatusFollow(req.decodeUser.userid, req.params.id, { ...req.body })
         }).send(res)
     }
-
-    findFollowerByKeyword = async (req, res, next) => {
-        return new SuccesResponse.OkResponse({
-            ...req.body,
-            message: "Get list follower by keyword successfully!",
-            metaData: await FollowService.changeStatusFollow(req.decodeUser.userid, { ...req.body })
-        }).send(res)
-    }
-
-
 }
 const followController = new FollowController()
 module.exports = followController

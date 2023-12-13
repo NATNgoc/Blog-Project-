@@ -2,7 +2,7 @@
 
 const UserRepository = require("../models/repository/user.repo")
 const Error = require('../core/error.response')
-const bcrypt = require('bcrypt')
+const bcryptjs = require('bcryptjs')
 const KeyService = require("./key.service")
 const { encryptString } = require("../utils")
 const OTPService = require("./otp.service")
@@ -29,7 +29,7 @@ async function checkExistingOTP(currentOTP, email) {
     const OTPs = await getOTPsByEmail(email)
     if (!isExistedOTP(OTPs)) throw new Error.AuthError("Your OTP code has expired or not correct!")
     const newestOTP = getNewestOTPCode(OTPs)
-    if (!await bcrypt.compare(currentOTP, newestOTP)) throw new Error.AuthError("Your OTP code has expired or not correct!")
+    if (!await bcryptjs.compare(currentOTP, newestOTP)) throw new Error.AuthError("Your OTP code has expired or not correct!")
 }
 
 function isExistedOTP(OTPs) {
@@ -61,7 +61,7 @@ async function checkEmailAndPassword(email, password) {
 
 
 async function isCorrectPassword(password, hashedPassword) {
-    return await bcrypt.compare(password, hashedPassword)
+    return await bcryptjs.compare(password, hashedPassword)
 }
 
 

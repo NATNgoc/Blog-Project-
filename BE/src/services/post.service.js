@@ -18,7 +18,8 @@ class PostService {
         await UserService.checkUser(userId)
         const listOfCategories = await checkCategoryIds(payload.post_category_ids)
         const newPost = createPostObject(userId, payload.post_title, payload.post_content, payload.post_thumb_url, payload.post_description, listOfCategories)
-        return await PostRepository.createNewPost(newPost)
+        const result = await Promise.all([PostRepository.createNewPost(newPost), updateCountOfCategoryByIds(payload.post_category_ids, 1)])
+        return result[0]
     }
 
     static async updateStatusOfPost(postId, { newStatus }) {
@@ -31,6 +32,8 @@ class PostService {
         }
         return await PostRepository.updateStatusOfPost(filter, newStatus)
     }
+
+
 
     static async getAllPost({ limit = 20, offset = 0, sortBy = "ctime", keyword, startDate, endDate, categoryId, authorId }) {
         const skip = limit * offset
@@ -49,6 +52,20 @@ class PostService {
 
 }
 //-------------------SUB FUNCTION--------------------
+
+async function updateCountOfCategoryByIds(categoryIds, count) {
+    const filter = {
+        _id: {
+            $in: categoryIds.map(id => objectIdParser(id))
+        }
+    }
+    const updateObject = {
+        $inc: {
+            category_post_count: count
+        }
+    }
+    return await CategoryRepository.updateCategorys(filter, updateObject)
+}
 
 function configQueryForgetAllPost(sortBy, keyword, startDate, endDate, categoryId, authorId) {
     let sortOption = sortBy === 'ctime' ? { createdAt: -1 } : { createdAt: 1 }

@@ -1,8 +1,8 @@
 const devConfig = require('../configs/config.mongodb');
 const { default: mongoose } = require('mongoose');
-// //LOCAL
+// // //LOCAL
 const connectString = 'mongodb://' + devConfig.db.host + ":" + devConfig.db.port + "/" + devConfig.db.name
-//CLOUD
+// CLOUD
 // const connectString = 'mongodb+srv://' +devConfig.db.user_name + ":" + devConfig.db.password+"@"+devConfig.db.cluster_name+".mongodb.net/"+devConfig.db.name +"?retryWrites=true&w=majority"
 
 class DatabaseMongoDB {
@@ -19,6 +19,7 @@ class DatabaseMongoDB {
             socketTimeoutMS: 30000,
             maxPoolSize: 30,
             useNewUrlParser: true,
+            //Local
             directConnection: true
         }).then(_ => {
             console.log("Connect mongoDB succesfully")

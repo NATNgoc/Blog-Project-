@@ -5,7 +5,7 @@ const { checkActivePost } = require('./user.service')
 const { objectIdParser, checkNullForObject, getUnselectDataForQuery } = require('../utils')
 const PostRepository = require('../models/repository/post.repo')
 const TransactionWrapper = require('../dbs/transaction.wrapper')
-const { configForStartDate, configForEndDate } = require('./post.service')
+const { configForStartDate, configForEndDate, checkExistingPost } = require('./post.service')
 const { sortBy } = require('lodash')
 //-------------MAIN SERVICE-----------------
 class LikeService {
@@ -27,6 +27,14 @@ class LikeService {
         return await LikeRepository.findLikes(filter, limit, skip, unSelectField, sortOption)
     }
 
+    static async findAllLikeHistoryOfPost(postId, { startDate, endDate, limit = 20, offset = 0, sortBy = 'ctime' }) {
+        await checkExistingPost(postId)
+        const skip = limit * offset
+        const unSelectField = getUnselectDataForQuery(["__v"])
+        const { filter, sortOption } = configQueryForLikeOfPost(postId, sortBy, startDate, endDate)
+        return await LikeRepository.findLikes(filter, limit, skip, unSelectField, sortOption)
+    }
+
 
 }
 //-------------SUB SERVICE-----------------
@@ -34,6 +42,15 @@ class LikeService {
 function configQueryForLikeOfUser(userId, sortBy, startDate, endDate) {
     let filter = {
         like_user_id: objectIdParser(userId)
+    }
+    const sortOption = sortBy === 'ctime' ? { createdAt: -1 } : { createdAt: 1 }
+    configFilterForGetAllLike(filter, startDate, endDate)
+    return { filter, sortOption }
+}
+
+function configQueryForLikeOfPost(postId, sortBy, startDate, endDate) {
+    let filter = {
+        like_post_id: objectIdParser(postId)
     }
     const sortOption = sortBy === 'ctime' ? { createdAt: -1 } : { createdAt: 1 }
     configFilterForGetAllLike(filter, startDate, endDate)
@@ -51,15 +68,16 @@ function configFilterForGetAllLike(filter, startDate, endDate) {
 
 
 async function processLikePost({ userId, postId }, session) {
-    await Promise.all([checkExistingLike(userId, postId), checkActivePost(postId)])
-    const result = await Promise.all([LikeRepository.likePostWithSession(postId, userId, session), updateLikeForPost(userId, postId, session)])
-    return result[1]
+    await checkExistingLike(userId, postId)
+    await checkActivePost(postId)
+    await LikeRepository.likePostWithSession(postId, userId, session)
+    return await updateLikeForPost(userId, postId, session)
 }
 
 async function processUnlikePost({ userId, postId }, session) {
     const currentLike = await checkUnExistingLike(userId, postId)
-    const result = await Promise.all([LikeRepository.deleteLikeByIdWithSession(currentLike._id, session), updateUnlikeForPost(userId, postId, session)])
-    return result[1]
+    await LikeRepository.deleteLikeByIdWithSession(currentLike._id, session)
+    return await updateUnlikeForPost(userId, postId, session)
 }
 
 async function checkUnExistingLike(userId, postId) {

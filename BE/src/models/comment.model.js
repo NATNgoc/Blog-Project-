@@ -28,6 +28,11 @@ var commentSchema = new mongoose.Schema({
             ref: 'user'
         }],
         default: []
+    },
+    status: {
+        type: Boolean,
+        required: true,
+        default: true
     }
 }, {
     timestamps: true,

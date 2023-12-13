@@ -1,27 +1,8 @@
 
-
-const { objectIdParser } = require('../../utils')
 const followModel = require('../follow.model')
 
 class FollowRepository {
-    // var followSchema = new mongoose.Schema({
-    //     follower_user_id: {
-    //         type: mongoose.Types.ObjectId,
-    //         required: true
-    //     },
-    //     following_user_id: {
-    //         type: mongoose.Types.ObjectId,
-    //         required: true
-    //     },
-    //     status: {
-    //         type: Boolean,
-    //         required: true,
-    //         default: true
-    //     }
-    // }, {
-    //     timestamps: true,
-    //     collection: COLLECTION_NAME
-    // });
+
 
     static async getListOfFollower(filter, limit, skip, select, sortOption = {}) {
         return await followModel.find({ ...filter })
@@ -72,9 +53,12 @@ class FollowRepository {
     }
 
     static async removeFollowById(followId) {
-        return followModel.findByIdAndDelete(followId)
+        return await followModel.findByIdAndDelete(followId)
     }
 
+    static async findFollowById(followId) {
+        return await followModel.findById(followId).lean()
+    }
 
     static async findFollowByUserId(followerUserID, followingUserID) {
         const filter = {

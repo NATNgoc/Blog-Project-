@@ -4,7 +4,7 @@ const PostRepository = require('../models/repository/post.repo');
 const Utils = require('../utils');
 const { checkActivePost } = require('./user.service')
 const TransactionWrapper = require('../dbs/transaction.wrapper');
-const { configForStartDate, configForEndDate } = require('./post.service');
+const { configForStartDate, configForEndDate, checkExistingPost } = require('./post.service');
 
 //----------------------MAIN SERVICE------------------------
 class CommentService {
@@ -24,14 +24,15 @@ class CommentService {
         return await CommentRepository.getComments(filter, limit, skip, unSelectField, sortOption)
     }
 
-    static async getAllCommentHistoryByPostId(postId, { offset = 0, limit = 20, startDate, endDate, sortBy = 'ctime' }) {
+    static async getAllCommentHistoryByPostId(requesterId, postId, { offset = 0, limit = 20, startDate, endDate, sortBy = 'ctime', status }) {
         Utils.checkNullForObject({ postId })
-        const skip = limit * offset
-        const unSelectField = Utils.getUnselectDataForQuery(["__v"])
-        const { filter, sortOption } = configForQueryAllComment(postId, null, startDate, endDate, sortBy)
-        return await CommentRepository.getComments(filter, limit, skip, unSelectField, sortOption)
+        const currentPost = await checkExistingPost(postId)
+        if (isOwnerOfPosts(requesterId, currentPost.post_user_id.toString())) {
+            return await queryAllCommentByPost(requesterId, currentPost, { offset, limit, startDate, endDate, sortBy, status })
+        } else {
+            return await queryAllCommentByPost(requesterId, currentPost, { offset, limit, startDate, endDate, sortBy, status: true })
+        }
     }
-
 
 }
 
@@ -39,13 +40,30 @@ class CommentService {
 
 //-----------------------SUB FUNCTION-----------------------
 
-function configForQueryAllComment(postId, userId, startDate, endDate, sortBy) {
-    const filter = configForFilterQueryAllComment(startDate, endDate, userId, postId)
+async function queryAllCommentByPost(requesterId, currentPost, paramsOfQuery) {
+    const { offset, limit, startDate, endDate, sortBy, status } = paramsOfQuery
+    const skip = limit * offset
+    const unSelectField = Utils.getUnselectDataForQuery(["__v"])
+    const { filter, sortOption } = configForQueryAllComment(currentPost._id, null, startDate, endDate, sortBy, status);
+    return await CommentRepository.getComments(filter, limit, skip, unSelectField, sortOption)
+}
+
+function isOwnerOfPosts(requesterId, ownerId) {
+    return requesterId === ownerId
+}
+
+
+function configForQueryAllComment(postId, userId, startDate, endDate, sortBy, statusOfPost) {
+    const filter = configForFilterQueryAllComment(startDate, endDate, userId, postId, statusOfPost)
     const sortOption = sortBy === 'ctime' ? { createdAt: -1 } : { createdAt: 1 }
     return { filter, sortOption }
 }
 
-function configForFilterQueryAllComment(startDate, endDate, userId, postId) {
+function configForStatus(filter, status) {
+    filter.status = status
+}
+
+function configForFilterQueryAllComment(startDate, endDate, userId, postId, statusOfPost) {
     let filter = {}
     if (startDate) {
         configForStartDate(filter, startDate)
@@ -58,6 +76,9 @@ function configForFilterQueryAllComment(startDate, endDate, userId, postId) {
     }
     if (postId) {
         configForPostId(filter, postId)
+    }
+    if (statusOfPost) {
+        configForStatus(filter, statusOfPost)
     }
     return filter
 }
@@ -91,8 +112,8 @@ async function processUnCommentPost({ userId, commentId }, session) {
     const filterForDelete = {
         _id: Utils.objectIdParser(currentComment._id)
     }
-    await Promise.all([CommentRepository.deleteCommentWithSession(filterForDelete, session),
-    updatePostStatusForUnCommentSection(currentComment.cmt_post_id, session)])
+    await CommentRepository.deleteCommentWithSession(filterForDelete, session)
+    return await updatePostStatusForUnCommentSection(currentComment.cmt_post_id, session)
 }
 
 async function processCommentPost({ userId, filteredComment }, session) {
