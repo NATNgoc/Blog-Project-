@@ -4,8 +4,9 @@ const Utils = require('../../utils/index')
 
 const requiredFields = {
     CREATE: ["post_title", "post_content", "post_thumb_url", "post_description", "post_category_ids"],
+    UPDATE: ["post_title", "post_content", "post_thumb_url", "post_description"]
 }
-
+//---------------------------VALIDATOR---------------------------
 const createPostValidator = async (req, res, next) => {
     //Lấy các trường được required
     const filteredRequestObject = Utils.getRequiredFieldsFromReqBody(req.body, requiredFields.CREATE)
@@ -20,6 +21,20 @@ const createPostValidator = async (req, res, next) => {
     next()
 }
 
+
+const updatePostValidator = async (req, res, next) => {
+    //Lấy các trường được required
+    const filteredRequestObject = Utils.getRequiredFieldsFromReqBody(req.body, requiredFields.UPDATE)
+    Utils.nullObjectParser(filteredRequestObject)
+    if (Utils.isEmptyObject(filteredRequestObject)) throw new Error.BadRequestError("Dont have anything for updating!")
+    filteredRequestObject.post_title ? await checkTitleOfPost(filteredRequestObject.post_title) : null
+    filteredRequestObject.post_content ? await checkContentOfPost(filteredRequestObject.post_content) : null
+    filteredRequestObject.post_description ? await checkDescriptionOfPost(filteredRequestObject.post_description) : null
+    filteredRequestObject.post_category_ids ? await checkCategoryIdsOfPost(filteredRequestObject.post_category_ids) : null
+    req.body = filteredRequestObject
+    next()
+}
+//----------------------------SUB FUNCTION---------------------------
 
 async function checkTitleOfPost(title) {
     if (!isValidTitle(title)) throw new Error.BadRequestError("Title's not valid")
@@ -53,5 +68,6 @@ function isValidCategoryIds(categoryIds) {
 }
 
 module.exports = {
-    createPostValidator
+    createPostValidator,
+    updatePostValidator
 }

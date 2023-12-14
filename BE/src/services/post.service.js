@@ -22,6 +22,11 @@ class PostService {
         return result[0]
     }
 
+    static async getPost(postId) {
+        const currentPost = await checkExistingPost(postId)
+        return currentPost
+    }
+
     static async updateStatusOfPost(postId, { newStatus }) {
         checkNullForObject({ newStatus })
         checkNotExistingStatus(newStatus)
@@ -33,6 +38,13 @@ class PostService {
         return await PostRepository.updateStatusOfPost(filter, newStatus)
     }
 
+    static async updateGeneralInformationOfPost(userId, postId, filteredPayload) {
+        const currentPost = await checkExistingPost(postId)
+        if (isOwnerOfPosts(userId, currentPost.post_user_id.toString())) {
+            return await updatePostWithId(postId, filteredPayload)
+        }
+        throw new Error.AuthError("You aren't autherized for doing that")
+    }
 
 
     static async getAllPost({ limit = 20, offset = 0, sortBy = "ctime", keyword, startDate, endDate, categoryId, authorId }) {
@@ -53,6 +65,21 @@ class PostService {
 }
 //-------------------SUB FUNCTION--------------------
 
+async function updatePostWithId(postId, payload) {
+    const filter = {
+        _id: objectIdParser(postId)
+    }
+    const bodyUpdate = {
+        $set: {
+            ...payload
+        }
+    }
+    const option = {
+        new: true
+    }
+    return await PostRepository.updatePost(filter, bodyUpdate, option)
+}
+
 async function updateCountOfCategoryByIds(categoryIds, count) {
     const filter = {
         _id: {
@@ -65,6 +92,10 @@ async function updateCountOfCategoryByIds(categoryIds, count) {
         }
     }
     return await CategoryRepository.updateCategorys(filter, updateObject)
+}
+
+function isOwnerOfPosts(requesterId, ownerId) {
+    return requesterId === ownerId
 }
 
 function configQueryForgetAllPost(sortBy, keyword, startDate, endDate, categoryId, authorId) {
@@ -94,7 +125,8 @@ function checkDuplicatedStatus(oldStatus, newStatus) {
     if (result) throw new Error.BadRequestError("Status is already like that!")
 }
 async function checkExistingPost(postId) {
-    const currentPost = await PostRepository.findPostById(postId)
+    const unSelectField = getUnselectDataForQuery(["status", "__v"])
+    const currentPost = await PostRepository.findPostById(postId, unSelectField)
     if (!currentPost) throw new Error.BadRequestError("Post isn't existed")
     return currentPost
 }

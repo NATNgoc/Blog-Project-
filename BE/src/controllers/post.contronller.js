@@ -34,6 +34,24 @@ class PostController {
         }).send(res)
     }
 
+    updateGeneralInformationOfPost = async (req, res, next) => {
+        return new SuccesResponse.OkResponse({
+            ...req.body,
+            message: "Update general information of post succesfully!",
+            metaData: await PostService.updateGeneralInformationOfPost(req.decodeUser.userid, req.params.id, req.body)
+        }).send(res)
+    }
+
+    getPost = async (req, res, next) => {
+        return new SuccesResponse.OkResponse({
+            ...req.body,
+            message: "Get post succesfully!",
+            metaData: await PostService.getPost(req.params.id)
+        }).send(res)
+    }
+
+
+
 }
 const postController = new PostController()
 module.exports = postController

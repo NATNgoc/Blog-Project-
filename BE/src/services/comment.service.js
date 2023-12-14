@@ -164,4 +164,5 @@ function createCommentObjectForCreate(userId, postId, content) {
     }
 }
 
-module.exports = { CommentService }
+
+module.exports = { CommentService, isOwnerOfPosts }

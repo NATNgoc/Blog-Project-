@@ -15,6 +15,8 @@ router.get('/author', catchError(autherizeAccessToken), catchError(postControlle
 router.patch('/:id/status', catchError(autherizeAccessToken), catchError(autherizePermission(Permission.ADMIN)), catchError(postController.updateStatusOfPost))
 router.get('/:id/comments', catchError(autherizeAccessToken), catchError(commentController.getAllCommentHistoryOfOfPost))
 router.get('/:id/likes', catchError(autherizeAccessToken), catchError(likeController.findAllLikeOfPost))
+router.patch('/:id/general', catchError(autherizeAccessToken), catchError(PostValidator.updatePostValidator), catchError(postController.updateGeneralInformationOfPost))
+router.get('/:id', catchError(autherizeAccessToken), catchError(postController.getPost))
 
 
 module.exports = router
