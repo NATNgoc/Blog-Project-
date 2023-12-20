@@ -2073,15 +2073,39 @@ paths:
         content:
           application/json:
             schema:
-              type: "object"
+              type: object
               properties:
-                email:
-                  type: "string"
-                  format: "email"
-                  example: "user123@gmail.com"
-                password:
-                  type: "string"
-                  example: "123@abcxyz"
+                user_nickname:
+                  type: string
+                  example: "Tuấn Anh"
+                user_email:
+                  type: string
+                  format: email
+                  example: "21522379@gm.uit.edu.vn"
+                user_password:
+                  type: string
+                  example: "ngoc20032"
+                user_profilePhotoURL:
+                  type: string
+                  format: uri
+                  example: "https://viso.ai/wp-content/uploads/2021/01/data-science-artificial-intelligence-machine-learning-vs-deep-learning.png"
+                user_website:
+                  type: string
+                  format: uri
+                  example: "https://www.facebook.com/profile.php?id=100024562028779"
+                user_bio:
+                  type: string
+                  example: "Đơn giản là thuw thôi"
+                user_gender:
+                  type: string
+                  enum:
+                    - male
+                    - female
+                    - other
+                  example: "male"
+                otp:
+                  type: string
+                  example: "316570"
       responses:
         "200":
           description: Successfully login
