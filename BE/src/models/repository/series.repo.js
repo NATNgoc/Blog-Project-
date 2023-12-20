@@ -15,15 +15,15 @@ class SeriesRepository {
             $addToSet: {
                 series_post_ids: { $each: postIds }
             }
-        }).lean()
+        }, { new: true }).lean()
     }
 
-    static async removePostsFromSeries(filter, postIds, options = {}) {
+    static async removePostsFromSeries(filter, postIds) {
         return await seriesModel.findOneAndUpdate({ ...filter }, {
             $pull: {
                 series_post_ids: { $in: postIds }
             }
-        }, { ...options }).lean();
+        }, { new: true }).lean();
     }
 
     static async findOneSeries(filter, selectField = {}) {

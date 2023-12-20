@@ -4,7 +4,7 @@ const SuccesResponse = require('../core/success.response')
 class CommentController {
 
     commentPost = async (req, res, next) => {
-        return new SuccesResponse.OkResponse({
+        return new SuccesResponse.CreatedResponse({
             ...req.body,
             message: "Comment succesfully!",
             metaData: await CommentService.commentPost(req.decodeUser.userid, req.body)

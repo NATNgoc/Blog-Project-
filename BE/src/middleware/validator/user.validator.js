@@ -13,7 +13,6 @@ const requiredFields = {
 const updateProfileValidator = async (req, res, next) => {
     let filteredRequestObject = Utils.filterRequiredFields(req.body, requiredFields.UPDATE)
     filteredRequestObject = Utils.nullObjectParser(filteredRequestObject)
-    console.log("🚀 ~ file: user.validator.js:16 ~ updateProfileValidator ~ filteredRequestObject:", filteredRequestObject)
     if (Utils.isEmptyObject(filteredRequestObject)) throw new Error.BadRequestError("Nothing for update")
     filteredRequestObject.user_gender ? await UserUtils.checkGender(filteredRequestObject.user_gender) : null
     filteredRequestObject.user_nickname ? await UserUtils.checkNickName(filteredRequestObject.user_nickname) : null

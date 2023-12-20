@@ -18,6 +18,14 @@ class UserController {
         }).send(res)
     }
 
+    getPostInWishList = async (req, res, next) => {
+        return new SuccesResponse.OkResponse({
+            ...req.body,
+            message: "Posts in wishList successfully!",
+            metaData: await UserService.updateGeneralProfile(req.decodeUser.userid, req.body)
+        }).send(res)
+    }
+
     addToWishList = async (req, res, next) => {
         return new SuccesResponse.OkResponse({
             ...req.body,

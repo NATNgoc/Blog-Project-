@@ -7,6 +7,8 @@ const UserValidator = require('../../middleware/validator/user.validator')
 const followController = require('../../controllers/follow.controller')
 const commentController = require('../../controllers/comment.controller')
 const likeController = require('../../controllers/like.controller')
+const seriesController = require('../../controllers/series.controller')
+const postController = require('../../controllers/post.contronller')
 
 router.patch('/password', catchError(autherizeAccessToken), catchError(UserValidator.resetPasswordValidator), catchError(userController.resetPassword))
 router.patch('/', catchError(autherizeAccessToken), catchError(UserValidator.updateProfileValidator), catchError(userController.updateGeneralProfile))
@@ -16,5 +18,7 @@ router.get('/:id/followers', catchError(autherizeAccessToken), catchError(follow
 router.get('/:id/followings', catchError(autherizeAccessToken), catchError(followController.getAllFollowing))
 router.get('/comments', catchError(autherizeAccessToken), catchError(commentController.getAllCommentHistoryOfUser))
 router.get('/likes', catchError(autherizeAccessToken), catchError(likeController.findAllLikeOfUser))
+router.get('/:id/series', catchError(autherizeAccessToken), catchError(seriesController.findAllSeriesOfUser))
+router.get('/:id/posts', catchError(autherizeAccessToken), catchError(postController.getAllPostOfUser))
 
 module.exports = router

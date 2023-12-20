@@ -27,11 +27,11 @@ class OTPService {
 //--------------------SUB FUNCTION-------------------------
 async function checkOTPsCount(email) {
     const OTPs = await OTPService.getOTPsByEmail(email)
-    if (OTPs.length === 5) throw new Error.BadRequestError("Please try again while later")
+    if (OTPs.length === 5) throw new Error.TooManyRequest("Please try again while later")
 }
 async function checkEmailUser(email) {
     if (await findUserByEmail(email))
-        throw new Error.BadRequestError("Email has existed!")
+        throw new Error.BadRequestError("Input's not valid!")
 }
 
 function getRandomOTP() {

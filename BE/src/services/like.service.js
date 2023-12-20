@@ -15,9 +15,11 @@ class LikeService {
         return await new TransactionWrapper(processLikePost).process({ userId, postId })
     }
 
-    static async unLikePost(userId, postId) {
-        checkNullForObject({ postId })
-        return await new TransactionWrapper(processUnlikePost).process({ userId, postId })
+    static async unLikePost(userId,likeId) {
+        checkNullForObject({ likeId })
+        const currentLike = await checkUnExistingLikeById(likeId)
+        if (currentLike.like_user_id.toString()!==userId) throw new Error.AuthError("You don't have permission for doing that")
+        await new TransactionWrapper(processUnlikePost).process({ currentLike })
     }
 
     static async findAllLikeHistoryOfUser(userId, { startDate, endDate, limit = 20, offset = 0, sortBy = 'ctime' }) {
@@ -74,14 +76,19 @@ async function processLikePost({ userId, postId }, session) {
     return await updateLikeForPost(userId, postId, session)
 }
 
-async function processUnlikePost({ userId, postId }, session) {
-    const currentLike = await checkUnExistingLike(userId, postId)
+async function processUnlikePost({ currentLike }, session) {
     await LikeRepository.deleteLikeByIdWithSession(currentLike._id, session)
-    return await updateUnlikeForPost(userId, postId, session)
+    return await updateUnlikeForPost(currentLike.like_post_id, session)
 }
 
 async function checkUnExistingLike(userId, postId) {
     const currentLike = await findLikeWithUserIdAndPostId(userId, postId)
+    if (!currentLike) throw new Error.BadRequestError("You didn't like this user before!")
+    return currentLike
+}
+
+async function checkUnExistingLikeById(likeId) {
+    const currentLike = await LikeRepository.findLikeById(likeId)
     if (!currentLike) throw new Error.BadRequestError("You didn't like this user before!")
     return currentLike
 }
@@ -91,14 +98,14 @@ async function updateLikeForPost(userId, postId, session) {
     return await PostRepository.updatePost(filter, bodyUpdate, options)
 }
 
-async function updateUnlikeForPost(userId, postId, session) {
-    const { filter, bodyUpdate, options } = configForUpdateUnLikeForPost(userId, postId, session)
+async function updateUnlikeForPost(postId, session) {
+    const { filter, bodyUpdate, options } = configForUpdateUnLikeForPost(postId, session)
     return await PostRepository.updatePost(filter, bodyUpdate, options)
 }
 
-function configForUpdateUnLikeForPost(userId, postId, session) {
+function configForUpdateUnLikeForPost(postId, session) {
     const filter = {
-        _id: objectIdParser(postId)
+        _id: postId
     }
     const bodyUpdate = {
         $inc: {

@@ -13,7 +13,7 @@ class CategoryService {
 
     static async removeCategory(categoryId) {
         const currentCategory = await CategoryService.checkNotExistingCategoryById(categoryId)
-        await checkPostsWithoutCategory(currentCategory._id)
+        if (currentCategory.category_post_count>0) throw new Error.BadRequestError("You have to delete all post with this category before remove category!")
         await CategoryRepository.removeCategory({ _id: currentCategory._id })
     }
 
@@ -29,7 +29,7 @@ class CategoryService {
 
     static async checkNotExistingCategoryById(categoryId) {
         const currentCategory = await findExistingCategoryById(categoryId)
-        if (!currentCategory) throw new Error.BadRequestError("Category's not existed")
+        if (!currentCategory) throw new Error.NotFoundError("Category's not existed")
         return currentCategory
     }
 
@@ -60,11 +60,6 @@ async function findExistingCategoryById(categoryId) {
 async function checkDuplicatedCatogoryName(name) {
     const currentCategory = await findExistingCategoryByName(name)
     if (currentCategory) throw new Error.BadRequestError("Category's already existed")
-}
-
-async function checkPostsWithoutCategory(categoryId) {
-    const postWithCategory = await findPostWithCategory(categoryId)
-    if (postWithCategory) throw new Error.BadRequestError("You have to delete all post with this category before remove category!")
 }
 
 async function findPostWithCategory(categoryId) {

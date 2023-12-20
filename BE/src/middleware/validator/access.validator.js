@@ -7,7 +7,7 @@ const Utils = require('../../utils/index')
 
 const requiredFields = {
     SIGN_UP: ["user_nickname", "user_email", "user_password", "user_profilePhotoURL",
-        "user_website", "user_bio", "user_gender"],
+        "user_website", "user_bio", "user_gender","otp"],
     LOGIN: ["email", "password"]
 }
 
@@ -15,9 +15,10 @@ const requiredFields = {
 //---------------------SIGN UP---------------------------------
 const signUpValidator = async (req, res, next) => {
     const filteredRequestObject = Utils.filterRequiredFields(req.body, requiredFields.SIGN_UP)
-    const { user_nickname, user_email, user_password, user_gender } = filteredRequestObject
-    checkNullForObject({ user_nickname, user_email, user_password, user_gender })
+    const { user_nickname, user_email, user_password, user_gender, otp } = filteredRequestObject
+    checkNullForObject({ user_nickname, user_email, user_password, user_gender, otp })
     await Promise.all([UserUtils.checkEmail(user_email), UserUtils.checkGender(user_gender), UserUtils.checkNickName(user_nickname), UserUtils.checkPassword(user_password)])
+    req.body=filteredRequestObject
     next()
 }
 

@@ -15,6 +15,10 @@ class LikeRepository {
         return await likeModel.findOne(filter, selectField).lean()
     }
 
+    static async findLikeById(id, selectField = {}) {
+        return await likeModel.findById(id, selectField).lean()
+    }
+
     static async findLikes(filter, limit = {}, skip = {}, selectFields = {}, sortOption = {}) {
         return await likeModel.find(filter)
             .skip(skip)

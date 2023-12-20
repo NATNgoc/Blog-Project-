@@ -53,8 +53,8 @@ async function checkExistingEmailUser(email) {
 
 async function checkEmailAndPassword(email, password) {
     const currentUser = await UserRepository.findUserByEmail(email)
-    if (!currentUser) throw new Error.AuthError("User's not signed up")
-    if (!await isCorrectPassword(password, currentUser.user_password)) throw new Error.AuthError("Password is not correct")
+    if (!currentUser) throw new Error.BadRequestError("Invalid email or password")
+    if (!await isCorrectPassword(password, currentUser.user_password)) throw new Error.BadRequestError("Invalid email or password")
     return currentUser
 }
 

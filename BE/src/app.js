@@ -4,9 +4,14 @@ const helmet = require('helmet');
 const morgan = require('morgan')
 const app = express()
 const cookieParser = require('cookie-parser');
+const cors = require('cors')
+const fs = require("fs")
+const YAML = require('yaml');
+const swaggerUi = require('swagger-ui-express');
+const path = require('path');
 
 //INIT MIDDLEWARE
-
+app.use(cors())
 app.use(morgan('dev'))
 // setting base
 app.use(helmet.frameguard({
@@ -43,7 +48,11 @@ app.use(cookieParser());
 require('./dbs/init.mongodb')
 //init app route
 require('./routes/index')(app)
+//init docs
+const file = fs.readFileSync(path.resolve('./docs/techHub.docs.yaml'), 'utf8')
+const swaggerDocument = YAML.parse(file)
 
+app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // hanlde error
 app.use((req, res, next) => {
     const error = new Error('Not Found')

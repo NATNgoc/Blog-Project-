@@ -5,7 +5,7 @@ const followController = require('../../controllers/follow.controller')
 const { autherizeAccessToken } = require('../../middleware/auth/checkAuthentication')
 
 router.post('/', catchError(autherizeAccessToken), catchError(followController.followUser))
-router.delete('/', catchError(autherizeAccessToken), catchError(followController.unFollowUser))
+router.delete('/:id', catchError(autherizeAccessToken), catchError(followController.unFollowUser))
 router.post('/:id/status', catchError(autherizeAccessToken), catchError(followController.changeStatus))
 
 

@@ -14,7 +14,7 @@ class FollowController {
         return new SuccesResponse.CreatedResponse({
             ...req.body,
             message: "Unfollow succesfully",
-            metaData: await FollowService.unFollowUser(req.decodeUser.userid, req.body.unFollowingUserId)
+            metaData: await FollowService.unFollowUser(req.decodeUser.userid, req.params.id)
         }).send(res)
     }
 

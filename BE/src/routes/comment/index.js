@@ -8,7 +8,6 @@ const { commentPostValidator } = require('../../middleware/validator/comment.val
 
 router.post('/', catchError(autherizeAccessToken), catchError(commentPostValidator), catchError(commentController.commentPost))
 router.delete('/:id', catchError(autherizeAccessToken), catchError(commentController.unCommentPost))
-router.get('/user', catchError(autherizeAccessToken), catchError(commentController.getAllCommentHistoryOfUser))
 router.get('/post/:id', catchError(autherizeAccessToken), catchError(commentController.getAllCommentHistoryOfOfPost))
 
 module.exports = router

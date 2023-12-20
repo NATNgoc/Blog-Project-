@@ -12,11 +12,11 @@ class PostRepository {
     }
 
     static async updatePosts(filter, body, option = {}) {
-        return await postModel.updateMany(filter, { $set: body }, { ...option })
+        return await postModel.updateMany(filter, { ...body }, { ...option })
     }
 
     static async updatePost(filter, bodyUpdate, options = {}) {
-        return await postModel.updateOne(filter, { ...bodyUpdate }, { ...options })
+        return await postModel.findOneAndUpdate(filter, { ...bodyUpdate }, { ...options })
     }
 
     static async findPostById(postId, selectField = {}) {

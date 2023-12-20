@@ -54,6 +54,12 @@ class ForBiddenRequestError extends ErrorResponse {
     }
 }
 
+class TooManyRequest extends ErrorResponse {
+    constructor(message = reasonPhrases.TOO_MANY_REQUESTS, status = statusCode.TOO_MANY_REQUESTS) {
+        super(message, status)
+    }
+}
+
 const catchError = (targetFunction) => {
     return (req, res, next) => {
         return Promise.resolve(targetFunction(req, res, next)).catch(next);
@@ -61,6 +67,7 @@ const catchError = (targetFunction) => {
 };
 
 module.exports = {
+    TooManyRequest,
     ErrorResponse,
     ConflictRequestError,
     ForBiddenRequestError,

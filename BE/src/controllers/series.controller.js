@@ -22,14 +22,14 @@ class SeriesController {
         return new SuccesResponse.OkResponse({
             ...req.body,
             message: "All series of user!",
-            metaData: await SeriesService.findAllSeriesOfUser(req.decodeUser.userid, req.query)
+            metaData: await SeriesService.findAllSeriesOfUser(req.params.id,req.decodeUser.userid, req.query)
         }).send(res)
     }
 
     findAllSeries = async (req, res, next) => {
         return new SuccesResponse.OkResponse({
             ...req.body,
-            message: "All series of user!",
+            message: "All series!",
             metaData: await SeriesService.findAllSeries(req.query)
         }).send(res)
     }

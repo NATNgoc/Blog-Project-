@@ -10,8 +10,10 @@ const { objectIdParser, getSelectDataForQuery, checkNullForObject } = require('.
 //------------------------------MAIN-FUNCTION--------------------
 class FollowService {
     static async followUser(followerUserID, followingUserID) {
-        if (followerUserID === followingUserID) throw new ErrorRespone.BadRequestError("You can't follow yourself")
         //TRANSACTION
+        await Promise.all([checkUser(followerUserID), checkUser(followingUserID)])
+        if (await getFollowExisted(followerUserID, followingUserID)) throw new ErrorRespone.BadRequestError("User has followed this user before!")
+        if (followerUserID === followingUserID) throw new ErrorRespone.BadRequestError("You can't follow yourself")
         return await new TransactionWrapper(processFollowingUser).process({ followerUserID, followingUserID })
         // TRIGGER
         // await Promise.all([checkUser(followerUserID), checkUser(followingUserID)])
@@ -19,9 +21,11 @@ class FollowService {
         // await FollowRepository.createNewFollow(followerUserID, followingUserID)
     }
 
-    static async unFollowUser(followerUserID, unFollowingUserId) {
-        if (followerUserID === followingUserID) throw new ErrorRespone.BadRequestError("You can't follow yourself")
-        return await new TransactionWrapper(processUnFollowingUser).process({ followerUserID, unFollowingUserId })
+    static async unFollowUser(userId,followId) {
+        checkNullForObject({followId})
+        const currentFollow = await checkFollowById(followId)
+        if (userId === currentFollow.following_user_id.toString()) throw new ErrorRespone.BadRequestError("You can't follow yourself")
+        return await new TransactionWrapper(processUnFollowingUser).process({ currentFollow })
     }
 
     static async getAllFollower(requesterId, ownerId, { sortBy = 'ctime', limit = 20, offset = 0, startDate = '2002-01-01', endDate = new Date(), status }) {
@@ -125,27 +129,20 @@ function isDuplicateStatus(oldStatus, newStatus) {
 
 async function checkFollowById(followId) {
     const currentFollow = await FollowRepository.findFollowById(followId)
-    if (!currentFollow) throw new ErrorRespone.BadRequestError("Follow is not existing")
+    if (!currentFollow) throw new ErrorRespone.NotFoundError("Follow's not found")
     return currentFollow
 }
 
 async function processFollowingUser({ followerUserID, followingUserID }, session) {
-    await checkUser(followerUserID)
-    await checkUser(followingUserID)
-    if (await getFollowExisted(followerUserID, followingUserID)) throw new ErrorRespone.BadRequestError("User has followed this user before!")
     await increaseFollowerCountOfUser(followingUserID, session)
     await increaseFollowingCountOfUser(followerUserID, session)
     await FollowRepository.createNewFollowWithSession(followerUserID, followingUserID, session)
 }
 
-async function processUnFollowingUser({ followerUserID, unFollowingUserId }, session) {
-    await checkUser(followerUserID)
-    await checkUser(unFollowingUserId)
-    const follow = await getFollowExisted(followerUserID, unFollowingUserId)
-    if (!follow) throw new ErrorRespone.BadRequestError("User hasn't followed this user before!")
-    await decreaseFollowerCountOfUser(unFollowingUserId, session)
-    await decreaseFollowingCountOfUser(followerUserID, session)
-    await FollowRepository.deleteFollowByIdWithSession(follow._id, session)
+async function processUnFollowingUser({ currentFollow }, session) {
+    await decreaseFollowerCountOfUser(currentFollow.following_user_id, session)
+    await decreaseFollowingCountOfUser(currentFollow.follower_user_id, session)
+    await FollowRepository.deleteFollowByIdWithSession(currentFollow._id, session)
 }
 
 async function increaseFollowerCountOfUser(userId, session) {

@@ -15,7 +15,6 @@ const statusOfPost = {
 class PostService {
 
     static async createNewPost(userId, payload) {
-        await UserService.checkUser(userId)
         const listOfCategories = await checkCategoryIds(payload.post_category_ids)
         const newPost = createPostObject(userId, payload.post_title, payload.post_content, payload.post_thumb_url, payload.post_description, listOfCategories)
         const result = await Promise.all([PostRepository.createNewPost(newPost), updateCountOfCategoryByIds(payload.post_category_ids, 1)])
@@ -40,7 +39,7 @@ class PostService {
 
     static async updateGeneralInformationOfPost(userId, postId, filteredPayload) {
         const currentPost = await checkExistingPost(postId)
-        if (isOwnerOfPosts(userId, currentPost.post_user_id.toString())) {
+        if (isOwner(userId, currentPost.post_user_id.toString())) {
             return await updatePostWithId(postId, filteredPayload)
         }
         throw new Error.AuthError("You aren't autherized for doing that")
@@ -54,16 +53,21 @@ class PostService {
         return await PostRepository.findPosts(filter, limit, skip, unSelectField, sortOption)
     }
 
-    static async getAllPostOfUser(userId, { limit = 20, offset = 0, sortBy = "ctime", keyword, startDate, endDate, categoryId, status }) {
+    static async getAllPostOfUser(requestUserId, ownerId, { limit = 20, offset = 0, sortBy = "ctime", keyword, startDate, endDate, categoryId, status }) {
         const skip = limit * offset
         const unSelectField = getUnselectDataForQuery(["__v"])
-        const { filter, sortOption } = configQueryForgetAllPostOfUser(userId, sortBy, keyword, startDate, endDate, categoryId, status)
+        let filter, sortOption;
+        if (isOwner(requestUserId, ownerId)) {
+            ({ filter, sortOption } = configQueryForgetAllPostOfUser(ownerId, sortBy, keyword, startDate, endDate, categoryId, status))
+        } else {
+            ({ filter, sortOption } = configQueryForgetAllPostOfUser(ownerId, sortBy, keyword, startDate, endDate, categoryId, status = true))
+        }
         return await PostRepository.findPosts(filter, limit, skip, unSelectField, sortOption)
     }
-
-
 }
 //-------------------SUB FUNCTION--------------------
+
+
 
 async function updatePostWithId(postId, payload) {
     const filter = {
@@ -94,7 +98,7 @@ async function updateCountOfCategoryByIds(categoryIds, count) {
     return await CategoryRepository.updateCategorys(filter, updateObject)
 }
 
-function isOwnerOfPosts(requesterId, ownerId) {
+function isOwner(requesterId, ownerId) {
     return requesterId === ownerId
 }
 

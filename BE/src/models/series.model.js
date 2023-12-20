@@ -15,9 +15,8 @@ var seriesSchema = new mongoose.Schema({
         required: true
     },
     series_post_ids: {
-        type: Array,
-        default: [{
-            type: mongoose.Types.ObjectId,
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'post'
         }],
         required: true

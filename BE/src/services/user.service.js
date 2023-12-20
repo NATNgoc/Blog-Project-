@@ -47,12 +47,10 @@ class UserService {
      * @param {*} postIds : những ids của bài posts muốn gỡ 
      */
     static async removePostFromWishList(userId, { postIds }) {
-        const filteredPostIds = postIds.map(id => objectIdParser(id))
-        await checkPostIdsBeforeRemove(userId, filteredPostIds)
+        await checkPostIdsBeforeRemove(userId, postIds)
+        const filteredPostIds = postIds.map(id => objectIdParser(id))        
         return await removePostIdsFromWishList(userId, filteredPostIds)
     }
-
-
 }
 //--------------------------SUB-FUNCTION------------------------
 
@@ -75,15 +73,13 @@ async function removePostIdsFromWishList(userId, postIds) {
 }
 
 async function checkPostIdsBeforeRemove(userId, postIdsForRemoving) {
-    const filter = {
-        _id: objectIdParser(userId),
-        user_favorite_posts: {
-            $in: postIdsForRemoving
-        }
-    }
-    const currentUser = await UserRepository.findUser(filter)
-    if (!currentUser) throw new Error.BadRequestError("Check postIds again")
-    return
+    const currentUser = await UserService.checkUser(userId)
+    const postIds = currentUser.user_favorite_posts.map(id => id.toString())
+    const isAllExist = postIdsForRemoving.every(id => {
+        let idCompare = id.toString()
+        return postIds.includes(idCompare)
+    });
+    if (!isAllExist) throw new Error.BadRequestError("Post ids is not valid")
 }
 
 function checkExistingPostIdInWishList(wishList, postId) {

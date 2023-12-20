@@ -10,11 +10,13 @@ const { configForStartDate, configForEndDate, checkExistingPost } = require('./p
 class CommentService {
 
     static async commentPost(userId, filteredComment) {
+        await checkActivePost(filteredComment.cmt_post_id)
         return await new TransactionWrapper(processCommentPost).process({ userId, filteredComment })
     }
 
     static async unCommentPost(userId, commentId) {
-        return await new TransactionWrapper(processUnCommentPost).process({ userId, commentId })
+        const currentComment = await checkExistingCommentWithUserId(userId, commentId)
+        return await new TransactionWrapper(processUnCommentPost).process({ currentComment })
     }
 
     static async getAllCommentHistoryByUserId(userId, { offset = 0, limit = 20, startDate, endDate, sortBy = 'ctime' }) {
@@ -107,8 +109,7 @@ async function checkExistingCommentWithUserId(userId, commentId) {
     return currentComment
 }
 
-async function processUnCommentPost({ userId, commentId }, session) {
-    const currentComment = await checkExistingCommentWithUserId(userId, commentId)
+async function processUnCommentPost({ currentComment }, session) {
     const filterForDelete = {
         _id: Utils.objectIdParser(currentComment._id)
     }
@@ -117,7 +118,6 @@ async function processUnCommentPost({ userId, commentId }, session) {
 }
 
 async function processCommentPost({ userId, filteredComment }, session) {
-    await checkActivePost(filteredComment.cmt_post_id)
     const newComment = createCommentObjectForCreate(userId, filteredComment.cmt_post_id, filteredComment.cmt_content)
     const result = await CommentRepository.createNewCommentWithSession(newComment, session)
     await updatePostStatusForCommentSection(filteredComment.cmt_post_id, session)

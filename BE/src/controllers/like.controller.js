@@ -15,7 +15,7 @@ class LikeController {
         return new SuccesResponse.CreatedResponse({
             ...req.body,
             message: "Unlike post succesfully!",
-            metaData: await LikeService.unLikePost(req.decodeUser.userid, req.body.postId)
+            metaData: await LikeService.unLikePost(req.decodeUser.userid, req.params.id)
         }).send(res)
     }
 

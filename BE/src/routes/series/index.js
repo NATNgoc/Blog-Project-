@@ -7,7 +7,6 @@ const seriesValidator = require('../../middleware/validator/series.validator')
 
 router.post('/', catchError(autherizeAccessToken), catchError(seriesValidator.createSeriesValidator), catchError(seriesController.createNewSeries))
 router.delete('/:id', catchError(autherizeAccessToken), catchError(seriesController.deleteSeries))
-router.get('/user', catchError(autherizeAccessToken), catchError(seriesController.findAllSeriesOfUser))
 router.post('/:id/posts', catchError(autherizeAccessToken), catchError(seriesController.addPostsIntoSeries))
 router.delete('/:id/posts', catchError(autherizeAccessToken), catchError(seriesController.removePostsFromSeries))
 router.get('/', catchError(autherizeAccessToken), catchError(seriesController.findAllSeries))

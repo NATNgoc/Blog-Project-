@@ -12,6 +12,7 @@ const createSeriesValidator = (req, res, next) => {
     checkNullForObject(filteredRequestObject)
     checkSeriesName(filteredRequestObject.series_name)
     checkSeriesPostIds(filteredRequestObject.series_post_ids)
+    filteredRequestObject.series_post_ids = filteredRequestObject.series_post_ids.map(id => Utils.objectIdParser(id));
     req.body = filteredRequestObject
     next()
 }
@@ -32,6 +33,9 @@ function checkSeriesPostIds(seriesPostIds) {
 }
 
 function isValideSeriesPostIds(seriesPostIds) {
+    if (!Array.isArray(seriesPostIds)) {
+        return false
+    }
     if (seriesPostIds.length === 0) return false
     seriesPostIds.forEach(element => {
         if (element.length !== 24) return false

@@ -42,15 +42,12 @@ var postSchema = new mongoose.Schema({
         enum: ['active', 'pending', 'blocked'],
         default: 'pending'
     },
-    post_is_series: {
-        type: Boolean,
-        required: true,
-        default: false
-    },
-    post_series_id: {
-        type: mongoose.Types.ObjectId,
-        ref: 'series',
-        default: null
+    post_series_ids: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'series'
+        }],
+        default: []
     }
 }, {
     timestamps: true,
