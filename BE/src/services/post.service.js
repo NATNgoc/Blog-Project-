@@ -3,7 +3,7 @@ const Error = require('../core/error.response')
 const CategoryRepository = require('../models/repository/category.repo')
 const PostRepository = require('../models/repository/post.repo')
 const { objectIdParser, getUnselectDataForQuery, checkNullForObject } = require('../utils')
-const { UserService } = require('./user.service')
+const { UserService, checkActivePost } = require('./user.service')
 
 const statusOfPost = {
     ACTIVE: 'active',
@@ -21,12 +21,18 @@ class PostService {
         return result[0]
     }
 
-    static async getPost(postId) {
-        const currentPost = await checkExistingPost(postId)
-        return currentPost
+    static async getPost(postId, requesterId) {
+        const currentPost = await PostRepository.findPostById(postId)
+        if (!currentPost) throw new Error.NotFoundError("Post not found!")
+        if (isOwner(requesterId, currentPost.post_user_id.toString())) {
+            return currentPost
+        } else {
+            return processUserGetPostNotOwner(currentPost)
+        }
     }
 
     static async updateStatusOfPost(postId, { newStatus }) {
+        newStatus = newStatus.trim()
         checkNullForObject({ newStatus })
         checkNotExistingStatus(newStatus)
         const currentPost = await checkExistingPost(postId)
@@ -67,7 +73,17 @@ class PostService {
 }
 //-------------------SUB FUNCTION--------------------
 
+function processUserGetPostNotOwner(post) {
+    if (isActivePost(post)) {
+        return post
+    } else {
+        throw new Error.AuthError("You can't get this post")
+    }
+}
 
+function isActivePost(post) {
+    return post.status === statusOfPost.ACTIVE
+}
 
 async function updatePostWithId(postId, payload) {
     const filter = {

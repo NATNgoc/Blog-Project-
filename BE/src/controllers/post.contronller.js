@@ -22,7 +22,7 @@ class PostController {
         return new SuccesResponse.OkResponse({
             ...req.body,
             message: "Get all post of user succesfully!",
-            metaData: await PostService.getAllPostOfUser(req.decodeUser.userid,req.params.id, req.query)
+            metaData: await PostService.getAllPostOfUser(req.decodeUser.userid, req.params.id, req.query)
         }).send(res)
     }
 
@@ -46,7 +46,7 @@ class PostController {
         return new SuccesResponse.OkResponse({
             ...req.body,
             message: "Get post succesfully!",
-            metaData: await PostService.getPost(req.params.id)
+            metaData: await PostService.getPost(req.params.id, req.decodeUser.userid)
         }).send(res)
     }
 

@@ -10,19 +10,14 @@ const { objectIdParser, getSelectDataForQuery, checkNullForObject } = require('.
 //------------------------------MAIN-FUNCTION--------------------
 class FollowService {
     static async followUser(followerUserID, followingUserID) {
-        //TRANSACTION
         await Promise.all([checkUser(followerUserID), checkUser(followingUserID)])
         if (await getFollowExisted(followerUserID, followingUserID)) throw new ErrorRespone.BadRequestError("User has followed this user before!")
         if (followerUserID === followingUserID) throw new ErrorRespone.BadRequestError("You can't follow yourself")
         return await new TransactionWrapper(processFollowingUser).process({ followerUserID, followingUserID })
-        // TRIGGER
-        // await Promise.all([checkUser(followerUserID), checkUser(followingUserID)])
-        // if (await getFollowExisted(followerUserID, followingUserID)) throw new ErrorRespone.BadRequestError("User has followed this user before!")
-        // await FollowRepository.createNewFollow(followerUserID, followingUserID)
     }
 
-    static async unFollowUser(userId,followId) {
-        checkNullForObject({followId})
+    static async unFollowUser(userId, followId) {
+        checkNullForObject({ followId })
         const currentFollow = await checkFollowById(followId)
         if (userId === currentFollow.following_user_id.toString()) throw new ErrorRespone.BadRequestError("You can't follow yourself")
         return await new TransactionWrapper(processUnFollowingUser).process({ currentFollow })
@@ -57,6 +52,8 @@ class FollowService {
 }
 
 //--------------------------SUB-FUNCTION------------------------
+
+
 
 function isOwnerOfFollows(requesterId, ownerId) {
     return requesterId === ownerId

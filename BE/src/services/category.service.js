@@ -13,7 +13,7 @@ class CategoryService {
 
     static async removeCategory(categoryId) {
         const currentCategory = await CategoryService.checkNotExistingCategoryById(categoryId)
-        if (currentCategory.category_post_count>0) throw new Error.BadRequestError("You have to delete all post with this category before remove category!")
+        if (currentCategory.category_post_count > 0) throw new Error.BadRequestError("You have to delete all post with this category before remove category!")
         await CategoryRepository.removeCategory({ _id: currentCategory._id })
     }
 
@@ -40,7 +40,10 @@ async function updateNewCategory(categoryId, bodyUpdate) {
     const filter = {
         _id: categoryId
     }
-    return await CategoryRepository.updateCategory(filter, bodyUpdate)
+    const option = {
+        new: true
+    }
+    return await CategoryRepository.updateCategory(filter, bodyUpdate, option)
 }
 
 async function findExistingCategoryByName(name) {

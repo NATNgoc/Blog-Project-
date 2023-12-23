@@ -15,10 +15,10 @@ class LikeService {
         return await new TransactionWrapper(processLikePost).process({ userId, postId })
     }
 
-    static async unLikePost(userId,likeId) {
+    static async unLikePost(userId, likeId) {
         checkNullForObject({ likeId })
         const currentLike = await checkUnExistingLikeById(likeId)
-        if (currentLike.like_user_id.toString()!==userId) throw new Error.AuthError("You don't have permission for doing that")
+        if (currentLike.like_user_id.toString() !== userId) throw new Error.AuthError("You don't have permission for doing that")
         await new TransactionWrapper(processUnlikePost).process({ currentLike })
     }
 
@@ -40,6 +40,10 @@ class LikeService {
 
 }
 //-------------SUB SERVICE-----------------
+
+function isOwnerOfLike(requesterId, ownerId) {
+    return requesterId === ownerId
+}
 
 function configQueryForLikeOfUser(userId, sortBy, startDate, endDate) {
     let filter = {
@@ -81,15 +85,9 @@ async function processUnlikePost({ currentLike }, session) {
     return await updateUnlikeForPost(currentLike.like_post_id, session)
 }
 
-async function checkUnExistingLike(userId, postId) {
-    const currentLike = await findLikeWithUserIdAndPostId(userId, postId)
-    if (!currentLike) throw new Error.BadRequestError("You didn't like this user before!")
-    return currentLike
-}
-
 async function checkUnExistingLikeById(likeId) {
     const currentLike = await LikeRepository.findLikeById(likeId)
-    if (!currentLike) throw new Error.BadRequestError("You didn't like this user before!")
+    if (!currentLike) throw new Error.NotFoundError("You didn't like this post before!")
     return currentLike
 }
 

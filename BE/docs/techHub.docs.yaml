@@ -130,7 +130,7 @@ paths:
                       post_categories:
                         type: array
                         items:
-                          $ref: "#/components/schemas/Category"
+                          $ref: "#/components/schemas/Categories"
                       status:
                         type: string
                         example: "pending"
@@ -185,7 +185,7 @@ paths:
               - "ctime"
               - "atime"
             default: "ctime"
-          description: The field to sort the posts by
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
         - in: query
           name: keyword
           required: false
@@ -218,43 +218,6 @@ paths:
           schema:
             type: string
           description: The ID of the author to filter the posts by
-      requestBody:
-        required: true
-        description: Details of the post to be created
-        content:
-          application/json:
-            schema:
-              type: "object"
-              properties:
-                post_title:
-                  type: string
-                  description: The title of the post
-                  example: "Việt Nam - Trung Quốc: Phát triển vững chắc, ổn định, lâu dài"
-                post_content:
-                  type: string
-                  description: The content of the post
-                  example: "Tổng Bí thư Nguyễn Phú Trọng tin tưởng chuyến thăm của Tổng Bí thư, Chủ tịch nước Trung Quốc Tập Cận Bình là một dấu mốc lịch sử mới, đưa quan hệ giữa hai Đảng, hai nước lên tầm cao mới. Chiều 12-12, tại trụ sở Trung ương Đảng, ngay sau lễ đón chính thức, Tổng Bí thư Nguyễn Phú Trọng đã hội đàm với Tổng Bí thư, Chủ tịch nước Trung Quốc (TQ) Tập Cận Bình. TQ là ưu tiên hàng đầu, sự lựa chọn chiến lược Phát biểu tại hội đàm, Tổng Bí thư Nguyễn Phú Trọng bày tỏ vui mừng và nhiệt liệt chào mừng Tổng Bí thư, Chủ tịch nước TQ Tập Cận Bình cùng phu nhân và đoàn đại biểu cấp cao Đảng, nhà nước TQ sang thăm cấp Nhà nước Việt Nam (VN) đúng vào dịp hai nước kỷ niệm 15 năm thiết lập quan hệ đối tác hợp tác chiến lược toàn diện (2008-2023). Tổng Bí thư Nguyễn Phú Trọng tin tưởng chuyến thăm là một dấu mốc lịch sử mới, đưa quan hệ giữa hai Đảng, hai nước lên tầm cao mới, đáp ứng nguyện vọng và lợi ích chung của nhân dân hai nước, vì hòa bình, hợp tác và phát triển của khu vực và thế giới."
-                post_thumb_url:
-                  type: string
-                  format: URL
-                  description: The thumbnail URL of the post
-                  example: "https://icdn.24h.com.vn/upload/4-2023/images/2023-12-13//1702425360-tong-bi-thu-nguyen-phu-trong-hoi-dam-voi-ong-tap-can-binh-tham-viet-nam-1-5546-3289-9946-width1200height799.jpg"
-                post_description:
-                  type: string
-                  description: The description of the post
-                  example: "Sau hội đàm cấp cao, Tổng Bí thư hai nước đã cùng xem và nghe giới thiệu về 36 văn bản thỏa thuận hợp tác trên nhiều lĩnh vực được ký kết giữa các ban, bộ, ngành, địa phương hai nước, thể hiện thành quả phong phú, toàn diện mà hai bên đạt được trong chuyến thăm lần này."
-                post_category_ids:
-                  type: array
-                  items:
-                    type: string
-                  description: The category IDs of the post
-                  example: ["657537b29ae40316265de5b4"]
-              required:
-                - post_title
-                - post_content
-                - post_thumb_url
-                - post_description
-                - post_category_ids
       responses:
         201:
           description: successful create new series
@@ -305,7 +268,7 @@ paths:
                             post_categories:
                               type: array
                               items:
-                                $ref: "#/components/schemas/Category"
+                                $ref: "#/components/schemas/Categories"
                             status:
                               type: string
                               example: "pending"
@@ -493,7 +456,10 @@ paths:
                         type: string
                         format: date-time
                         description: Creation date
-
+        "400":
+          description: The post is not foundd
+        "401":
+          description: Auth error. You not autherized for accessing to an post that has pending or blocked status
     patch:
       summary: Update a general information of post by Id
       operationId: updateGeneralInfomationOfPost
@@ -501,7 +467,7 @@ paths:
         - posts
       security:
         - BearerAuth: []
-      description: "You can update the genral info of post such as name, description, URL, content"
+      description: "You can update the general info of post such as name, description, URL, content"
       parameters:
         - name: id
           in: path
@@ -511,6 +477,11 @@ paths:
             format: MongoId
             type: string
       requestBody:
+        description: "**General information** includes:<br>
+          - post_title<br>
+          - post_content<br>
+          - post_thumb_url<br>
+          - post_description<br><br>***All field*** are `optional`"
         required: true
         content:
           application/json:
@@ -647,7 +618,11 @@ paths:
               type: "object"
               properties:
                 newStatus:
-                  type: boolean
+                  type: string
+                  enum:
+                    - active
+                    - pending
+                    - blocked
                   example: active
                   description: This is one of three status that are available in the system
               required:
@@ -746,6 +721,8 @@ paths:
                       __v:
                         type: integer
                         example: 0
+        "401":
+          description: Autherized Error. This error occurs when you aren't not `Admin`
   /posts/{id}/comments:
     get:
       tags:
@@ -771,6 +748,7 @@ paths:
               - "ctime"
               - "atime"
             default: "ctime"
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
         - name: limit
           in: query
           description: "Limit the number of results"
@@ -923,6 +901,7 @@ paths:
               - "ctime"
               - "atime"
             default: "ctime"
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
         - name: limit
           in: query
           description: "Limit the number of results"
@@ -951,12 +930,6 @@ paths:
           schema:
             type: string
             format: "yyyy-dd-mm"
-        - name: status
-          in: query
-          description: The state of comments.<br> `True` is active and `False` is blocked by author of post
-          required: false
-          schema:
-            type: boolean
       responses:
         "200":
           description: Successful get list
@@ -1343,7 +1316,7 @@ paths:
               - "ctime"
               - "atime"
             default: "ctime"
-          description: The field to sort the posts by
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
         - in: query
           name: keyword
           required: false
@@ -1429,8 +1402,6 @@ paths:
                               example: 0
                             post_categories:
                               type: array
-                              items:
-                                $ref: "#/components/schemas/Category"
                             status:
                               type: string
                               example: "pending"
@@ -1544,6 +1515,7 @@ paths:
               - "ctime"
               - "atime"
             default: "ctime"
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
         - name: limit
           in: query
           description: "Limit the number of results"
@@ -1677,6 +1649,7 @@ paths:
               - "ctime"
               - "atime"
             default: "ctime"
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
         - name: limit
           in: query
           description: "Limit the number of results"
@@ -1799,6 +1772,7 @@ paths:
               - "ctime"
               - "atime"
             default: "ctime"
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
         - name: limit
           in: query
           description: "Limit the number of results"
@@ -1916,6 +1890,7 @@ paths:
               - "ctime"
               - "atime"
             default: "ctime"
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
         - name: limit
           in: query
           description: "Limit the number of results"
@@ -1999,10 +1974,14 @@ paths:
       description: ""
       operationId: loginUser
       requestBody:
+        description: Email and password for login section
         content:
           application/json:
             schema:
               type: "object"
+              required:
+                - email
+                - password
               properties:
                 email:
                   type: "string"
@@ -2070,6 +2049,7 @@ paths:
       description: ""
       operationId: signUpUser
       requestBody:
+        description: Input user's information include all required filed below
         content:
           application/json:
             schema:
@@ -2095,17 +2075,23 @@ paths:
                   example: "https://www.facebook.com/profile.php?id=100024562028779"
                 user_bio:
                   type: string
-                  example: "Đơn giản là thuw thôi"
+                  example: "Đơn giản là ngọc thôi"
                 user_gender:
                   type: string
                   enum:
                     - male
                     - female
-                    - other
+                    - unknown
                   example: "male"
                 otp:
                   type: string
                   example: "316570"
+              required:
+                - otp
+                - user_gender
+                - user_password
+                - user_email
+                - user_nickname
       responses:
         "200":
           description: Successfully login
@@ -2165,6 +2151,7 @@ paths:
       security:
         - BearerAuth: []
       requestBody:
+        description: The userId that you want to follow
         required: true
         content:
           application/json:
@@ -2173,10 +2160,11 @@ paths:
               properties:
                 followingUserId:
                   type: string
+                  format: MongoId
                   description: The ID of the user to follow.
                   example: "656a003aca3b51815e15a94a"
               required:
-                - followerUserID
+                - followingUserId
       responses:
         201:
           description: Follow successful.
@@ -2284,6 +2272,9 @@ paths:
                 properties:
                   error:
                     type: boolean
+                    enum:
+                      - true
+                      - false
                     default: false
                     description: Whether there was an error.
                   message:
@@ -2327,7 +2318,7 @@ paths:
       tags:
         - categories
       summary: Create new category
-      description: "***This features is only for [ADMIN]***"
+      description: "This feature is only for `[ADMIN]`"
       operationId: createNewCategory
       security:
         - BearerAuth: []
@@ -2342,9 +2333,11 @@ paths:
                 category_name:
                   type: "string"
                   example: "Chính trị"
+                  description: The name of the category
                 category_description:
                   type: "string"
                   example: "Chính trị (Tiếng Anh: politics) là hoạt động trong lĩnh vực quan hệ giữa các giai cấp, cũng như các dân tộc và các quốc gia với vấn đề giành, giữ, tổ chức và sử dụng quyền lực Nhà nước; là sự tham gia của nhân dân vào công việc của Nhà nước và xã hội, là hoạt động chính trị thực tiễn của giai cấp, các đảng phái chính trị, các nhà nước nhằm tìm kiếm những khả năng thực hiện đường lối và những mục tiêu đã đề ra nhằm thỏa mãn lợi ích."
+                  description: The content contains general information about the category
               required:
                 - category_name
                 - category_description
@@ -2462,6 +2455,7 @@ paths:
                               example: 67
         401:
           description: "Unvalid Token"
+  /categories/{id}:
     delete:
       summary: Delete a category by Id
       operationId: deleteCategory
@@ -2469,7 +2463,7 @@ paths:
         - categories
       security:
         - BearerAuth: []
-      description: "***This features is only for [ADMIN]***"
+      description: "This feature is only for `[ADMIN]`"
       parameters:
         - name: id
           in: path
@@ -2514,7 +2508,7 @@ paths:
         - categories
       security:
         - BearerAuth: []
-      description: "***This features is only for [ADMIN]***"
+      description: "This feature is only for `[ADMIN]`"
       parameters:
         - name: id
           in: path
@@ -2523,6 +2517,22 @@ paths:
           schema:
             format: MongoId
             type: string
+      requestBody:
+        description: "The information of category for updating"
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category_name:
+                  type: string
+                  description: The title of the category
+                  example: "Lập trình"
+                category_description:
+                  type: string
+                  description: The content of the category
+                  example: "Lập trình là việc một người sử dụng các ngôn ngữ lập trình, các đoạn mã hay các tiện ích có sẵn để tạo ra một phần mềm máy tính, trò chơi, trang web, ứng dụng,... Điều này giúp người dùng đơn giản hóa việc thực hiện mệnh lệnh với laptop, hay dễ dàng tương tác với nhau thông qua các thiết bị điện tử. Và những người làm công việc lập trình thì được gọi chung là lập trình viên."
       responses:
         200:
           description: Remove category succesfully.
@@ -2598,10 +2608,8 @@ paths:
                     description: Additional metadata (optional).
         400:
           description: Input invalid.
-        404:
-          description: Like is not found
-        401:
-          description: "Dont have permission"
+        default:
+          description: Check again all things
   /likes/{id}:
     delete:
       summary: Unlike a post
@@ -2610,7 +2618,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: "The category id that you want to remove"
+          description: "The like id that you want to delete"
           required: true
           schema:
             format: MongoId
@@ -2771,13 +2779,11 @@ paths:
                     description: HTTP status code of the response
                     default: 201
                   metaData:
-                    type: string
+                    type: object
         400:
           description: Input invalid
         401:
           description: "Dont have permission"
-        404:
-          description: Post is not found
   /series:
     post:
       tags:
@@ -2880,6 +2886,7 @@ paths:
               - "ctime"
               - "atime"
             default: "ctime"
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
         - name: limit
           in: query
           description: "Limit the number of results"
@@ -3024,6 +3031,7 @@ paths:
               - "ctime"
               - "atime"
             default: "ctime"
+          description: The sort the posts by `newest` (ctime) or `oldest` (atime)
         - name: limit
           in: query
           description: "Limit the number of results"
@@ -3411,7 +3419,7 @@ paths:
           description: Series's not found
 components:
   schemas:
-    User:
+    Users:
       type: object
       properties:
         user_nickname:
@@ -3444,7 +3452,7 @@ components:
           enum:
             - user
             - admin
-    Post:
+    Posts:
       type: object
       properties:
         post_user_id:
@@ -3475,7 +3483,7 @@ components:
           type: array
           items:
             type: string
-    Comment:
+    Comments:
       type: object
       properties:
         cmt_post_id:
@@ -3492,7 +3500,7 @@ components:
             type: string
         status:
           type: boolean
-    Category:
+    Categories:
       type: object
       properties:
         category_name:
@@ -3501,14 +3509,14 @@ components:
           type: string
         category_post_count:
           type: number
-    Like:
+    Likes:
       type: object
       properties:
         like_user_id:
           type: string
         like_post_id:
           type: string
-    Follow:
+    Follows:
       type: object
       properties:
         follower_user_id:
@@ -3530,7 +3538,7 @@ components:
             type: string
         series_status:
           type: boolean
-    ApiKey:
+    ApiKeys:
       type: object
       properties:
         key:
@@ -3541,7 +3549,7 @@ components:
           type: array
           items:
             type: string
-    Otp:
+    Otps:
       type: object
       properties:
         email:
@@ -3550,7 +3558,7 @@ components:
           type: string
         createdAt:
           type: string
-    Key:
+    Keys:
       type: object
       properties:
         user_id:

@@ -114,7 +114,7 @@ async function processUnCommentPost({ currentComment }, session) {
         _id: Utils.objectIdParser(currentComment._id)
     }
     await CommentRepository.deleteCommentWithSession(filterForDelete, session)
-    return await updatePostStatusForUnCommentSection(currentComment.cmt_post_id, session)
+    await updatePostStatusForUnCommentSection(currentComment.cmt_post_id, session)
 }
 
 async function processCommentPost({ userId, filteredComment }, session) {
