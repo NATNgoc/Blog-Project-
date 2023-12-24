@@ -52,7 +52,7 @@ const Notification = ({ navigation }) => {
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <View style={styles.verticalLine} />
-            <Text style={{color: "#1A1F36", fontSize: 12,}}>"Surprise motherfucker!!"</Text>
+            <Text style={{color: "#1A1F36", fontSize: 12,}}>"Kame!!"</Text>
             </View>
             <Text style={styles.date}>Last monday at 0:00 AM</Text>
              <View style={[styles.horizontalLine, {marginTop: 15,}]} />
@@ -60,9 +60,49 @@ const Notification = ({ navigation }) => {
         </View>
       )}
 
-      {option === 'Unread' && <View style={{ flex: 1 }}></View>}
+      {option === 'Unread' && (
+        <View style={{ flex: 1 }}>
+          <View style={styles.body}>
+            <View style={styles.profile}>
+              <Image
+                source={require('../assets/Post/avt.png')}
+                style={{ marginRight: 5 }}
+              />
+              <Text style={styles.bold}>Naruto</Text>
+              <Text>comment on</Text>
+              <Text style={styles.bold}>Frieza post</Text>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={styles.verticalLine} />
+            <Text style={{color: "#1A1F36", fontSize: 12,}}>"Rasengan!!"</Text>
+            </View>
+            <Text style={styles.date}>Last monday at 0:00 AM</Text>
+             <View style={[styles.horizontalLine, {marginTop: 15,}]} />
+          </View>
+        </View>
+      )}
 
-      {option === 'Read' && <View style={{ flex: 1 }}></View>}
+      {option === 'Read' && (
+        <View style={{ flex: 1 }}>
+          <View style={styles.body}>
+            <View style={styles.profile}>
+              <Image
+                source={require('../assets/Post/avt.png')}
+                style={{ marginRight: 5 }}
+              />
+              <Text style={styles.bold}>Luffy</Text>
+              <Text>comment on</Text>
+              <Text style={styles.bold}>Frieza post</Text>
+            </View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={styles.verticalLine} />
+            <Text style={{color: "#1A1F36", fontSize: 12,}}>"Gomu!!"</Text>
+            </View>
+            <Text style={styles.date}>Last monday at 0:00 AM</Text>
+             <View style={[styles.horizontalLine, {marginTop: 15,}]} />
+          </View>
+        </View>
+      )}
       
     </View>
   );

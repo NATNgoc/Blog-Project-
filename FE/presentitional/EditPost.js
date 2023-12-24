@@ -17,12 +17,12 @@ const EditPost = ({ navigation }) => {
   const [option, setOption] = useState('General');
   const data = [{ value: 'General' }, { value: 'Comment' }];
 
-  const [title, setTitle] = useState('One Piece');
+  const [title, setTitle] = useState('Please Start Writing Better Git Commits');
   const handleTitleChange = (value) => {
     setTitle(value);
   };
 
-  const [content, setContent] = useState('Gomu gomu no');
+  const [content, setContent] = useState('I recently read a helpful article on Hashnode by Simon Egersand...');
   const handleContentChange = (value) => {
     setContent(value);
   };
@@ -134,16 +134,18 @@ const EditPost = ({ navigation }) => {
             setSelected={setSelected}
             data={datalist}
             search={false} 
+            boxStyles={{ position:'absolute', right: 20, width: 166 }}
+            dropdownStyles={{ position:'absolute', right: 20, top: 45, width: 161 }}
           />
           </View>
         )}
       </TouchableOpacity>
           </View>
-          <Text style={{ marginTop: 7, marginLeft: 10 }}>
+          <Text style={{ marginTop: 7, marginLeft: 10, }}>
             Once upon a time, there is a boy who want to become the king of
             pirates
           </Text>
-          <View style={{ marginHorizontal: 27 }}>
+          <View style={{ marginHorizontal: 27, }}>
             <View style={styles.horizontalLineComment} />
           </View>
         </View>

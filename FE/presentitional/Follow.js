@@ -21,7 +21,7 @@ const Follow = ({ navigation }) => {
   };
 
   const [isFollowing, setIsFollowing] = useState(true);
-  
+
   const handlePress = () => {
     setIsFollowing(!isFollowing);
   };
@@ -45,17 +45,14 @@ const Follow = ({ navigation }) => {
       </View>
 
       <View style={styles.searchFilter}>
-            <View style={styles.search}>
-              <TextInput
-                style={styles.inputSeach}
-                placeholder="Search"
-              />
-            </View>
-              <Icon name="search" size={24} color="#00000" />
-          </View>
+        <View style={styles.search}>
+          <TextInput style={styles.inputSeach} placeholder="Search" />
+        </View>
+        <Icon name="search" size={24} color="#00000" />
+      </View>
 
       {option === 'Follower' && (
-        <View style={{ flex: 1, }}>
+        <View style={{ flex: 1 }}>
           <View style={styles.profile}>
             <View style={{ flexDirection: 'row' }}>
               <Image source={require('../assets/avtpost.png')} />
@@ -70,7 +67,7 @@ const Follow = ({ navigation }) => {
       )}
 
       {option === 'Following' && (
-        <View style={{ flex: 1, }}>
+        <View style={{ flex: 1 }}>
           <View style={styles.profile}>
             <View style={{ flexDirection: 'row' }}>
               <Image source={require('../assets/avtpost.png')} />
@@ -80,10 +77,10 @@ const Follow = ({ navigation }) => {
               </View>
             </View>
             <TouchableOpacity style={styles.button} onPress={handlePress}>
-            <Text style={isFollowing ? styles.unfollow : styles.follow}>
-              {isFollowing ? 'Unfollow' : 'Follow'}
-            </Text>
-          </TouchableOpacity>
+              <Text style={isFollowing ? styles.unfollow : styles.follow}>
+                {isFollowing ? 'Unfollow' : 'Follow'}
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       )}
@@ -155,8 +152,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#756E6E',
   },
-   follow: {
+  follow: {
     fontSize: 15,
-    fontWeight: 'bold',  
+    fontWeight: 'bold',
   },
 });

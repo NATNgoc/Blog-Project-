@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import Follow from './Follow';
+import OthersPost from './OthersPost'
 
 const ProfileOthers = ({ navigation }) => {
   const [isFollowing, setIsFollowing] = useState(false);
@@ -54,7 +55,9 @@ const ProfileOthers = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.navigate(Follow)}>
           <Text>2K Following</Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate(OthersPost)}>
         <Text>3K Posts</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.horizontalLine} />

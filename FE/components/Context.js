@@ -9,7 +9,7 @@ const AuthProvider = ({ children }) => {
   const [password, setPassword] = useState('');
 
   const loginUser = (enteredEmail, enteredPassword) => {
-    if (enteredEmail === '123' && enteredPassword === '123') {
+    if (enteredEmail === '0' && enteredPassword === '0') {
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);

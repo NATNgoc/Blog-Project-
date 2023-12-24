@@ -12,6 +12,8 @@ import Notification from '../presentitional/Notification'
 import Activities from '../presentitional/Activities'
 import Follow from '../presentitional/Follow'
 import ProfileStack from './ProfileStack'
+import EditPost from '../presentitional/EditPost'
+import UserPost from '../presentitional/UserPost'
 
 const Drawer = createDrawerNavigator();
 
@@ -66,6 +68,14 @@ export default function DrawerNavigator() {
         <Drawer.Screen
         name="ProfileStack"
         component={ProfileStack}  
+      />
+       <Drawer.Screen
+        name="EditPost"
+        component={EditPost}  
+      />
+      <Drawer.Screen
+        name="UserPost"
+        component={UserPost}  
       />
     </Drawer.Navigator>
   );

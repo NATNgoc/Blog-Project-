@@ -7,33 +7,33 @@ import {
   Switch,
   StyleSheet,
 } from 'react-native';
-import {Picker} from "@react-native-picker/picker"
+import { Picker } from '@react-native-picker/picker';
 
-const HandleSwitch = () => {
-  const [isEnabled, setIsEnabled] = useState(false);
+const SettingOthers = ({ navigation }) => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [Enable, setEnable] = useState();
+  
+  const toggleDarkMode = () => {
+    setIsDarkMode((previousState) => !previousState);
+  };
 
-  const toggleSwitch = () => {
-    setIsEnabled(previousState => !previousState);
+  const HandleSwitch = () => {
+    const trackColor = { false: '#C0C0C0', true: '#A9A9A9' };
+    const thumbColor = isDarkMode ? '#309CFF' : '#f4f3f4';
+    return (
+      <View>
+        <Switch
+          trackColor={trackColor}
+          thumbColor={thumbColor}
+          onValueChange={toggleDarkMode}
+          value={isDarkMode}
+        />
+      </View>
+    );
   };
 
   return (
-    <View>
-      <Switch
-        trackColor={{ false: '#C0C0C0', true: '#A9A9A9' }}
-        thumbColor={isEnabled ? '#309CFF' : '#f4f3f4'}   
-        onValueChange={toggleSwitch}
-        value={isEnabled}
-      />
-    </View>
-  );
-};
-
-const SettingOthers = ({ navigation }) => {
-
-   const [Enable , setEnable]  = useState(); 
-   
-  return (
-    <View style={styles.container}>
+    <View style={[styles.container, isDarkMode ? styles.darkModeContainer : null]}>
       <Image
         source={require('../assets/SmallRectangle.png')}
         style={styles.layer}
@@ -41,44 +41,45 @@ const SettingOthers = ({ navigation }) => {
 
       <View style={styles.homeHeader}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image source={require('../assets/Arrow.png')} style={styles.backImage} />
+          <Image
+            source={require('../assets/Arrow.png')}
+            style={styles.backImage}
+          />
         </TouchableOpacity>
-        <Text style={styles.title}>Others</Text>
+        <Text style={[styles.title, isDarkMode ? styles.darkModeText : null]}>Others</Text>
       </View>
 
       <View style={styles.tabList}>
         <View style={[styles.commonContainer, styles.space]}>
-            <Text style={styles.colorText}>Dark Mode</Text>
-            <HandleSwitch />
+          <Text style={[styles.colorText, isDarkMode ? styles.darkModeText : null]}>Dark Mode</Text>
+          <HandleSwitch />
         </View>
 
-         <View style={[styles.commonContainer, styles.space]}>
-            <Text style={styles.colorText}>Language</Text>
-             <Picker 
-          selectedValue={Enable} 
-          style={styles.picker} 
-          onValueChange={(itemValue) => setEnable(itemValue)} 
-        > 
-          <Picker.Item label="English" value="en" /> 
-          <Picker.Item label="Vietnamese" value="vi" /> 
-          <Picker.Item label="France" value="fr" /> 
-          <Picker.Item label="Espanol" value="es" />          
-        </Picker> 
+        <View style={[styles.commonContainer, styles.space]}>
+          <Text style={[styles.colorText, isDarkMode ? styles.darkModeText : null]}>Language</Text>
+          <Picker
+            selectedValue={Enable}
+            style={styles.picker}
+            onValueChange={(itemValue) => setEnable(itemValue)}>
+            <Picker.Item label="English" value="en" />
+            <Picker.Item label="Vietnamese" value="vi" />
+            <Picker.Item label="France" value="fr" />
+            <Picker.Item label="Espanol" value="es" />
+          </Picker>
         </View>
 
-         <View style={[styles.commonContainer, styles.space]}>
-            <Text style={styles.colorText}>Region</Text>
-            <Picker 
-          selectedValue={Enable} 
-          style={styles.picker} 
-          onValueChange={(itemValue) => setEnable(itemValue)} 
-        > 
-          <Picker.Item label="VietNam" value="vi" /> 
-          <Picker.Item label="US" value="en" /> 
-          <Picker.Item label="UK" value="en" /> 
-          <Picker.Item label="France" value="fr" /> 
-          <Picker.Item label="Spain" value="es" />          
-        </Picker> 
+        <View style={[styles.commonContainer, styles.space]}>
+          <Text style={[styles.colorText, isDarkMode ? styles.darkModeText : null]}>Region</Text>
+          <Picker
+            selectedValue={Enable}
+            style={styles.picker}
+            onValueChange={(itemValue) => setEnable(itemValue)}>
+            <Picker.Item label="VietNam" value="vi" />
+            <Picker.Item label="US" value="en" />
+            <Picker.Item label="UK" value="en" />
+            <Picker.Item label="France" value="fr" />
+            <Picker.Item label="Spain" value="es" />
+          </Picker>
         </View>
       </View>
     </View>
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
   layer: {
     position: 'absolute',
     width: '100%',
-    height: '10.2%', 
+    height: '10.2%',
   },
   commonContainer: {
     flexDirection: 'row',
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   space: {
-    width: '88%', 
+    width: '88%',
     marginBottom: 25,
   },
   tabList: {
@@ -136,6 +137,12 @@ const styles = StyleSheet.create({
     width: 80,
     fontSize: 11,
     borderRadius: 10,
+  },
+  darkModeContainer: {
+    backgroundColor: 'black',
+  },
+  darkModeText: {
+    color: 'white',
   },
 });
 

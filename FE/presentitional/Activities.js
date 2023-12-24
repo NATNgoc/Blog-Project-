@@ -52,7 +52,7 @@ const Activities = ({ navigation }) => {
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <View style={styles.verticalLine} />
-            <Text style={{color: "#1A1F36", fontSize: 12,}}>"Surprise motherfucker!!"</Text>
+            <Text style={{color: "#1A1F36", fontSize: 12,}}>"hahaha!!"</Text>
             </View>
             <Text style={styles.date}>Last monday at 0:00 AM</Text>
              <View style={[styles.horizontalLine, {marginTop: 15,}]} />
@@ -74,7 +74,7 @@ const Activities = ({ navigation }) => {
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <View style={styles.verticalLine} />
-            <Text style={{color: "#1A1F36", fontSize: 12,}}>"Surprise motherfucker!!"</Text>
+            <Text style={{color: "#1A1F36", fontSize: 12,}}>"hihihi!!"</Text>
             </View>
             <Text style={styles.date}>Last monday at 0:00 AM</Text>
              <View style={[styles.horizontalLine, {marginTop: 15,}]} />
@@ -96,7 +96,7 @@ const Activities = ({ navigation }) => {
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <View style={styles.verticalLine} />
-            <Text style={{color: "#1A1F36", fontSize: 12,}}>"Surprise motherfucker!!"</Text>
+            <Text style={{color: "#1A1F36", fontSize: 12,}}>"hohoho!!"</Text>
             </View>
             <Text style={styles.date}>Last monday at 0:00 AM</Text>
              <View style={[styles.horizontalLine, {marginTop: 15,}]} />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   View,
   Text,
@@ -7,39 +7,31 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
-import Notification from './Notification';
 import postsData from '../components/postsData';
 import Post from './Post';
 
-const Home = () => {
-  const navigation = useNavigation();
+const OthersPost = ({ navigation }) => {
   return (
     <ScrollView
       contentContainerStyle={{
         alignItems: 'center',
-        backgroundColor: '#EFEFEF',
+        backgroundColor: '#F6F6F6',
       }}>
       <View style={styles.homeHeader}>
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
-          <Image source={require('../assets/Home/gg_menu-left.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate(Notification)}>
-          <Image source={require('../assets/Home/Notification.png')} />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image source={require('../assets/Arrow.png')} />
         </TouchableOpacity>
       </View>
 
+      <Text style={styles.title}>USERNAME's Posts</Text>
+
+      <View style={styles.horizontalLine} />
+
       <View style={styles.searchFilter}>
         <View style={styles.search}>
-          <TextInput
-            style={styles.inputSeach}
-            placeholder="Search"
-            // value={email}
-            // handleTextChange={(text) => setEmail(text)}
-          />
+          <TextInput style={styles.inputSeach} placeholder="Search" />
           <Icon name="search" size={24} color="#00000" />
         </View>
 
@@ -54,7 +46,7 @@ const Home = () => {
           key={post.id}
           onPress={() => navigation.navigate(Post)}>
           <View style={styles.headerPost}>
-            <Text style={styles.title}>{post.title}</Text>
+            <Text style={styles.titlePost}>{post.title}</Text>
             <View style={styles.profilepost}>
               <Image source={post.avatar} style={styles.imgAvatar} />
               <Text style={styles.username}>{post.username}</Text>
@@ -72,17 +64,35 @@ const Home = () => {
   );
 };
 
+export default OthersPost;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#EFEFEF',
+    marginTop: 70,
+    marginBottom: 10,
+    marginHorizontal: 8,
+    backgroundColor: '#F6F6F6',
   },
   homeHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: '90%',
-    marginTop: 50,
+    width: '97%',
+    marginLeft: 3,
+    marginTop: 60,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    alignSelf: 'flex-start',
+    marginLeft: 37,
+    marginVertical: 15,
+  },
+  horizontalLine: {
+    width: '93%',
+    height: 1,
+    marginTop: 15,
+    backgroundColor: '#C8C8C8',
   },
   searchFilter: {
     flexDirection: 'row',
@@ -129,7 +139,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  title: {
+  titlePost: {
     alignItems: 'center',
     justifyContent: 'center',
     fontFamily: 'Montserrat',
@@ -172,5 +182,3 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 });
-
-export default Home;

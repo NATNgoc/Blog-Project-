@@ -1,7 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import { FontAwesome, FontAwesome5 } from '@expo/vector-icons'
-import Follow from './Follow'
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
+import Follow from './Follow';
+import UserPost from './UserPost';
 
 const ProfileUser = ({ navigation }) => {
   return (
@@ -39,7 +40,9 @@ const ProfileUser = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.navigate(Follow)}>
           <Text>2K Following</Text>
         </TouchableOpacity>
-        <Text>3K Posts</Text>
+        <TouchableOpacity onPress={() => navigation.navigate(UserPost)}>
+          <Text>3K Posts</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.horizontalLine} />
@@ -50,30 +53,34 @@ const ProfileUser = ({ navigation }) => {
           <Image source={require('../assets/Profile/3dot.png')} />
         </View>
         <View style={[styles.commonContainer, styles.space]}>
-         <View style={{flexDirection: 'row',}}>
-          <FontAwesome name="user" size={20}  style={{marginRight: 10,}} /> 
-          <Text>Nick name</Text>
+          <View style={{ flexDirection: 'row' }}>
+            <FontAwesome name="user" size={20} style={{ marginRight: 10 }} />
+            <Text>Nick name</Text>
           </View>
           <Text>NATN</Text>
         </View>
         <View style={[styles.commonContainer, styles.space]}>
-        <View style={{flexDirection: 'row',}}>
-          <FontAwesome name="globe" size={20}  style={{marginRight: 10,}} /> 
-          <Text>Website</Text>
-        </View>
+          <View style={{ flexDirection: 'row' }}>
+            <FontAwesome name="globe" size={20} style={{ marginRight: 10 }} />
+            <Text>Website</Text>
+          </View>
           <Text>blahblah.com</Text>
         </View>
         <View style={[styles.commonContainer, styles.space]}>
-         <View style={{flexDirection: 'row',}}>
-          <FontAwesome name="envelope" size={20}  style={{marginRight: 10,}} /> 
-          <Text>Email</Text>
+          <View style={{ flexDirection: 'row' }}>
+            <FontAwesome
+              name="envelope"
+              size={20}
+              style={{ marginRight: 10 }}
+            />
+            <Text>Email</Text>
           </View>
           <Text>blahblah@gmail.com</Text>
         </View>
         <View style={[styles.commonContainer, styles.space]}>
-         <View style={{flexDirection: 'row',}}>
-          <FontAwesome5 name="venus" size={24}  style={{marginRight: 10,}} /> 
-          <Text>Genre</Text>
+          <View style={{ flexDirection: 'row' }}>
+            <FontAwesome5 name="venus" size={24} style={{ marginRight: 10 }} />
+            <Text>Genre</Text>
           </View>
           <Text>male</Text>
         </View>

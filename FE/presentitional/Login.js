@@ -55,6 +55,7 @@ const Login = () => {
           placeholder="Password"
           value={password}
           handleTextChange={(pwd) => setPassword(pwd)}
+          password={true}
         />
 
         <TouchableOpacity>
