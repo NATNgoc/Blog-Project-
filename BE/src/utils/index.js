@@ -69,6 +69,12 @@ const filterRequiredFields = (obj, fields) => {
     });
     return result;
 }
+
+const configForSortQuery= (sortBy)  =>  {
+    if (sortBy === 'atime') return {createdAt: 1}
+    else if (sortBy === 'ctime') return {createdAt: -1}
+    return {}
+}
 const wrapperFunctionWithTransaction =
     module.exports = {
         HEADER,
@@ -82,5 +88,6 @@ const wrapperFunctionWithTransaction =
         getUnselectDataForQuery,
         nullObjectParser,
         filterRequiredFields,
-        getRequiredFieldsFromReqBody
+        getRequiredFieldsFromReqBody,
+        configForSortQuery
     }

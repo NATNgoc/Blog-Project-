@@ -16,6 +16,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.0
 servers:
+  - url: https://localhost:6890/api/v1
   - url: http://localhost:6890/api/v1
 tags:
   - name: series
@@ -1171,6 +1172,8 @@ paths:
       tags:
         - users
       summary: Reset password
+      security:
+        - BearerAuth: []
       description: Reset password of user
       operationId: resetPassword
       requestBody:
@@ -1221,6 +1224,8 @@ paths:
       summary: Update general profile of user
       description: Update profile of user
       operationId: updateProfile
+      security:
+        - BearerAuth: []
       requestBody:
         description: "All fields in body request are **_optional_**. You can choose the field you would like for updating"
         required: true

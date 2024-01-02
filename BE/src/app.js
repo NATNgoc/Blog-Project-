@@ -9,10 +9,11 @@ const fs = require("fs")
 const YAML = require('yaml');
 const swaggerUi = require('swagger-ui-express');
 const path = require('path');
-
+const mongoSanitize = require('express-mongo-sanitize');
 //INIT MIDDLEWARE
 app.use(cors())
 app.use(morgan('dev'))
+app.use(mongoSanitize());
 // setting base
 app.use(helmet.frameguard({
     action: 'deny'

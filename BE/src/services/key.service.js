@@ -5,30 +5,38 @@ const { Types } = require('mongoose')
 const KeyRepository = require('../models/repository/key.repo')
 const Error = require('../core/error.response')
 
+const ALGORITHM = 'RS256';
+const ACCESS_TOKEN_EXPIRY = '2days';
+const REFRESH_TOKEN_EXPIRY = '7days';
+
 class KeyService {
 
     static genToken = async (user, typeOfGenToken) => {
+        //---CONFIG JWT
+        const {
+            accessTokenOptions,
+            refreshTokenOptions,
+            payload
+        } = configJWTForGenTokenSection(user)
+        // ---GEN TOKEN
         const { privateKey, publicKey } = await this.genPubicAndPrivateKey()
-        const { accessToken, refreshToken } = await this.createPairToken(
-            {
-                userid: user._id,
-                email: user.email
-            },
-            privateKey,
-            {
-                algorithm: 'RS256',
-                expiresIn: '2days'
-            },
-            {
-                algorithm: 'RS256',
-                expiresIn: '7days'
-            }
-        )
-        const result = await tokenAction[typeOfGenToken](publicKey, user._id)
-        if (!result) {
+        const [pairToken, insertKeyResult] = await Promise.all([
+            this.createPairToken(payload, privateKey, accessTokenOptions, refreshTokenOptions),
+            tokenAction[typeOfGenToken](publicKey, user._id)
+        ]);
+        if (!insertKeyResult) {
             throw new Error.ServiceUnAvailible("Something went wrong!")
         }
-        return { accessToken, refreshToken }
+        // const { privateKey, publicKey } = await this.genPubicAndPrivateKey()
+        // const pairToken = await this.createPairToken(payload, privateKey, accessTokenOptions, refreshTokenOptions)
+        // const insertKeyResult = await tokenAction[typeOfGenToken](publicKey, user._id)
+        // if (!insertKeyResult) {
+        //     throw new Error.ServiceUnAvailible("Something went wrong!")
+        // }
+        return {
+            accessToken: pairToken.accessToken,
+            refreshToken: pairToken.refreshToken
+        }
     }
 
     static async genNewKey(publicKey, userId) {
@@ -41,7 +49,7 @@ class KeyService {
     }
 
     static genPubicAndPrivateKey = async () => {
-        const { privateKey, publicKey } = await crypto.generateKeyPairSync('rsa', {
+        const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
             modulusLength: 2048, // Độ mạnh của thuật toán generateKey
             publicKeyEncoding: { type: 'pkcs1', format: 'pem' },
             privateKeyEncoding: { type: 'pkcs1', format: 'pem' }
@@ -50,15 +58,33 @@ class KeyService {
     }
 
     static async createPairToken(payload, privateKey, optionAccessToken, optionRefreshToken) {
-        const accessToken = await jwt.sign(payload, privateKey, optionAccessToken)
-        const refreshToken = await jwt.sign(payload, privateKey, optionRefreshToken)
+        const [accessToken, refreshToken] = await Promise.all([jwt.sign(payload, privateKey, optionAccessToken), jwt.sign(payload, privateKey, optionRefreshToken)])
         return {
             accessToken,
             refreshToken
         }
     }
 }
-
+//-----------------SUB FUNCTION--------------
+function configJWTForGenTokenSection(user) {
+    const accessTokenOptions = {
+        algorithm: ALGORITHM,
+        expiresIn: ACCESS_TOKEN_EXPIRY
+    };
+    const refreshTokenOptions = {
+        algorithm: ALGORITHM,
+        expiresIn: REFRESH_TOKEN_EXPIRY
+    };
+    const payload = {
+        userid: user._id,
+        email: user.email
+    }
+    return {
+        accessTokenOptions,
+        refreshTokenOptions,
+        payload
+    }
+}
 const tokenAction = {
     "NEW": KeyService.genNewKey,
     "REFRESH": KeyService.getRefreshKey

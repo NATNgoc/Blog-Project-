@@ -36,7 +36,7 @@ class UserService {
     }
 
     static async addPostToWishList(userId, { postId }) {
-        const result = await Promise.all([await this.checkUser(userId), checkActivePost(postId)])
+        const result = await Promise.all([this.checkUser(userId), checkActivePost(postId)])
         checkExistingPostIdInWishList(result[0].user_favorite_posts, postId)
         const { filter, bodyUpdate, option, selectField } = configQueryForAddWishList(userId, postId)
         return await UserRepository.updateUser(filter, bodyUpdate, selectField, option)

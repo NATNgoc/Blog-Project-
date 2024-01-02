@@ -2,7 +2,7 @@
 const Error = require('../core/error.response')
 const CategoryRepository = require('../models/repository/category.repo')
 const PostRepository = require('../models/repository/post.repo')
-const { objectIdParser, getUnselectDataForQuery, checkNullForObject } = require('../utils')
+const { objectIdParser, getUnselectDataForQuery, checkNullForObject, configForSortQuery } = require('../utils')
 const { UserService, checkActivePost } = require('./user.service')
 
 const statusOfPost = {
@@ -52,11 +52,14 @@ class PostService {
     }
 
 
-    static async getAllPost({ limit = 20, offset = 0, sortBy = "ctime", keyword, startDate, endDate, categoryId, authorId }) {
+    static async getAllPost({ limit = 20, offset = 0, sortBy, keyword, startDate, endDate, categoryId, authorId }) {
         const skip = limit * offset
-        const unSelectField = getUnselectDataForQuery(["status", "__v"])
+        const unSelectField = getUnselectDataForQuery(["post_content", "status", "__v", "post_series_ids"])
         const { filter, sortOption } = configQueryForgetAllPost(sortBy, keyword, startDate, endDate, categoryId, authorId)
-        return await PostRepository.findPosts(filter, limit, skip, unSelectField, sortOption)
+        console.time('Execution Time');
+        const result = await PostRepository.findPosts(filter, limit, skip, unSelectField, sortOption)
+        console.timeEnd('Execution Time');
+        return result
     }
 
     static async getAllPostOfUser(requestUserId, ownerId, { limit = 20, offset = 0, sortBy = "ctime", keyword, startDate, endDate, categoryId, status }) {
@@ -119,7 +122,7 @@ function isOwner(requesterId, ownerId) {
 }
 
 function configQueryForgetAllPost(sortBy, keyword, startDate, endDate, categoryId, authorId) {
-    let sortOption = sortBy === 'ctime' ? { createdAt: -1 } : { createdAt: 1 }
+    let sortOption = configForSortQuery(sortBy)
     let filter = {
         status: statusOfPost.ACTIVE
     }

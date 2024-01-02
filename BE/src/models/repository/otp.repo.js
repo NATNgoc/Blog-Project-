@@ -1,5 +1,4 @@
 const otpModel = require('../otp.model')
-const otpGenerator = require('otp-generator')
 
 class OTPRepository {
 
