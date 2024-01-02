@@ -11,7 +11,7 @@
 </p>
 
 # Objectives 🦦
-Our goal is to create a blogging application that hundreds of thousands of people can use and share their stories with everyone.
+Our goal is to create a blog application that hundreds of thousands of people can use and share their stories with everyone.
 
 # Progress 📈
 - Back-End: 60%
