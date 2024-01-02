@@ -1,0 +1,92 @@
+[02/01/2024 16:22:53] error: Argument passed in must be a string of 12 bytes or a string of 24 hex characters or an integer BSONError: Argument passed in must be a string of 12 bytes or a string of 24 hex characters or an integer
+    at new ObjectId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\node_modules\mongoose\node_modules\bson\lib\bson.cjs:2055:23)
+    at Object.objectIdParser (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\utils\index.js:12:12)
+    at findCommentWithUserId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:99:20)
+    at checkExistingCommentWithUserId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:107:34)
+    at CommentService.unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:18:38)
+    at unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\controllers\comment.controller.js:18:44)
+    at H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\core\error.response.js:65:32
+    at Layer.handle [as handle_request] (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\node_modules\express\lib\router\layer.js:95:5)
+    at next (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\node_modules\express\lib\router\route.js:144:13)
+    at autherizeAccessToken (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\middleware\auth\checkAuthentication.js:15:5)
+[02/01/2024 16:23:06] error: Comment is not your own or not exist Error: Comment is not your own or not exist
+    at checkExistingCommentWithUserId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:108:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async CommentService.unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:18:32)
+    at async unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\controllers\comment.controller.js:18:23)
+[02/01/2024 16:24:41] error: Comment is not your own or not exist Error: Comment is not your own or not exist
+    at checkExistingCommentWithUserId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:108:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async CommentService.unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:18:32)
+    at async unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\controllers\comment.controller.js:18:23)
+[02/01/2024 16:24:42] error: Comment is not your own or not exist Error: Comment is not your own or not exist
+    at checkExistingCommentWithUserId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:108:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async CommentService.unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:18:32)
+    at async unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\controllers\comment.controller.js:18:23)
+[02/01/2024 16:30:06] ERROR: Comment is not your own or not exist Error: Comment is not your own or not exist
+    at checkExistingCommentWithUserId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:108:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async CommentService.unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:18:32)
+    at async unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\controllers\comment.controller.js:18:23)
+[02/01/2024 16:30:06] ERROR: Comment is not your own or not exist Error: Comment is not your own or not exist
+    at checkExistingCommentWithUserId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:108:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async CommentService.unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:18:32)
+    at async unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\controllers\comment.controller.js:18:23)
+[02/01/2024 16:30:06] ERROR: Comment is not your own or not exist Error: Comment is not your own or not exist
+    at checkExistingCommentWithUserId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:108:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async CommentService.unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:18:32)
+    at async unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\controllers\comment.controller.js:18:23)
+[02/01/2024 16:30:06] ERROR: Comment is not your own or not exist Error: Comment is not your own or not exist
+    at checkExistingCommentWithUserId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:108:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async CommentService.unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:18:32)
+    at async unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\controllers\comment.controller.js:18:23)
+[02/01/2024 16:30:48] - ERROR - MessageComment is not your own or not exist - Stack:Error: Comment is not your own or not exist
+    at checkExistingCommentWithUserId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:108:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async CommentService.unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:18:32)
+    at async unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\controllers\comment.controller.js:18:23)
+[02/01/2024 16:30:49] - ERROR - MessageComment is not your own or not exist - Stack:Error: Comment is not your own or not exist
+    at checkExistingCommentWithUserId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:108:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async CommentService.unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:18:32)
+    at async unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\controllers\comment.controller.js:18:23)
+[02/01/2024 16:31:09] - ERROR - Message: Comment is not your own or not exist - Stack: Error: Comment is not your own or not exist
+    at checkExistingCommentWithUserId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:108:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async CommentService.unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:18:32)
+    at async unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\controllers\comment.controller.js:18:23)
+[02/01/2024 16:31:09] - ERROR - Message: Comment is not your own or not exist - Stack: Error: Comment is not your own or not exist
+    at checkExistingCommentWithUserId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:108:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async CommentService.unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:18:32)
+    at async unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\controllers\comment.controller.js:18:23)
+[02/01/2024 16:31:09] - ERROR - Message: Comment is not your own or not exist - Stack: Error: Comment is not your own or not exist
+    at checkExistingCommentWithUserId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:108:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async CommentService.unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:18:32)
+    at async unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\controllers\comment.controller.js:18:23)
+[02/01/2024 16:31:09] - ERROR - Message: Comment is not your own or not exist - Stack: Error: Comment is not your own or not exist
+    at checkExistingCommentWithUserId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:108:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async CommentService.unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:18:32)
+    at async unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\controllers\comment.controller.js:18:23)
+[02/01/2024 16:46:59] - ERROR - Message: Comment is not your own or not exist - UserId: 658a99e84c8fa3c88d131f43 - Stack trace: undefined
+[02/01/2024 16:50:58] - ERROR - Message: Comment is not your own or not exist - UserId: 658a99e84c8fa3c88d131f43 - Stack trace: Error: Comment is not your own or not exist
+    at checkExistingCommentWithUserId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:108:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async CommentService.unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:18:32)
+    at async unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\controllers\comment.controller.js:18:23)
+[02/01/2024 16:50:58] - ERROR - Message: Comment is not your own or not exist - UserId: 658a99e84c8fa3c88d131f43 - Stack trace: Error: Comment is not your own or not exist
+    at checkExistingCommentWithUserId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:108:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async CommentService.unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:18:32)
+    at async unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\controllers\comment.controller.js:18:23)
+[02/01/2024 16:50:59] - ERROR - Message: Comment is not your own or not exist - UserId: 658a99e84c8fa3c88d131f43 - Stack trace: Error: Comment is not your own or not exist
+    at checkExistingCommentWithUserId (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:108:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async CommentService.unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\services\comment.service.js:18:32)
+    at async unCommentPost (H:\Self-Study\NodeJs\BlogProject\Blog-Project\BE\src\controllers\comment.controller.js:18:23)

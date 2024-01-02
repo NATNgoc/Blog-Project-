@@ -24,6 +24,12 @@ class ConflictRequestError extends ErrorResponse {
     }
 }
 
+class ServiceUnAvailible extends ErrorResponse {
+    constructor(message = reasonPhrases.SERVICE_UNAVAILABLE, status = statusCode.SERVICE_UNAVAILABLE) {
+        super(message, status)
+    }
+}
+
 class NotFoundError extends ErrorResponse {
     constructor(message = reasonPhrases.NOT_FOUND, status = statusCode.NOT_FOUND) {
         super(message, status)
@@ -48,20 +54,28 @@ class ForBiddenRequestError extends ErrorResponse {
     }
 }
 
-const functionHanlder = (targetFunction) => {
-    return (req, res, next) => {
-        targetFunction(req, res, next).catch(next)
+class TooManyRequest extends ErrorResponse {
+    constructor(message = reasonPhrases.TOO_MANY_REQUESTS, status = statusCode.TOO_MANY_REQUESTS) {
+        super(message, status)
     }
 }
 
+const catchError = (targetFunction) => {
+    return (req, res, next) => {
+        return Promise.resolve(targetFunction(req, res, next)).catch(next);
+    };
+};
+
 module.exports = {
+    TooManyRequest,
     ErrorResponse,
     ConflictRequestError,
     ForBiddenRequestError,
     NotFoundError,
+    ServiceUnAvailible,
     AuthError,
     BadRequestError,
-    functionHanlder
+    catchError
 }
 
 
