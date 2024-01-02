@@ -27,12 +27,6 @@ class KeyService {
         if (!insertKeyResult) {
             throw new Error.ServiceUnAvailible("Something went wrong!")
         }
-        // const { privateKey, publicKey } = await this.genPubicAndPrivateKey()
-        // const pairToken = await this.createPairToken(payload, privateKey, accessTokenOptions, refreshTokenOptions)
-        // const insertKeyResult = await tokenAction[typeOfGenToken](publicKey, user._id)
-        // if (!insertKeyResult) {
-        //     throw new Error.ServiceUnAvailible("Something went wrong!")
-        // }
         return {
             accessToken: pairToken.accessToken,
             refreshToken: pairToken.refreshToken
