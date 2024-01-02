@@ -40,4 +40,11 @@ Our goal is to create a blogging application that hundreds of thousands of peopl
 - Step 3: Run terminal with 
 ```npm start```
 - Step 4: Open ```https:\\localhost:6890\api]v1\docs``` to open swagger and enjoy
+# Contributors 💓
+Thanks for your effort to make the project 
+
+| Leader | Member | Member |  
+| ---- | ---- | ---- |
+| [![](https://avatars.githubusercontent.com/u/96611889?s=400&u=238fddadfb541848381d7690bf57530ae3827c93&v=4)](https://github.com/NATNgoc) | [![](https://avatars.githubusercontent.com/u/108615688?v=4)](https://github.com/KhaiNoob) | [![](https://avatars.githubusercontent.com/u/146072945?v=4)](https://github.com/billythephes) |  
+| Nguyễn Anh Tuấn Ngọc | Danh Hoàng Khải | Nguyễn Hồng Phúc |  
 
