@@ -33,7 +33,7 @@ Our goal is to create a blog application that hundreds of thousands of people ca
 # Front End
 - [x] Reactnative
 # Figma
-📌Link: [You can see here] (https://www.figma.com/file/ODO94TEJe1k8n9zUcRXI7k/Blog-App-(Community)?type=design&node-id=0%3A1&mode=design&t=13liis08FRq9Ylak-1)
+📌Link: [You can see here](https://www.figma.com/file/ODO94TEJe1k8n9zUcRXI7k/Blog-App-(Community)?type=design&node-id=0%3A1&mode=design&t=13liis08FRq9Ylak-1)
 # How to run project with server-side?
 - Step 1: Clone the project
 - Step 2: Input the information in .env
