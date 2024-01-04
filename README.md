@@ -39,7 +39,7 @@ Our goal is to create a blog application that hundreds of thousands of people ca
 - Step 2: Input the information in .env
 - Step 3: Run terminal with 
 ```npm start```
-- Step 4: Open ```https:\\localhost:6890\api]v1\docs``` to open swagger and enjoy
+- Step 4: Open ```https:\\localhost:6890\api\v1\docs``` to open swagger and enjoy
 # Contributors 💓
 Thanks for your effort to make the project 
 
