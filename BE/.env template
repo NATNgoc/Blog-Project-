@@ -1,0 +1,12 @@
+APP_PORT_DEV=6890
+DB_DEV_HOST_NAME="127.0.0.1"
+DB_DEV_PORT=27001
+DB_DEV_NAME="Blog_App"
+DB_DEV_USERNAME= ... # pend for mongodb cloud
+DB_DEV_PASSWORD= ... # pend for mongodb cloud
+DB_DEV_CLUSTER_NAME= ... # pend for mongodb cloud
+GOOGLE_PASSWORD= .... # pend for email smtp
+GOOGLE_USERNAME= ...# pend for email smtp
+MAIL_HOST= .... # pend for email smtp
+MAIL_PORT= ... # pend for email smtp
+LOG_LEVEL='info' # pend for wiston
