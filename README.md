@@ -36,10 +36,11 @@ Our goal is to create a blog application that hundreds of thousands of people ca
 📌Link: [You can see here](https://www.figma.com/file/ODO94TEJe1k8n9zUcRXI7k/Blog-App-(Community)?type=design&node-id=0%3A1&mode=design&t=13liis08FRq9Ylak-1)
 # How to run project with server-side?
 - Step 1: Clone the project
-- Step 2: Input the information in .env
-- Step 3: Run terminal with 
+- Step 2: Create your file .env with ".evn template" attached in my BE folder
+- Step 3: If you run on local, start docker compose. Otherwise, enter your cluster information into .env file to run on cloud enviroment.
+- Step 4: Run terminal with 
 ```npm start```
-- Step 4: Open ```https:\\localhost:6890\api\v1\docs``` to open swagger and enjoy
+- Step 5: Open ```https:\\localhost:6890\api\v1\docs``` to open swagger and enjoy :D
 # Contributors 💓
 Thanks for your effort to make the project 
 
